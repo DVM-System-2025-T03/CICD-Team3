@@ -52,7 +52,7 @@ jobs:
         id: create
         uses: atlassian/gajira-create@v3
         with:
-          project: TEAM
+          project: TEAM3
           issuetype: Bug
           summary: '${{ github.event.issue.title }}'
           description: '${{ steps.md2jira.outputs.output-text }}'

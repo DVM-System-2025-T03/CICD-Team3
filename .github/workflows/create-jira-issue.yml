@@ -12,6 +12,8 @@ jobs:
   create-issue:
     name: Create Jira issue
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
       - name: Login
         uses: atlassian/gajira-login@v3

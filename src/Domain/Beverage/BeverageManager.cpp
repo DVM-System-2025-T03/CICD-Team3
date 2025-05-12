@@ -1,22 +1,25 @@
-#include <iostream>
+#include <list>
+#include "Beverage.h"
 
 class BeverageManager{
-    private List<Beverage> beverages;
+    private:
+        list<Beverage> beverages;
 
-    public boolean hasEnoughStock(int beverageId, int quantity){
+    public:
+        bool hasEnoughStock(int beverageId, int quantity){
         return false;
     }
 
-    public boolean reduceQuantity(int beverageId, int quantity){
+        bool reduceQuantity(int beverageId, int quantity){
         return false;
     }
 
-    public Beverage getBeverage(int beverageId){
-        return NULL;
+        Beverage getBeverage(int beverageId){
+        return ;
     }
 
-    public int getStock(int beverageId){
+        int getStock(int beverageId){
         return 0;
     }
 
-}
+};

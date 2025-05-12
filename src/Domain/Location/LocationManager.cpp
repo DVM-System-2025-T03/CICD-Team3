@@ -1,13 +1,9 @@
-#include <iostream>
+#include "LocationManager.h"
 
-class LocationManager{
-    private Location location;
-    
-    public DVMInfoDTO calculatieNearest(List<ResponseStockDTO> responseList){
-        return NULL;
-    }
+DVMInfoDTO LocationManager::calculateNearest(list<ResponseStockDTO> responseList) {
+    return DVMInfoDTO();
+}
 
-    public Location getLocation(){
-        return NULL;
-    }
+Location LocationManager::getLocation() {
+    return Location();
 }

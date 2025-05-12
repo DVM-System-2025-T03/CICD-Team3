@@ -1,11 +1,5 @@
-#include <iostream>
+#include "RequestPaymentController.h"
 
-class RequestPaymentController{
-    private BeverageManager beverageManager;
-    private Bank bank;
-    private CreditCard creditCard;
-
-    public Beverage enterCardNumber(string cardNumber){
-        return NULL;
-    }
+Beverage RequestPaymentController::enterCardNumber(string cardNumber) {
+    return Beverage();
 }

@@ -1,13 +1,17 @@
+#include "Beverage.h"
+
 class Beverage{
-    private int id;
-    private string name;
-    private int stock;
+    private:
+        int id;
+        string name;
+        int stock;
 
-    public boolean hasEnoughStock(int quantity){
+    public:
+        bool hasEnoughStock(int quantity){
         return false;
     }
 
-    public reduceQuantity(int quantity){
+        bool reduceQuantity(int quantity){
         return false;
     }
-}
+};

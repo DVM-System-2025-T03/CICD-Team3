@@ -1,23 +1,17 @@
-#include <iostream>
-#include <Map>
-#include <string>
+#include "AuthCodeManager.h"
 
-class AuthCodeManager{
-    private Map<string, pair<int, int>> AuthCodeManager;
+bool AuthCodeManager::validateAuthCode(string authCode) {
+    return false;
+}
 
-    public boolean validateAuthCode(string authCode){
-        return false;
-    }
+int AuthCodeManager::getBeverageId(string authCode) {
+    return 0;
+}
 
-    public int getBeverageId(string authCode){
-        return 0;
-    }
+void AuthCodeManager::saveAuthCode(string authCode) {
+    
+}
 
-    public void saveAuthCode(string authCode){
-
-    }
-
-    public string generateAuthCode(){
-        return "";
-    }
+string AuthCodeManager::generateAuthCode() {
+    return "";
 }

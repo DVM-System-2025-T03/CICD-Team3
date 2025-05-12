@@ -1,25 +1,22 @@
-#include <list>
-#include "Beverage.h"
+#include "BeverageManager.h"
 
-class BeverageManager{
-    private:
-        list<Beverage> beverages;
+bool BeverageManager::hasEnoughStock(int beverageId, int quantity) {
+    return false;
+}
 
-    public:
-        bool hasEnoughStock(int beverageId, int quantity){
-        return false;
+bool BeverageManager::reduceQuantity(int beverageId, int quantity) {
+    return false;
+}
+
+Beverage BeverageManager::getBeverage(int beverageId) {
+    for(list<Beverage>::iterator bevgerage = beverages.begin(); bevgerage != beverages.end(); bevgerage++){
+        if(bevgerage->getId() == beverageId){
+            return *bevgerage;
+        }
     }
+    return Beverage();
+}
 
-        bool reduceQuantity(int beverageId, int quantity){
-        return false;
-    }
-
-        Beverage getBeverage(int beverageId){
-        return ;
-    }
-
-        int getStock(int beverageId){
-        return 0;
-    }
-
-};
+int BeverageManager::getStock(int beverageId) {
+    return 0;
+}

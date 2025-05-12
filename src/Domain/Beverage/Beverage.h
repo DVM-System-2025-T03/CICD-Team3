@@ -1,6 +1,4 @@
-#ifndef BEVERAGE_H
-#define BEVERAGE_H
-
+#pragma once
 #include <iostream>
 #include <string>
 using namespace std;
@@ -14,6 +12,5 @@ private:
 public:
     bool hasEnoughStock(int quantity);
     bool reduceQuantity(int quantity);
+    int getId();
 };
-
-#endif

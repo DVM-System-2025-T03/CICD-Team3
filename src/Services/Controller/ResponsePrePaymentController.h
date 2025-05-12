@@ -1,6 +1,4 @@
-#ifndef RESPONSEPREPAYMENTCONTROLLER_H
-#define RESPONSEPREPAYMENTCONTROLLER_H
-
+#pragma once
 #include "BeverageManager.h"
 #include "AuthCodeManager.h"
 #include "ResponsePrePaymentDTO.h"
@@ -14,5 +12,3 @@ private:
 public:
     ResponsePrePaymentDTO responsePrePay(int beverageId, int quantity, AuthCode authCode);
 };
-
-#endif

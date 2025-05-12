@@ -14,6 +14,6 @@ private:
     SocketManager socketManager;
 
 public:
-    void enterPrePayIntention(bool intention);
+    void enterPrePayIntention(bool intention, Beverage beverage, int quantity);
     string enterCardNumber(string cardNumber);
 };

@@ -11,3 +11,7 @@ bool Beverage::reduceQuantity(int quantity){
 int Beverage::getId(){
     return id;
 }
+
+int Beverage::getPrice(){
+    return price;
+}

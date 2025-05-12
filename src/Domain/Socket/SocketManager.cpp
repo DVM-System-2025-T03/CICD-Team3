@@ -1,22 +1,17 @@
-#include <iostream>
+#include "SocketManager.h"
 
-class SocketManager{
-    private ResponseStockController ResponseStockController;
-    private ResponsePrePaymentController ResponsePrePaymentController;
+list<ResponseStockDTO> SocketManager::requestBeverageStockToOthers(int beverageId, int quantity, int srcId, int dstId) {
+    return list<ResponseStockDTO>();
+}
 
-    public List<ResponseStockDTO> requestBeverageStockToOthers(int beverageId, int quantity, int srcId, int dstId){
-        return NULL;
-    }
+ResponseStockDTO SocketManager::requestBeverageInfo(int beverageId, int quantity, int srcId, int dstId) {
+    return ResponseStockDTO();
+}
 
-    public ResponseStockDTO requestBeverageInfo(int beverageId, int quantity, int srcId, int dstId){
-        return NULL;
-    }
+ResponsePrePaymentDTO SocketManager::requestPrePay(int beverageId, int quantity, string authCode, int srcId, int dstId) {
+    return ResponsePrePaymentDTO();
+}
 
-    public ResponsePrePaymentDTO requestPrePay(int beverageId, int quantity, string authCode, int srcId, int dstId){
-        return NULL;
-    }
-
-    public boolean requestPrePayment(int beverageId, int quantity, string authCode, int srcId, int dstId){
-        return false;
-    }
+bool SocketManager::requestPrePayment(int beverageId, int quantity, string authCode, int srcId, int dstId) {
+    return false;
 }

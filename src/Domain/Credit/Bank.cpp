@@ -1,13 +1,10 @@
-#include <iostream>
+#include "Bank.h"
+#include "CreditCard.h"
 
-class Bank{
-    private List<CreditCard> cards;
+CreditCard Bank::requestCard(string cardNumber) {
+    return CreditCard();
+}
 
-    public CreditCard requestCard(string cardNumber){
-        return NULL;
-    }
-
-    public void saveCreditCard(CreditCard creditCard){
-        return;
-    }
+void Bank::saveCreditCard(CreditCard creditCard) {
+    cards.push_back(creditCard);
 }

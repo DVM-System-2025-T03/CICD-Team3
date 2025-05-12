@@ -1,10 +1,5 @@
-#include <iostream>
+#include "ResponseStockController.h"
 
-class ResponseStockController{
-    private LocationManager LocationManager;
-    private BeverageManager beverageManager;
-
-    public ResponseStockDTO responseBeverageStock(int beverageId, int quantity){
-        return NULL;
-    }
+ResponseStockDTO ResponseStockController::responseBeverageStock(int beverageId, int quantity) {
+    return ResponseStockDTO();  // 스켈레톤
 }

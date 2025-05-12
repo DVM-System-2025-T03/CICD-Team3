@@ -1,16 +1,9 @@
-#include <iostream>
+#include "RequestPrePaymentController.h"
 
-class RequestPrePaymentController{
-    private AuthCodeManager authCodeManager;
-    private CreditCard card;
-    private Bank bank;
-    private SocketManager SocketManager;
+void RequestPrePaymentController::enterPrePayIntention(bool intention) {
+    
+}
 
-    public void enterPrePayIntention(boolean intention){
-        return;
-    }
-
-    public string enterCardNumber(string cardNumber){
-        return "";
-    }
+string RequestPrePaymentController::enterCardNumber(string cardNumber) {
+    return "";
 }

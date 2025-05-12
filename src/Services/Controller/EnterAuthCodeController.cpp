@@ -1,10 +1,5 @@
-#include <iostream>
+#include "EnterAuthCodeController.h"
 
-class EnterAuthCodeController{
-    private BeverageManager beverageManager;
-    private AuthCodeManager authCodeManager;
-
-    public Beverage enterAuthCode(string authCode){
-        return NULL;
-    }
+Beverage EnterAuthCodeController::enterAuthCode(string authCode) {
+    return Beverage();  // 스켈레톤 반환
 }

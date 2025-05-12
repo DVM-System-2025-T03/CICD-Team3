@@ -1,14 +1,9 @@
-#include <iostream>
+#include "CreditCard.h"
 
-class CreditCard{
-    private string cardNumber;
-    private int balance;
+bool CreditCard::validateBalance(int price) {
+    return false;
+}
 
-    public boolean validateBalance(int price){
-        return false;
-    }
-
-    public void reduceBalance(int price){
-        return;
-    }
+void CreditCard::reduceBalance(int price) {
+    
 }

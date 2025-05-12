@@ -1,11 +1,5 @@
-#include <iostream>
+#include "SelectBeverageController.h"
 
-class SelectBeverageController{
-    private LocationManager LocationManager;
-    private BeverageManager beverageManager;
-    private SocketManager SocketManager;
-
-    public void SelectBeverage(int beverageId, int quantity){
-        return;
-    }
+void SelectBeverageController::selectBeverage(int beverageId, int quantity) {
+    
 }

@@ -1,7 +1,7 @@
 #pragma once
-#include "LocationManager.h"
-#include "BeverageManager.h"
-#include "SocketManager.h"
+#include "../../Domain/Location/LocationManager.h"
+#include "../../Domain/Beverage/BeverageManager.h"
+#include "../../Domain/Socket/SocketManager.h"
 
 class SelectBeverageController {
 private:

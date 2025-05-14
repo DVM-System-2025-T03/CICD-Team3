@@ -1,10 +1,10 @@
 #pragma once
 #include <list>
 #include <string>
-#include "ResponseStockDTO.h"
-#include "ResponsePrePaymentDTO.h"
-#include "ResponseStockController.h"
-#include "ResponsePrePaymentController.h"
+#include "../DTO/ResponseStockDTO.h"
+#include "../DTO/ResponsePrePaymentDTO.h"
+#include "../../Services/Controller/ResponseStockController.h"
+#include "../../Services/Controller/ResponsePrePaymentController.h"
 
 using namespace std;
 

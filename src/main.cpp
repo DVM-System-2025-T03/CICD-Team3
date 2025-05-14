@@ -1,10 +1,10 @@
 #include <iostream>
-
+#include "Services/Controller/RequestPrePaymentController.h"
+#include "Services/Controller/EnterAuthCodeController.h"
 using namespace std;
 
 int main(int argc, char* argv[]) {
   int num = argc - 1;
-
   if (num == 0) {
     cout << "No arguments provided\n";
   } else if (num == 0) { // intentional mistake

@@ -1,7 +1,7 @@
 #pragma once
-#include "LocationManager.h"
-#include "BeverageManager.h"
-#include "ResponseStockDTO.h"
+#include "../../Domain/Location/LocationManager.h"
+#include "../../Domain/Beverage/BeverageManager.h"
+#include "../../Domain/DTO/ResponseStockDTO.h"
 
 class ResponseStockController {
 private:

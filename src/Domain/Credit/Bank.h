@@ -9,6 +9,6 @@ private:
     list<CreditCard> cards;
 
 public:
-    CreditCard requestCard(string cardNumber);
+    CreditCard* requestCard(string cardNumber);
     void saveCreditCard(CreditCard creditCard);
 };

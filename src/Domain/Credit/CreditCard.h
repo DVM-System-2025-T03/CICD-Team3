@@ -10,4 +10,5 @@ private:
 public:
     bool validateBalance(int price);
     void reduceBalance(int price);
+    bool isValid();
 };

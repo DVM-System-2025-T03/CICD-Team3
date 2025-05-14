@@ -10,7 +10,14 @@ void SelectBeverageController::selectBeverage(int beverageId, int quantity) {
     }
 
     // 2. 로컬 재고 확인
-    if (beverageManager.hasEnoughStock(beverageId, quantity)) {
+    bool hasStock = false;
+    try {
+        hasStock = beverageManager.hasEnoughStock(beverageId, quantity);
+    } catch (const std::out_of_range& e) {
+        throw std::invalid_argument(std::string("존재하지 않는 beverageId 입니다: ") + std::to_string(beverageId));
+    }
+
+    if (hasStock) {
         // 3. 재고가 충분하면 아무 것도 하지 않고 종료
         return;
     }

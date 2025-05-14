@@ -1,31 +1,31 @@
-#include "BeverageManager.h"
+#include <list>
+#include "Beverage.h"
 
-Beverage::Beverage() : id(0), name(""), stock(0), price(0) {}
+class BeverageManager{
+    private:
+        list<Beverage> beverages;
 
-Beverage::Beverage(int id, string& name, int stock, int price)
-        : id(id), name(name), stock(stock), price(price) {}
+    public:
+        bool hasEnoughStock(int beverageId, int quantity){
+            for (Beverage beverage : beverages) {
+                if (beverage.getId() == beverageId) {
+                    return beverage.hasEnoughStock(quantity);
+                }
+            }
 
-bool BeverageManager::hasEnoughStock(int beverageId, int quantity) {
-    return false;
-}
-
-bool BeverageManager::reduceQuantity(int beverageId, int quantity) {
-    return false;
-}
-
-Beverage BeverageManager::getBeverage(int beverageId) {
-    for(list<Beverage>::iterator bevgerage = beverages.begin(); bevgerage != beverages.end(); bevgerage++){
-        if(bevgerage->getId() == beverageId){
-            return *bevgerage;
+            throw std::out_of_range("beverageId에 해당하는 음료가 없습니다.");            
         }
+
+        bool reduceQuantity(int beverageId, int quantity){
+        return false;
     }
-    return Beverage();
-}
 
-int BeverageManager::getStock(int beverageId) {
-    return 0;
-}
+        Beverage getBeverage(int beverageId){
+        return ;
+    }
 
-void BeverageManager::addBeverage(Beverage& beverage) {
-    beverages.push_back(beverage);
-}
+        int getStock(int beverageId){
+        return 0;
+    }
+
+};

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <exception>
-#include "DVMInfoDTO.h"
+#include "../DTO/DVMInfoDTO.h"
 
 class DVMInfoException : public std::exception {
 private:

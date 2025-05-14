@@ -1,17 +1,17 @@
 #include "Beverage.h"
 
-class Beverage{
-    private:
-        int id;
-        string name;
-        int stock;
+bool Beverage::hasEnoughStock(int quantity){
+    return false;
+}
 
-    public:
-        bool hasEnoughStock(int quantity){
-        return false;
-    }
+bool Beverage::reduceQuantity(int quantity){
+    return false;
+}
 
-        bool reduceQuantity(int quantity){
-        return false;
-    }
-};
+int Beverage::getId(){
+    return id;
+}
+
+int Beverage::getPrice(){
+    return price;
+}

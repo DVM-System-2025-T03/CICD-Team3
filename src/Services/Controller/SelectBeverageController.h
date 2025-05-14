@@ -2,6 +2,8 @@
 #include "LocationManager.h"
 #include "BeverageManager.h"
 #include "SocketManager.h"
+#include "DVMInfoException.h"
+#include <stdexcept>
 
 class SelectBeverageController {
 private:

@@ -1,5 +1,10 @@
 #include "BeverageManager.h"
 
+Beverage::Beverage() : id(0), name(""), stock(0), price(0) {}
+
+Beverage::Beverage(int id, string& name, int stock, int price)
+        : id(id), name(name), stock(stock), price(price) {}
+
 bool BeverageManager::hasEnoughStock(int beverageId, int quantity) {
     return false;
 }
@@ -19,4 +24,8 @@ Beverage BeverageManager::getBeverage(int beverageId) {
 
 int BeverageManager::getStock(int beverageId) {
     return 0;
+}
+
+void BeverageManager::addBeverage(Beverage& beverage) {
+    beverages.push_back(beverage);
 }

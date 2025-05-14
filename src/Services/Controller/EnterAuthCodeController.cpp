@@ -1,19 +1,23 @@
 #include "EnterAuthCodeController.h"
 
-Beverage EnterAuthCodeController::enterAuthCode(string authCode) {
+EnterAuthCodeController::EnterAuthCodeController(BeverageManager* beverageManager, AuthCodeManager* authCodeManager)
+    : beverageManager(beverageManager), authCodeManager(authCodeManager) {
+}
+
+optional<Beverage> EnterAuthCodeController::enterAuthCode(string authCode) {
     bool isValid = false;
 
     for(int i = 0; i < 3; i++){
-        isValid = authCodeManager.validateAuthCode(authCode);
+        isValid = authCodeManager->validateAuthCode(authCode);
         if(isValid) break;
     }
 
     if(!isValid){
         // uc 1
-        return ;
+        return nullopt;
     }
 
-    int beverageId = authCodeManager.getBeverageId(authCode);
-    Beverage beverage = beverageManager.getBeverage(beverageId);
+    int beverageId = authCodeManager->getBeverageId(authCode);
+    Beverage beverage = beverageManager->getBeverage(beverageId);
     return beverage;
 }

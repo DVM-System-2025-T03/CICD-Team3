@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
-#include "BeverageManager.h"
-#include "Bank.h"
-#include "CreditCard.h"
-#include "Beverage.h"
+#include "../../Domain/Beverage/BeverageManager.h"
+#include "../../Domain/Credit/Bank.h"
+#include "../../Domain/Credit/CreditCard.h"
+#include "../../Domain/Beverage/Beverage.h"
 using namespace std;
 
 class RequestPaymentController {

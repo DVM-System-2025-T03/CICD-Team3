@@ -1,8 +1,8 @@
 #pragma once
-#include "BeverageManager.h"
-#include "AuthCodeManager.h"
-#include "ResponsePrePaymentDTO.h"
-#include "AuthCode.h"
+#include "../../Domain/Beverage/BeverageManager.h"
+#include "../../Domain/Auth/AuthCodeManager.h"
+#include "../../Domain/DTO/ResponsePrePaymentDTO.h"
+#include "../../Domain/Auth/AuthCode.h"
 
 class ResponsePrePaymentController {
 private:

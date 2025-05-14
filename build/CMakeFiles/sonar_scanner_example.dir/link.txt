@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/sonar_scanner_example.dir/src/main.cpp.o -o sonar_scanner_example

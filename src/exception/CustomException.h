@@ -5,7 +5,7 @@
 
 using namespace std;
 
-namespace exception {
+namespace customException {
 
 class CustomException : public std::runtime_error {
 public:
@@ -33,10 +33,16 @@ public:
         : CustomException("Duplicate: " + message) {}
 };
 
-class AuthenticationException : public CustomException {
+class NotEnoughStockException : public CustomException {
 public:
-    explicit AuthenticationException(const string& message) 
-        : CustomException("Authentication Error: " + message) {}
+    explicit NotEnoughStockException(const string& message) 
+        : CustomException("Not Enough Stock: " + message) {}
+};
+
+class NotEnoughBalanceException : public CustomException {
+public:
+    explicit NotEnoughBalanceException(const string& message) 
+        : CustomException("Not Enough Balance: " + message) {}
 };
 
 }

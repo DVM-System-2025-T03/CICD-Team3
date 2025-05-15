@@ -1,8 +1,11 @@
 #include "AuthCodeManager.h"
+#include "exception/CustomException.h"
+
+using namespace customException;
 
 bool AuthCodeManager::validateAuthCode(string authCode) {
     if(authCodeMap.find(authCode) == authCodeMap.end()){
-        return false;
+        throw NotFoundException("Auth code not found");
     }
     return true;
 }
@@ -11,7 +14,7 @@ int AuthCodeManager::getBeverageId(string authCode) {
     map<string, pair<int, int>>::iterator auth = authCodeMap.find(authCode);
     
     if(auth == authCodeMap.end()){
-        return -1;
+        throw NotFoundException("Auth code not found");
     }
 
     return auth->second.first;

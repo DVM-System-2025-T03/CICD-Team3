@@ -8,7 +8,13 @@ FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/refs/heads/main.zip
 )
-FetchContent_MakeAvailable(googletest)
+FetchContent_Declare(
+  json
+  URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
+)
+FetchContent_MakeAvailable(googletest json)
+
+include_directories(/opt/homebrew/include ${CMAKE_SOURCE_DIR}/src)
 
 enable_testing()
 
@@ -27,7 +33,9 @@ target_link_libraries(AuthCodeManagerTest
     gmock
     gtest_main
     pthread
+    nlohmann_json::nlohmann_json
 )
+add_test(NAME AuthCodeManagerTest COMMAND AuthCodeManagerTest)
 
 add_executable(BeverageManagerTest
     test/Domain/Beverage/BeverageManagerTest.cpp
@@ -45,6 +53,9 @@ target_link_libraries(BeverageManagerTest
     gmock
     gtest_main
     pthread
+    nlohmann_json::nlohmann_json
 )
+add_test(NAME BeverageManagerTest COMMAND BeverageManagerTest)
 
-add_executable(sonar_scanner_example src/main.cpp)# 빌드할 실행파일 및 소스 목록
+add_executable(sonar_scanner_example src/main.cpp src/Domain/Socket/SocketManager.cpp)# 빌드할 실행파일 및 소스 목록
+target_link_libraries(sonar_scanner_example PRIVATE nlohmann_json::nlohmann_json)

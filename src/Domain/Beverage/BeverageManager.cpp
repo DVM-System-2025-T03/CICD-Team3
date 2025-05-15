@@ -1,5 +1,6 @@
 #include "BeverageManager.h"
-
+#include "exception/CustomException.h"
+using namespace customException;
 bool BeverageManager::hasEnoughStock(int beverageId, int quantity) {
     return false;
 }
@@ -14,7 +15,7 @@ Beverage BeverageManager::getBeverage(int beverageId) {
             return *bevgerage;
         }
     }
-    return Beverage();
+    throw NotFoundException("Beverage not found");
 }
 
 int BeverageManager::getStock(int beverageId) {

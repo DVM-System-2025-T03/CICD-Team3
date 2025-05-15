@@ -1,12 +1,13 @@
 #include "RequestPrePaymentController.h"
-
+#include "exception/CustomException.h"
+using namespace customException;
 RequestPrePaymentController::RequestPrePaymentController(AuthCodeManager* authCodeManager, Bank* bank, SocketManager* socketManager)
     : authCodeManager(authCodeManager), bank(bank), socketManager(socketManager) {}
 
-bool RequestPrePaymentController::enterPrePayIntention(bool intention, Beverage beverage, int quantity, int srcId, int dstId) {
+void RequestPrePaymentController::enterPrePayIntention(bool intention, Beverage beverage, int quantity, int srcId, int dstId) {
     if (!intention) {
         // uc1
-        return false;
+        throw InvalidException("Invalid intention");
     }
 
     for (int i = 0; i < 3; i++) {
@@ -20,22 +21,22 @@ bool RequestPrePaymentController::enterPrePayIntention(bool intention, Beverage 
         }
 
         if (!card->validateBalance(beverage.getPrice() * quantity)) {
-            return false;
+            throw NotEnoughStockException("Not enough stock");
         }
 
         string authCode = authCodeManager->generateAuthCode();
         if (!socketManager->requestPrePayment(beverage.getId(), quantity, authCode, srcId, dstId)) {
-            return false;
+            throw InvalidException("Invalid auth code");
         }
 
         cout << "선결제 완료" << endl;
         cout << "인증 코드 : " << authCode << endl;
 
-        return true;
+        return;
     }
     cout << "카드번호 3회 실패" << endl;
     // uc1
-    return false;
+    throw InvalidException("Invalid card number");
 }
 
 string RequestPrePaymentController::enterCardNumber(string cardNumber) {

@@ -1,6 +1,7 @@
 #include "Domain/Auth/AuthCodeManager.h"
+#include "exception/CustomException.h"
 #include <gtest/gtest.h>
-
+using namespace customException;
 class AuthCodeManagerTest : public ::testing::Test {
 protected:
     AuthCodeManager manager;
@@ -18,8 +19,8 @@ TEST_F(AuthCodeManagerTest, ValidateAuthCode_등록된코드_True반환) {
 }
 
 TEST_F(AuthCodeManagerTest, ValidateAuthCode_없는코드_False반환) {
-    EXPECT_FALSE(manager.validateAuthCode("INVALID999"));
-    EXPECT_FALSE(manager.validateAuthCode(""));
+    EXPECT_THROW(manager.validateAuthCode("INVALID999"), NotFoundException);
+    EXPECT_THROW(manager.validateAuthCode(""), NotFoundException);
 }
 
 TEST_F(AuthCodeManagerTest, GetBeverageId_등록된코드_Id반환) {
@@ -28,6 +29,6 @@ TEST_F(AuthCodeManagerTest, GetBeverageId_등록된코드_Id반환) {
 }
 
 TEST_F(AuthCodeManagerTest, GetBeverageId_없는코드_Minus1반환) {
-    EXPECT_EQ(manager.getBeverageId("INVALID999"), -1);
-    EXPECT_EQ(manager.getBeverageId(""), -1);
+    EXPECT_THROW(manager.getBeverageId("INVALID999"), NotFoundException);
+    EXPECT_THROW(manager.getBeverageId(""), NotFoundException);
 }

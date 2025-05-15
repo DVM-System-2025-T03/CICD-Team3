@@ -1,6 +1,7 @@
 #include "Domain/Beverage/BeverageManager.h"
+#include "exception/CustomException.h"
 #include <gtest/gtest.h>
-
+using namespace customException;
 class BeverageManagerTest : public ::testing::Test {
 protected:
     BeverageManager manager;
@@ -20,22 +21,18 @@ TEST_F(BeverageManagerTest, GetBeverage_Found_ReturnsBeverage) {
     EXPECT_EQ(result.getId(), 1);
 }
 
-TEST_F(BeverageManagerTest, GetBeverage_NotFound_CharInput_ReturnsDefaultBeverage) {
-    Beverage result = manager.getBeverage('ab');
-    EXPECT_EQ(result.getId(), 0);
+TEST_F(BeverageManagerTest, GetBeverage_NotFound_CharInput_ThrowsException) {
+    EXPECT_THROW(manager.getBeverage('a'), NotFoundException);
 }
 
-TEST_F(BeverageManagerTest, GetBeverage_NotFound_NegativeInput_ReturnsDefaultBeverage) {
-    Beverage result = manager.getBeverage(-1);
-    EXPECT_EQ(result.getId(), 0);
+TEST_F(BeverageManagerTest, GetBeverage_NotFound_NegativeInput_ThrowsException) {
+    EXPECT_THROW(manager.getBeverage(-1), NotFoundException);
 }
 
-TEST_F(BeverageManagerTest, GetBeverage_NotFound_ZeroInput_ReturnsDefaultBeverage) {
-    Beverage result = manager.getBeverage(0);
-    EXPECT_EQ(result.getId(), 0);
+TEST_F(BeverageManagerTest, GetBeverage_NotFound_ZeroInput_ThrowsException) {
+    EXPECT_THROW(manager.getBeverage(0), NotFoundException);
 }
 
-TEST_F(BeverageManagerTest, GetBeverage_NotFound_OverMaxInput_ReturnsDefaultBeverage) {
-    Beverage result = manager.getBeverage(999);
-    EXPECT_EQ(result.getId(), 0);
+TEST_F(BeverageManagerTest, GetBeverage_NotFound_OverMaxInput_ThrowsException) {
+    EXPECT_THROW(manager.getBeverage(999), NotFoundException);
 }

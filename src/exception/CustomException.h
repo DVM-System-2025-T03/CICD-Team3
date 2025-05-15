@@ -45,4 +45,11 @@ public:
         : CustomException("Not Enough Balance: " + message) {}
 };
 
+class FailedToPrePaymentException : public CustomException {
+public:
+    explicit FailedToPrePaymentException(const string& message) 
+        : CustomException("Failed to Connect: " + message) {}
+
+};
+
 }

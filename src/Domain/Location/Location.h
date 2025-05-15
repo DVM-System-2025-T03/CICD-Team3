@@ -9,9 +9,9 @@ class Location{
         double y;
 
     public:
-        double distanceTo(double x, double y) const {
-            double dx = this->x - x;
-            double dy = this->y - y;
+        double distanceTo(double otherX, double otherY) const {
+            double dx = this->x - otherX;
+            double dy = this->y - otherY;
             return std::sqrt(dx * dx + dy * dy);
         }
 };

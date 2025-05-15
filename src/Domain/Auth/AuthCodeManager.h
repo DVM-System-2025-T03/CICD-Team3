@@ -10,6 +10,6 @@ private:
 public:
     bool validateAuthCode(string authCode);
     int getBeverageId(string authCode);
-    void saveAuthCode(string authCode);
+    void saveAuthCode(string authCode, pair<int, int> beverage);
     string generateAuthCode();
 };

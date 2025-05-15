@@ -17,8 +17,8 @@ int AuthCodeManager::getBeverageId(string authCode) {
     return auth->second.first;
 }
 
-void AuthCodeManager::saveAuthCode(string authCode) {
-    
+void AuthCodeManager::saveAuthCode(string authCode, pair<int, int> beverage) {
+    authCodeMap[authCode] = beverage;
 }
 
 string AuthCodeManager::generateAuthCode() {

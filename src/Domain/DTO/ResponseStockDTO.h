@@ -10,7 +10,7 @@ class ResponseStockDTO{
         double y;
     public:
         ResponseStockDTO() : id(0), beverageId(0), stock(0), x(0.0), y(0.0) {}
-        ResponseStockDTO(int id, int beverageId, int quantity, double x, double y) 
+        ResponseStockDTO(int id, int beverageId, int stock, double x, double y) 
             : id(id), beverageId(beverageId), stock(stock), x(x), y(y) {}
 
         int getId() const { return id; }

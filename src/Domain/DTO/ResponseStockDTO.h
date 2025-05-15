@@ -1,8 +1,6 @@
 #pragma once
 #include <iostream>
 
-using namespace std;
-
 class ResponseStockDTO{
     private:
         int id;     // 다른 DVM id

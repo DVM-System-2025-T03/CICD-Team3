@@ -6,7 +6,7 @@ EnterAuthCodeController::EnterAuthCodeController(BeverageManager* beverageManage
     : beverageManager(beverageManager), authCodeManager(authCodeManager) {
 }
 
-optional<Beverage> EnterAuthCodeController::enterAuthCode(string authCode) {
+Beverage EnterAuthCodeController::enterAuthCode(string authCode) {
     bool isValid = false;
 
     for(int i = 0; i < 3; i++){

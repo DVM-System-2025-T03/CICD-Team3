@@ -1,5 +1,5 @@
 #pragma once
-#include "../Domain/Location/LocationManager.h"
+#include "Domain/Location/LocationManager.h"
 #include "../Domain/Beverage/BeverageManager.h"
 #include "../Domain/Socket/SocketManager.h"
 #include "../exception/DVMInfoException.h"

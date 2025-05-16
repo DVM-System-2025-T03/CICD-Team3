@@ -35,6 +35,6 @@ int BeverageManager::getStock(int beverageId){
         return 0;
 }
 
-void BeverageManager::addBeverage(Beverage& beverage) {
+void BeverageManager::addBeverage(Beverage beverage) {
     beverages.insert({beverage.getId(), beverage});
 }

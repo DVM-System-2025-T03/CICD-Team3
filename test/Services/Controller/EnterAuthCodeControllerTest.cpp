@@ -17,7 +17,7 @@ protected:
         beverageManager.addBeverage(Beverage(1, "콜라", 1000, 10));
         beverageManager.addBeverage(Beverage(2, "사이다", 1000, 10));
 
-        authCodeManager.saveAuthCode("ABC12", {1, 3});
+        authCodeManager.saveAuthCode(1,3,"ABC12");
 
         controller = new EnterAuthCodeController(&beverageManager, &authCodeManager);
     }

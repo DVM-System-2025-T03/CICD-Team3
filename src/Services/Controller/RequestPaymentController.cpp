@@ -1,8 +1,8 @@
 #include "RequestPaymentController.h"
 
-RequestPaymentController::RequestPaymentController(const BeverageManager& beverageManager, 
-                                                       const Bank& bank,
-                                                       const CreditCard& creditCard,
+RequestPaymentController::RequestPaymentController(BeverageManager* beverageManager, 
+                                                       Bank* bank,
+                                                       CreditCard* creditCard,
                                                        int beverageId,
                                                        int quantity,
                                                        int price)
@@ -14,7 +14,7 @@ Beverage RequestPaymentController::enterCardNumber(string cardNumber) {
     CreditCard* card = nullptr;
 
     for (int attempt = 1; attempt <= MAX_ATTEMPTS; ++attempt) {
-        card = bank.requestCard(cardNumber);
+        card = bank->requestCard(cardNumber);
         if (card != nullptr) {
             break;
         }
@@ -37,14 +37,14 @@ Beverage RequestPaymentController::enterCardNumber(string cardNumber) {
     }
 
     // 재고 차감
-    if (!beverageManager.reduceQuantity(beverageId, quantity)) {
+    if (!beverageManager->reduceQuantity(beverageId, quantity)) {
         throw BeverageReductionException();
     }
 
     // 결제 처리
     card->reduceBalance(price);
-    bank.saveCreditCard(*card);
+    bank->saveCreditCard(*card);
 
     // 구매한 음료 반환
-    return beverageManager.getBeverage(beverageId);
+    return beverageManager->getBeverage(beverageId);
 }

@@ -5,9 +5,11 @@
 
 class ResponseStockController {
 private:
-    LocationManager locationManager;
-    BeverageManager beverageManager;
+    LocationManager* locationManager;
+    BeverageManager* beverageManager;
 
 public:
+    ResponseStockController(BeverageManager* beverageManager, LocationManager* locationManager)
+        : beverageManager(beverageManager), locationManager(locationManager) {}
     ResponseStockDTO responseBeverageStock(int beverageId, int quantity);
 };

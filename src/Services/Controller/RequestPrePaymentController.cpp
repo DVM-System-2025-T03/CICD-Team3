@@ -4,7 +4,7 @@ using namespace customException;
 RequestPrePaymentController::RequestPrePaymentController(AuthCodeManager* authCodeManager, Bank* bank, SocketManager* socketManager)
     : authCodeManager(authCodeManager), bank(bank), socketManager(socketManager) {}
 
-void RequestPrePaymentController::enterPrePayIntention(bool intention, Beverage beverage, int quantity, int srcId, int dstId) {
+void RequestPrePaymentController::enterPrePayIntention(bool intention) {
     if (!intention) {
         // uc1
         throw InvalidException("Invalid intention");

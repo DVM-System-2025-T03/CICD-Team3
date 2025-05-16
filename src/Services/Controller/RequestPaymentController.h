@@ -8,18 +8,18 @@ using namespace std;
 
 class RequestPaymentController {
 private:
-    BeverageManager beverageManager;
-    Bank bank;
-    CreditCard creditCard;
+    BeverageManager* beverageManager;
+    Bank* bank;
+    CreditCard* creditCard;
     int beverageId;
     int quantity;
     int price;
 
 public:
     // 생성자: 모든 private 멤버를 초기화
-    RequestPaymentController(const BeverageManager& beverageManager, 
-                             const Bank& bank,
-                             const CreditCard& creditCard,
+    RequestPaymentController(BeverageManager* beverageManager, 
+                             Bank* bank,
+                             CreditCard* creditCard,
                              int beverageId,
                              int quantity,
                              int price);

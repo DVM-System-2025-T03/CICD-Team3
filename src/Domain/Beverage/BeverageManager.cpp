@@ -5,7 +5,7 @@ using namespace customException;
 
 bool BeverageManager::hasEnoughStock(int beverageId, int quantity) {
     if(this->beverages.find(beverageId) == beverages.end()){
-        throw std::out_of_range("beverageId에 해당하는 음료가 없습니다.");            
+        throw NotFoundException("beverageId에 해당하는 음료가 없습니다.");            
         return false;
     }
 
@@ -15,7 +15,7 @@ bool BeverageManager::hasEnoughStock(int beverageId, int quantity) {
 
 bool BeverageManager::reduceQuantity(int beverageId, int quantity) {
     if(this->beverages.find(beverageId) == beverages.end()){
-        throw std::out_of_range("beverageId에 해당하는 음료가 없습니다.");            
+        throw NotFoundException("beverageId에 해당하는 음료가 없습니다.");            
         return false;
     }
 
@@ -25,7 +25,7 @@ bool BeverageManager::reduceQuantity(int beverageId, int quantity) {
 
 Beverage BeverageManager::getBeverage(int beverageId) {
     if(this->beverages.find(beverageId) == beverages.end()){
-        throw std::out_of_range("beverageId에 해당하는 음료가 없습니다.");    
+        throw NotFoundException("beverageId에 해당하는 음료가 없습니다.");    
     }
 
     return this->beverages[beverageId];

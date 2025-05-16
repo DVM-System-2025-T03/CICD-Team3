@@ -16,6 +16,6 @@ private:
 
 public:
     RequestPrePaymentController(AuthCodeManager* authCodeManager, Bank* bank, SocketManager* socketManager);
-    void enterPrePayIntention(bool intention, Beverage beverage, int quantity, int srcId, int dstId);
+    void enterPrePayIntention(bool intention);
     string enterCardNumber(string cardNumber, Beverage beverage, int quantity, int srcId, int dstId);
 };

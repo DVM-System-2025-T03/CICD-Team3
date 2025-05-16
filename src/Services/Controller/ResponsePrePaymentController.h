@@ -6,10 +6,12 @@
 
 class ResponsePrePaymentController {
     private:
-        BeverageManager beverageManager;
-        AuthCodeManager authCodeManager;
+        BeverageManager* beverageManager;
+        AuthCodeManager* authCodeManager;
 
     public:
+        ResponsePrePaymentController(BeverageManager* beverageManager, AuthCodeManager* authCodeManager)
+            : beverageManager(beverageManager), authCodeManager(authCodeManager) {}
         ResponsePrePaymentDTO responsePrePay(int beverageId, int quantity, string authCode);
 };
 

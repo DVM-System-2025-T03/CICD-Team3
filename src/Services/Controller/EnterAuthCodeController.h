@@ -13,5 +13,5 @@ private:
 
 public:
     EnterAuthCodeController(BeverageManager* beverageManager, AuthCodeManager* authCodeManager);
-    optional<Beverage> enterAuthCode(string authCode);
+    Beverage enterAuthCode(string authCode);
 };

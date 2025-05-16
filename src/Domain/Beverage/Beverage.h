@@ -12,7 +12,7 @@ private:
 
 public:
     Beverage();
-    Beverage(int id, string& name, int stock, int price);
+    Beverage(int id, const string& name, int stock, int price);
     bool hasEnoughStock(int quantity);
     bool reduceQuantity(int quantity);
     int getId();

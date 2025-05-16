@@ -1,8 +1,11 @@
 #include "AuthCodeManager.h"
+#include "exception/CustomException.h"
+
+using namespace customException;
 
 bool AuthCodeManager::validateAuthCode(string authCode) {
     if(authCodeMap.find(authCode) == authCodeMap.end()){
-        return false;
+        throw NotFoundException("Auth code not found");
     }
     return true;
 }
@@ -11,16 +14,26 @@ int AuthCodeManager::getBeverageId(string authCode) {
     map<string, pair<int, int>>::iterator auth = authCodeMap.find(authCode);
     
     if(auth == authCodeMap.end()){
-        return -1;
+        throw NotFoundException("Auth code not found");
     }
 
     return auth->second.first;
 }
 
-void AuthCodeManager::saveAuthCode(string authCode) {
-    
+void AuthCodeManager::saveAuthCode(string authCode, pair<int, int> beverage) {
+    authCodeMap[authCode] = beverage;
 }
 
 string AuthCodeManager::generateAuthCode() {
-    return "";
+    const std::string CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    std::string authCode;
+
+    std::random_device rd;  // 시스템에서 안전한 시드 생성
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, CHARACTERS.size() - 1);
+
+    for (int i = 0; i < 5; ++i) {
+        authCode += CHARACTERS[dist(gen)];
+    }
+    return authCode;
 }

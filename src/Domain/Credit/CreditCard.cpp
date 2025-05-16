@@ -1,7 +1,12 @@
 #include "CreditCard.h"
+#include "exception/CustomException.h"
+using namespace customException;
 
 bool CreditCard::validateBalance(int price) {
-    return false;
+    if (this->balance < price) {
+        throw NotEnoughBalanceException("Not enough balance");
+    }
+    return true;
 }
 
 void CreditCard::reduceBalance(int price) {
@@ -10,4 +15,8 @@ void CreditCard::reduceBalance(int price) {
 
 bool CreditCard::isValid(){
     return !this->cardNumber.empty();
+}
+
+string CreditCard::getCardNumber() {
+    return this->cardNumber;
 }

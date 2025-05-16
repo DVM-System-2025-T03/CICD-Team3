@@ -12,8 +12,8 @@
 #include "Domain/Credit/CreditCard.h"
 #include "Domain/Location/LocationManager.h"
 #include "Domain/Beverage/Beverage.h"
-#include "Exception/CustomException.h"
-#include "Exception/DVMInfoException.h"
+#include "src/Exception/CustomException.h"
+#include "src/Exception/DVMInfoException.h"
 #include <iostream>
 
 int main(int argc, char* argv[]) {

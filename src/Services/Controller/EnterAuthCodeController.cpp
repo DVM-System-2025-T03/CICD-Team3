@@ -1,10 +1,12 @@
 #include "EnterAuthCodeController.h"
+#include "exception/CustomException.h"
+using namespace customException;
 
 EnterAuthCodeController::EnterAuthCodeController(BeverageManager* beverageManager, AuthCodeManager* authCodeManager)
     : beverageManager(beverageManager), authCodeManager(authCodeManager) {
 }
 
-optional<Beverage> EnterAuthCodeController::enterAuthCode(string authCode) {
+Beverage EnterAuthCodeController::enterAuthCode(string authCode) {
     bool isValid = false;
 
     for(int i = 0; i < 3; i++){
@@ -14,7 +16,7 @@ optional<Beverage> EnterAuthCodeController::enterAuthCode(string authCode) {
 
     if(!isValid){
         // uc 1
-        return nullopt;
+        throw InvalidException("Invalid auth code");
     }
 
     int beverageId = authCodeManager->getBeverageId(authCode);

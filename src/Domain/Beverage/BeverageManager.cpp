@@ -1,31 +1,37 @@
-#include <list>
-#include "Beverage.h"
+#include "BeverageManager.h"
+#include "Exception/CustomException.h"
 
-class BeverageManager{
-    private:
-        list<Beverage> beverages;
+using namespace customException;
 
-    public:
-        bool hasEnoughStock(int beverageId, int quantity){
-            for (Beverage beverage : beverages) {
-                if (beverage.getId() == beverageId) {
-                    return beverage.hasEnoughStock(quantity);
-                }
-            }
+bool BeverageManager::hasEnoughStock(int beverageId, int quantity) {
+    for (Beverage beverage : beverages) {
+        if (beverage.getId() == beverageId) {
+            return beverage.hasEnoughStock(quantity);
+        }
+    }
 
-            throw std::out_of_range("beverageId에 해당하는 음료가 없습니다.");            
+    throw std::out_of_range("beverageId에 해당하는 음료가 없습니다.");            
+    return false;
+}
+
+bool BeverageManager::reduceQuantity(int beverageId, int quantity) {
+    return false;
+}
+
+Beverage BeverageManager::getBeverage(int beverageId) {
+    for(list<Beverage>::iterator bevgerage = beverages.begin(); bevgerage != beverages.end(); bevgerage++){
+        if(bevgerage->getId() == beverageId){
+            return *bevgerage;
         }
 
-        bool reduceQuantity(int beverageId, int quantity){
-        return false;
+        throw NotFoundException("Beverage not found");
     }
+}
 
-        Beverage getBeverage(int beverageId){
-        return ;
-    }
-
-        int getStock(int beverageId){
+int BeverageManager::getStock(int beverageId){
         return 0;
-    }
+}
 
-};
+void BeverageManager::addBeverage(const Beverage& beverage) {
+    beverages.push_back(beverage);
+}

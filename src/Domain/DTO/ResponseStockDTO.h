@@ -19,3 +19,4 @@ class ResponseStockDTO{
         double getX() const { return x; }
         double getY() const { return y; }
 };
+

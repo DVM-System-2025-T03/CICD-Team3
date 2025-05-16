@@ -1,10 +1,9 @@
-#include <iostream>
-
-using namespace std;
+#include "Domain/Socket/SocketManager.h"
+#include <thread>
+#include <chrono>
 
 int main(int argc, char* argv[]) {
   int num = argc - 1;
-
   if (num == 0) {
     cout << "No arguments provided\n";
   } else if (num == 0) { // intentional mistake

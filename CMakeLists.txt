@@ -116,5 +116,5 @@ target_link_libraries(EnterAuthCodeControllerTest
 
 add_test(NAME EnterAuthCodeControllerTest COMMAND EnterAuthCodeControllerTest)
 
-add_executable(sonar_scanner_example src/main.cpp src/Domain/Socket/SocketManager.cpp)# 빌드할 실행파일 및 소스 목록
+add_executable(sonar_scanner_example src/main.cpp)# 빌드할 실행파일 및 소스 목록
 target_link_libraries(sonar_scanner_example PRIVATE nlohmann_json::nlohmann_json)

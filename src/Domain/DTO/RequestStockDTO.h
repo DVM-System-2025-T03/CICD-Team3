@@ -37,16 +37,16 @@ class RequestStockDTO{
 
 
 // to_json, from_json 함수 정의
-void to_json(json& j, const Msg_content_RequestStockDTO& mc) {
+inline void to_json(json& j, const Msg_content_RequestStockDTO& mc) {
     j = json{{"item_code", mc.item_code}, {"item_num", mc.item_num}};
 }
 
-void from_json(const json& j, Msg_content_RequestStockDTO& mc) {
+inline void from_json(const json& j, Msg_content_RequestStockDTO& mc) {
     j.at("item_code").get_to(mc.item_code);
     j.at("item_num").get_to(mc.item_num);
 }
 
-void to_json(json& j, const RequestStockDTO& dto) {
+inline void to_json(json& j, const RequestStockDTO& dto) {
     j = json{
         {"msg_type", dto.msg_type},
         {"src_id", dto.src_id},
@@ -55,7 +55,7 @@ void to_json(json& j, const RequestStockDTO& dto) {
     };
 }
 
-void from_json(const json& j, RequestStockDTO& dto) {
+inline void from_json(const json& j, RequestStockDTO& dto) {
     j.at("msg_type").get_to(dto.msg_type);
     j.at("src_id").get_to(dto.src_id);
     j.at("dst_id").get_to(dto.dst_id);

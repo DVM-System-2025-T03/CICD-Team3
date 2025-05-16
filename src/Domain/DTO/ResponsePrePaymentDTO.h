@@ -49,17 +49,17 @@ class ResponsePrePaymentDTO{
 };
 
 // to_json, from_json 함수 정의
-void to_json(json& j, const Msg_content_ResponsePrePaymentDTO& mc) {
+inline void to_json(json& j, const Msg_content_ResponsePrePaymentDTO& mc) {
     j = json{{"item_code", mc.item_code}, {"item_num", mc.item_num}, {"availability", mc.availability}};
 }
 
-void from_json(const json& j, Msg_content_ResponsePrePaymentDTO& mc) {
+inline void from_json(const json& j, Msg_content_ResponsePrePaymentDTO& mc) {
     j.at("item_code").get_to(mc.item_code);
     j.at("item_num").get_to(mc.item_num);
     j.at("availability").get_to(mc.availability);
 }
 
-void to_json(json& j, const ResponsePrePaymentDTO& dto) {
+inline void to_json(json& j, const ResponsePrePaymentDTO& dto) {
     j = json{
         {"msg_type", dto.msg_type},
         {"src_id", dto.src_id},
@@ -68,7 +68,7 @@ void to_json(json& j, const ResponsePrePaymentDTO& dto) {
     };
 }
 
-void from_json(const json& j, ResponsePrePaymentDTO& dto) {
+inline void from_json(const json& j, ResponsePrePaymentDTO& dto) {
     j.at("msg_type").get_to(dto.msg_type);
     j.at("src_id").get_to(dto.src_id);
     j.at("dst_id").get_to(dto.dst_id);

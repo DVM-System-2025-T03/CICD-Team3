@@ -43,18 +43,18 @@ class ResponseStockDTO{
 };
 
 // to_json, from_json 함수 정의
-void to_json(json& j, const Msg_content_ResponseStockDTO& mc) {
+inline void to_json(json& j, const Msg_content_ResponseStockDTO& mc) {
     j = json{{"item_code", mc.item_code}, {"item_num", mc.item_num}, {"coor_x", mc.coor_x}, {"coor_y", mc.coor_y}};
 }
 
-void from_json(const json& j, Msg_content_ResponseStockDTO& mc) {
+inline void from_json(const json& j, Msg_content_ResponseStockDTO& mc) {
     j.at("item_code").get_to(mc.item_code);
     j.at("item_num").get_to(mc.item_num);
     j.at("coor_x").get_to(mc.coor_x);
     j.at("coor_y").get_to(mc.coor_y);
 }
 
-void to_json(json& j, const ResponseStockDTO& dto) {
+inline void to_json(json& j, const ResponseStockDTO& dto) {
     j = json{
         {"msg_type", dto.msg_type},
         {"src_id", dto.src_id},
@@ -63,7 +63,7 @@ void to_json(json& j, const ResponseStockDTO& dto) {
     };
 }
 
-void from_json(const json& j, ResponseStockDTO& dto) {
+inline void from_json(const json& j, ResponseStockDTO& dto) {
     j.at("msg_type").get_to(dto.msg_type);
     j.at("src_id").get_to(dto.src_id);
     j.at("dst_id").get_to(dto.dst_id);

@@ -1,6 +1,6 @@
 #include "SocketManager.h"
 
-list<ResponseStockDTO> SocketManager::requestBeverageStockToOthers(int beverageId, int quantity, int srcId, int dstId) {
+list<ResponseStockDTO> SocketManager::requestBeverageStockToOthers(int beverageId, int quantity) {
     return list<ResponseStockDTO>();
 }
 

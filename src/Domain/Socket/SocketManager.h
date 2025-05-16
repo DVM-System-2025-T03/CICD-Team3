@@ -14,7 +14,7 @@ private:
     ResponsePrePaymentController responsePrePaymentController;
 
 public:
-    list<ResponseStockDTO> requestBeverageStockToOthers(int beverageId, int quantity, int srcId, int dstId);
+    list<ResponseStockDTO> requestBeverageStockToOthers(int beverageId, int quantity);
     ResponseStockDTO requestBeverageInfo(int beverageId, int quantity, int srcId, int dstId);
     ResponsePrePaymentDTO requestPrePay(int beverageId, int quantity, string authCode, int srcId, int dstId);
     bool requestPrePayment(int beverageId, int quantity, string authCode, int srcId, int dstId);

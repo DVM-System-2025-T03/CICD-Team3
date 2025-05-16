@@ -1,7 +1,11 @@
 #pragma once
 #include <list>
 #include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 #include "CreditCard.h"
+
 using namespace std;
 
 class Bank {

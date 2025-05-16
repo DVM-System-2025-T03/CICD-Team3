@@ -1,5 +1,5 @@
 #include "Domain/Auth/AuthCodeManager.h"
-#include "exception/CustomException.h"
+#include "Exception/CustomException.h"
 #include <gtest/gtest.h>
 using namespace customException;
 class AuthCodeManagerTest : public ::testing::Test {
@@ -8,8 +8,8 @@ protected:
 
     void SetUp() override {
         // 테스트를 위한 인증 코드 등록
-        manager.saveAuthCode("ABC12", {1, 2});
-        manager.saveAuthCode("ABC34",  {2, 5});
+        manager.saveAuthCode("ABC12", 1,2);
+        manager.saveAuthCode("ABC34",  2,5);
     }
 };
 

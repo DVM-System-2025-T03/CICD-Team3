@@ -28,7 +28,7 @@ string AuthCodeManager::generateAuthCode() {
     const string CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     string authCode = "";
 
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 0; i < 5; ++i) {
         authCode += CHARACTERS[rand() % CHARACTERS.length()];
     }
     return authCode;

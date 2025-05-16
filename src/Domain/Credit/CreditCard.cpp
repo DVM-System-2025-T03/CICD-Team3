@@ -16,3 +16,7 @@ void CreditCard::reduceBalance(int price) {
 bool CreditCard::isValid(){
     return !this->cardNumber.empty();
 }
+
+string CreditCard::getCardNumber() {
+    return this->cardNumber;
+}

@@ -32,3 +32,15 @@ TEST_F(AuthCodeManagerTest, GetBeverageId_없는코드_Minus1반환) {
     EXPECT_THROW(manager.getBeverageId("INVALID999"), NotFoundException);
     EXPECT_THROW(manager.getBeverageId(""), NotFoundException);
 }
+
+TEST_F(AuthCodeManagerTest, GenerateAuthCode_길이가5) {
+    string code = manager.generateAuthCode();
+    EXPECT_EQ(code.length(), 5);
+}
+
+TEST_F(AuthCodeManagerTest, GenerateAuthCode_영어와_숫자만포함) {
+    string code = manager.generateAuthCode();
+    EXPECT_TRUE(all_of(code.begin(), code.end(), [](char c) {
+        return isalnum(static_cast<unsigned char>(c));
+    }));
+}

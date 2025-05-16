@@ -1,25 +1,40 @@
-#include <map>
-#include "Beverage.h"
+#include "BeverageManager.h"
+#include "Exception/CustomException.h"
 
-class BeverageManager{
-    private:
-        map<int, Beverage> beverages;
+using namespace customException;
 
-    public:
-        bool hasEnoughStock(int beverageId, int quantity){
-            return false;
-        }
+bool BeverageManager::hasEnoughStock(int beverageId, int quantity) {
+    if(this->beverages.find(beverageId) == beverages.end()){
+        throw std::out_of_range("beverageId에 해당하는 음료가 없습니다.");            
+        return false;
+    }
 
-        bool reduceQuantity(int beverageId, int quantity){
-            return beverages[beverageId].reduceQuantity(quantity);
-        }
+    Beverage beverage = this->beverages[beverageId];
+    return beverage.hasEnoughStock(quantity);
+}
 
-        Beverage getBeverage(int beverageId){
-            return ;
-        }
+bool BeverageManager::reduceQuantity(int beverageId, int quantity) {
+    if(this->beverages.find(beverageId) == beverages.end()){
+        throw std::out_of_range("beverageId에 해당하는 음료가 없습니다.");            
+        return false;
+    }
 
-        int getStock(int beverageId){
-            return 0;
-        }
+    Beverage beverage = this->beverages[beverageId];
+    return beverage.reduceQuantity(quantity);
+}
 
-};
+Beverage BeverageManager::getBeverage(int beverageId) {
+    if(this->beverages.find(beverageId) == beverages.end()){
+        throw std::out_of_range("beverageId에 해당하는 음료가 없습니다.");    
+    }
+
+    return this->beverages[beverageId];
+}
+
+int BeverageManager::getStock(int beverageId){
+        return 0;
+}
+
+void BeverageManager::addBeverage(Beverage& beverage) {
+    beverages.insert({beverage.getId(), beverage});
+}

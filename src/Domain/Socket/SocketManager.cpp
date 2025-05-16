@@ -144,7 +144,7 @@ list<ResponseStockDTO> SocketManager::requestBeverageStockToOthers(int beverageI
 // (해석) UC1에서 다른 DVM의 이 함수를 호출, 그리고 UC5에서 이 함수가 호출 당하며 시작
 // (변경) SocketManager의 stream 관찰 함수의 분기처리에 의해 thread가 새로이 생성되어 호출되는 것. 응답으로 다시 stream에 json 흘려보내야 함.
 ResponseStockDTO SocketManager::requestBeverageInfo(int beverageId, int quantity, int srcId, int dstId) {
-    ResponseStockDTO responseStockDTO =  this->responseStockController.responseBeverageStock(beverageId, quantity);
+    ResponseStockDTO responseStockDTO = this->responseStockController .responseBeverageStock(beverageId, quantity);
     responseStockDTO.setSrcAndDst(dstId, srcId);
     return responseStockDTO;
 }

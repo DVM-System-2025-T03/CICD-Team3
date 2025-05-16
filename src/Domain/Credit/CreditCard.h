@@ -8,6 +8,9 @@ private:
     int balance;
 
 public:
+    CreditCard(string cardNumber, int balance) : cardNumber(cardNumber), balance(balance) {}
     bool validateBalance(int price);
     void reduceBalance(int price);
+    bool isValid();
+    string& getCardNumber() { return cardNumber; }
 };

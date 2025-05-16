@@ -6,6 +6,7 @@
 #include "../DTO/RequestStockDTO.h"
 #include "../DTO/ResponseStockDTO.h"
 #include "../DTO/RequestPrePaymentDTO.h"
+#include "../DTO/ResponseStockDTO.h"
 #include "../DTO/ResponsePrePaymentDTO.h"
 #include "../../Services/Controller/ResponseStockController.h"
 #include "../../Services/Controller/ResponsePrePaymentController.h"
@@ -32,6 +33,7 @@ public:
 
     //2040 정의 메서드
     list<ResponseStockDTO> requestBeverageStockToOthers(int beverageId, int quantity, int srcId, int dstId);
+    
     ResponseStockDTO requestBeverageInfo(int beverageId, int quantity, int srcId, int dstId);
     ResponsePrePaymentDTO requestPrePay(int beverageId, int quantity, string authCode, int srcId, int dstId);
     bool requestPrePayment(int beverageId, int quantity, string authCode, int srcId, int dstId);

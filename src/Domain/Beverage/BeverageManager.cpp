@@ -1,25 +1,25 @@
-#include <list>
+#include <map>
 #include "Beverage.h"
 
 class BeverageManager{
     private:
-        list<Beverage> beverages;
+        map<int, Beverage> beverages;
 
     public:
         bool hasEnoughStock(int beverageId, int quantity){
-        return false;
-    }
+            return false;
+        }
 
         bool reduceQuantity(int beverageId, int quantity){
-        return false;
-    }
+            return beverages[beverageId].reduceQuantity(quantity);
+        }
 
         Beverage getBeverage(int beverageId){
-        return ;
-    }
+            return ;
+        }
 
         int getStock(int beverageId){
-        return 0;
-    }
+            return 0;
+        }
 
 };

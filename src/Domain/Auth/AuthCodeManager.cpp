@@ -8,8 +8,8 @@ int AuthCodeManager::getBeverageId(string authCode) {
     return 0;
 }
 
-void AuthCodeManager::saveAuthCode(string authCode) {
-    
+void AuthCodeManager::saveAuthCode(int beverageId, int quantity, string authCode) {
+    this->authCodeMap.insert({authCode, {beverageId, quantity}});
 }
 
 string AuthCodeManager::generateAuthCode() {

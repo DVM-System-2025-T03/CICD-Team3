@@ -8,10 +8,14 @@ class Beverage{
 
     public:
         bool hasEnoughStock(int quantity){
-        return false;
-    }
+            return false;
+        }
 
         bool reduceQuantity(int quantity){
-        return false;
-    }
+            if(stock >= quantity){
+                stock -= quantity;
+                return true;
+            }
+            return false;
+        }
 };

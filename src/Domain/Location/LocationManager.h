@@ -1,8 +1,8 @@
 #pragma once
 #include <list>
 #include "Location.h"
-#include "DVMInfoDTO.h"
-#include "ResponseStockDTO.h"
+#include "../DTO/DVMInfoDTO.h"
+#include "../DTO/ResponseStockDTO.h"
 using namespace std;
 
 class LocationManager {

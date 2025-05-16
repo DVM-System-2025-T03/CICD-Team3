@@ -12,7 +12,7 @@ class Msg_content_ResponseStockDTO{
         int coor_x;
         int coor_y;
 
-        Msg_content_ResponseStockDTO();
+        Msg_content_ResponseStockDTO() = default;
 
         Msg_content_ResponseStockDTO(int beverageId, int quantity, int x, int y){
             this->item_code = beverageId;
@@ -29,7 +29,7 @@ class ResponseStockDTO{
         int dst_id;
         Msg_content_ResponseStockDTO msg_content;
 
-        ResponseStockDTO();
+        ResponseStockDTO() = default;
 
         ResponseStockDTO(int beverageId, int quantity, int x, int y){
             this->msg_type = "resp_stock";

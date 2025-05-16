@@ -10,7 +10,16 @@ bool Beverage::hasEnoughStock(int quantity){
 }
 
 bool Beverage::reduceQuantity(int quantity){
-    return false;
+    if (quantity < 0) {
+        return false;
+    }
+
+    if (stock < quantity) {
+        return false;
+    }
+
+    stock -= quantity;
+    return true;
 }
 
 int Beverage::getId(){

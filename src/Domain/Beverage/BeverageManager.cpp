@@ -15,7 +15,13 @@ bool BeverageManager::hasEnoughStock(int beverageId, int quantity) {
 }
 
 bool BeverageManager::reduceQuantity(int beverageId, int quantity) {
-    return false;
+    for (auto& beverage : beverages) {
+        if (beverage.getId() == beverageId) {
+            return beverage.reduceQuantity(quantity);
+        }
+    }
+
+    return false;       // 해당 ID의 음료가 없을 경우
 }
 
 Beverage BeverageManager::getBeverage(int beverageId) {

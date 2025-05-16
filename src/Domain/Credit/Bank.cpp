@@ -25,9 +25,11 @@ CreditCard* Bank::requestCard(string cardNumber) {
     }
 
     cout << "[Bank] 해당 카드 번호 없음: " << cardNumber << std::endl;
+
     return nullptr;
 }
 
 void Bank::saveCreditCard(CreditCard creditCard) {
-    cards.push_back(creditCard);
+    // 추가 구현
+    
 }

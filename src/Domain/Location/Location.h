@@ -9,6 +9,14 @@ class Location{
         double y;
 
     public:
+        int getX(){
+            return this->x;
+        }
+
+        int getY(){
+            return this->y;
+        }
+
         double distanceTo(double otherX, double otherY) const {
             double dx = this->x - otherX;
             double dy = this->y - otherY;

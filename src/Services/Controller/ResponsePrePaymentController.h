@@ -5,10 +5,11 @@
 #include "../../Domain/Auth/AuthCode.h"
 
 class ResponsePrePaymentController {
-private:
-    BeverageManager beverageManager;
-    AuthCodeManager authCodeManager;
+    private:
+        BeverageManager beverageManager;
+        AuthCodeManager authCodeManager;
 
-public:
-    ResponsePrePaymentDTO responsePrePay(int beverageId, int quantity, AuthCode authCode);
+    public:
+        ResponsePrePaymentDTO responsePrePay(int beverageId, int quantity, string authCode);
 };
+

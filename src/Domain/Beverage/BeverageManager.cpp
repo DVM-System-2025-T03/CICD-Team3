@@ -4,40 +4,37 @@
 using namespace customException;
 
 bool BeverageManager::hasEnoughStock(int beverageId, int quantity) {
-    for (Beverage beverage : beverages) {
-        if (beverage.getId() == beverageId) {
-            return beverage.hasEnoughStock(quantity);
-        }
+    if(this->beverages.find(beverageId) == beverages.end()){
+        throw std::out_of_range("beverageId에 해당하는 음료가 없습니다.");            
+        return false;
     }
 
-    throw std::out_of_range("beverageId에 해당하는 음료가 없습니다.");            
-    return false;
+    Beverage beverage = this->beverages[beverageId];
+    return beverage.hasEnoughStock(quantity);
 }
 
 bool BeverageManager::reduceQuantity(int beverageId, int quantity) {
-    for (auto& beverage : beverages) {
-        if (beverage.getId() == beverageId) {
-            return beverage.reduceQuantity(quantity);
-        }
+    if(this->beverages.find(beverageId) == beverages.end()){
+        throw std::out_of_range("beverageId에 해당하는 음료가 없습니다.");            
+        return false;
     }
 
-    return false;       // 해당 ID의 음료가 없을 경우
+    Beverage beverage = this->beverages[beverageId];
+    return beverage.reduceQuantity(quantity);
 }
 
 Beverage BeverageManager::getBeverage(int beverageId) {
-    for(list<Beverage>::iterator bevgerage = beverages.begin(); bevgerage != beverages.end(); bevgerage++){
-        if(bevgerage->getId() == beverageId){
-            return *bevgerage;
-        }
-
-        throw NotFoundException("Beverage not found");
+    if(this->beverages.find(beverageId) == beverages.end()){
+        throw std::out_of_range("beverageId에 해당하는 음료가 없습니다.");    
     }
+
+    return this->beverages[beverageId];
 }
 
 int BeverageManager::getStock(int beverageId){
         return 0;
 }
 
-void BeverageManager::addBeverage(const Beverage& beverage) {
-    beverages.push_back(beverage);
+void BeverageManager::addBeverage(Beverage beverage) {
+    beverages.insert({beverage.getId(), beverage});
 }

@@ -2,7 +2,7 @@
 #include "../Domain/Location/LocationManager.h"
 #include "../Domain/Beverage/BeverageManager.h"
 #include "../Domain/Socket/SocketManager.h"
-#include "../Exception/DVMInfoException.h"
+#include "../exception/DVMInfoException.h"
 #include <stdexcept>
 
 class SelectBeverageController {

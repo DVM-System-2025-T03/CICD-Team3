@@ -1,5 +1,5 @@
 #include "Domain/Beverage/BeverageManager.h"
-#include "Exception/CustomException.h"
+#include "exception/CustomException.h"
 #include <gtest/gtest.h>
 using namespace customException;
 class BeverageManagerTest : public ::testing::Test {

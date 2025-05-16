@@ -92,5 +92,29 @@ target_link_libraries(BankTest
 
 add_test(NAME BankTest COMMAND BankTest)
 
+# EnterAuthCodeControllerTest
+add_executable(EnterAuthCodeControllerTest
+    test/Services/Controller/EnterAuthCodeControllerTest.cpp
+    src/Domain/Auth/AuthCodeManager.cpp
+    src/Domain/Beverage/BeverageManager.cpp
+    src/Domain/Beverage/Beverage.cpp
+    src/Services/Controller/EnterAuthCodeController.cpp
+)
+
+target_include_directories(EnterAuthCodeControllerTest PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/test
+)
+
+target_link_libraries(EnterAuthCodeControllerTest
+    gtest
+    gmock
+    gtest_main
+    pthread
+    nlohmann_json::nlohmann_json
+)
+
+add_test(NAME EnterAuthCodeControllerTest COMMAND EnterAuthCodeControllerTest)
+
 add_executable(sonar_scanner_example src/main.cpp src/Domain/Socket/SocketManager.cpp)# 빌드할 실행파일 및 소스 목록
 target_link_libraries(sonar_scanner_example PRIVATE nlohmann_json::nlohmann_json)

@@ -22,6 +22,6 @@ int BeverageManager::getStock(int beverageId) {
     return 0;
 }
 
-void BeverageManager::addBeverage(Beverage& beverage) {
+void BeverageManager::addBeverage(const Beverage& beverage) {
     beverages.push_back(beverage);
 }

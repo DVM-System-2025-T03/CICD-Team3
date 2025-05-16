@@ -25,11 +25,15 @@ void AuthCodeManager::saveAuthCode(string authCode, pair<int, int> beverage) {
 }
 
 string AuthCodeManager::generateAuthCode() {
-    const string CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    string authCode = "";
+    const std::string CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    std::string authCode;
+
+    std::random_device rd;  // 시스템에서 안전한 시드 생성
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, CHARACTERS.size() - 1);
 
     for (int i = 0; i < 5; ++i) {
-        authCode += CHARACTERS[rand() % CHARACTERS.length()];
+        authCode += CHARACTERS[dist(gen)];
     }
     return authCode;
 }

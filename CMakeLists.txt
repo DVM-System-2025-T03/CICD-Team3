@@ -3,10 +3,6 @@ project(sonar_scanner_example)# 프로젝트 이름 명시
 
 set(CMAKE_CXX_STANDARD 17)# 사용할 C++ 표준(여기선 17)
 
-target_include_directories(sonar_scanner_example PRIVATE
-    ${CMAKE_SOURCE_DIR}/src
-)
-
 include(FetchContent)
 FetchContent_Declare(
   googletest
@@ -121,4 +117,7 @@ target_link_libraries(EnterAuthCodeControllerTest
 add_test(NAME EnterAuthCodeControllerTest COMMAND EnterAuthCodeControllerTest)
 
 add_executable(sonar_scanner_example src/main.cpp)# 빌드할 실행파일 및 소스 목록
+target_include_directories(sonar_scanner_example PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+)
 target_link_libraries(sonar_scanner_example PRIVATE nlohmann_json::nlohmann_json)

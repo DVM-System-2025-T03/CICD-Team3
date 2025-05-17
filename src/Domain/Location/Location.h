@@ -9,6 +9,7 @@ class Location{
         double y;
 
     public:
+        Location() = default;
         int getX(){
             return this->x;
         }

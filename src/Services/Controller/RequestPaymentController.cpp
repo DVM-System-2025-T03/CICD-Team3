@@ -1,16 +1,13 @@
 #include "RequestPaymentController.h"
 
 RequestPaymentController::RequestPaymentController(BeverageManager* beverageManager, 
-                                                       Bank* bank,
-                                                       CreditCard* creditCard,
-                                                       int beverageId,
-                                                       int quantity,
-                                                       int price)
-    : beverageManager(beverageManager), bank(bank), creditCard(creditCard), 
-      beverageId(beverageId), quantity(quantity), price(price) {}
+                                                       Bank* bank)
+    : beverageManager(beverageManager), bank(bank) {}
 
-Beverage RequestPaymentController::enterCardNumber(string cardNumber) {
+Beverage RequestPaymentController::enterCardNumber(string cardNumber, int beverageId, int quantity) {
     const int MAX_ATTEMPTS = 3;
+    Beverage beverage = beverageManager->getBeverage(beverageId);
+    int price = beverage.getPrice() * quantity;
     CreditCard* card = nullptr;
 
     for (int attempt = 1; attempt <= MAX_ATTEMPTS; ++attempt) {
@@ -36,6 +33,7 @@ Beverage RequestPaymentController::enterCardNumber(string cardNumber) {
         throw InsufficientBalanceException();
     }
 
+    
     // 재고 차감
     if (!beverageManager->reduceQuantity(beverageId, quantity)) {
         throw BeverageReductionException();

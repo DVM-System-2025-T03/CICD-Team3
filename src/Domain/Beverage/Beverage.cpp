@@ -6,7 +6,10 @@ Beverage::Beverage(int id, const string& name, int stock, int price)
     :id(id), name(name), stock(stock), price(price){};
 
 bool Beverage::hasEnoughStock(int quantity){
-    return false;
+    if (stock < quantity) {
+        return false;
+    }
+    return true;
 }
 
 bool Beverage::reduceQuantity(int quantity){

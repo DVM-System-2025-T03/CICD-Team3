@@ -1,16 +1,86 @@
 {
+    "version": "2.0.0",
     "tasks": [
+        {
+            "label": "CMake Build & Run",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--config",
+                "Debug"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Run Main Executable",
+            "type": "shell",
+            "command": "${workspaceFolder}/build/sonar_scanner_example",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
         {
             "type": "cppbuild",
             "label": "C/C++: g++ 활성 파일 빌드",
             "command": "/usr/bin/g++",
             "args": [
                 "-fdiagnostics-color=always",
+                "-std=c++17",
                 "-g",
                 "${file}",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
-                "-I${workspaceFolder}/include"
+                "-I${workspaceFolder}/include",
+                "-I${workspaceFolder}/src"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "detail": "디버거에서 생성된 작업입니다."
+        },
+        {
+            "label": "CMake Build Debug",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--config",
+                "Debug"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "detail": "CMake를 이용한 전체 빌드"
+        },
+        {
+            "type": "cppbuild",
+            "label": "C/C++: clang 활성 파일 빌드",
+            "command": "/usr/bin/clang",
+            "args": [
+                "-fcolor-diagnostics",
+                "-fansi-escape-codes",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}"
             ],
             "options": {
                 "cwd": "${fileDirname}"
@@ -23,7 +93,28 @@
                 "isDefault": true
             },
             "detail": "디버거에서 생성된 작업입니다."
+        },
+        {
+            "label": "CMake Build Debug",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--config",
+                "Debug"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "CMake를 이용한 전체 빌드"
         }
-    ],
-    "version": "2.0.0"
+    ]
 }

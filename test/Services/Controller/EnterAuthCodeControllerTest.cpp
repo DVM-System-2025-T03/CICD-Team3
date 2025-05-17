@@ -2,7 +2,7 @@
 #include "Domain/Beverage/BeverageManager.h"
 #include "Services/Controller/EnterAuthCodeController.h"
 #include "Domain/Beverage/Beverage.h"
-#include "exception/CustomException.h"
+#include "Exception/CustomException.h"
 #include <gtest/gtest.h>
 
 using namespace customException;

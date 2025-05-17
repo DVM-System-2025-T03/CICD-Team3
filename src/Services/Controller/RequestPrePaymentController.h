@@ -5,6 +5,8 @@
 #include "../../Domain/Credit/Bank.h"
 #include "../../Domain/Socket/SocketManager.h"
 #include "../../Domain/Auth/AuthCodeManager.h"
+#include "../../Domain/DTO/ResponseStockDTO.h"
+#include "../../Domain/Beverage/BeverageManager.h"
 
 using namespace std;
 
@@ -13,9 +15,10 @@ private:
     AuthCodeManager* authCodeManager;
     Bank* bank;
     SocketManager* socketManager;
+    BeverageManager* beverageManager;
 
 public:
-    RequestPrePaymentController(AuthCodeManager* authCodeManager, Bank* bank, SocketManager* socketManager);
+    RequestPrePaymentController(AuthCodeManager* authCodeManager, Bank* bank, SocketManager* socketManager, BeverageManager* beverageManager);
     void enterPrePayIntention(bool intention);
     string enterCardNumber(string cardNumber, Beverage beverage, int quantity, int srcId, int dstId);
 };

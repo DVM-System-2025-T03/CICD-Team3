@@ -1,6 +1,10 @@
 #include "SelectBeverageController.h"
 
-void SelectBeverageController::selectBeverage(int beverageId, int quantity) {
+SelectBeverageController::SelectBeverageController(LocationManager* locationManager, BeverageManager* beverageManager, SocketManager* socketManager)
+    : locationManager(locationManager), beverageManager(beverageManager), socketManager(socketManager) {
+}
+
+bool SelectBeverageController::selectBeverage(int beverageId, int quantity) {
     // 1. 입력 검증
     if (beverageId <= 0 || beverageId > 20) {
         throw std::invalid_argument("beverageId는 1 이상 20 이하의 값이어야 합니다.");
@@ -12,22 +16,23 @@ void SelectBeverageController::selectBeverage(int beverageId, int quantity) {
     // 2. 로컬 재고 확인
     bool hasStock = false;
     try {
-        hasStock = beverageManager.hasEnoughStock(beverageId, quantity);
+        hasStock = beverageManager->hasEnoughStock(beverageId, quantity);
     } catch (const std::out_of_range& e) {
         throw std::invalid_argument(std::string("존재하지 않는 beverageId 입니다: ") + std::to_string(beverageId));
     }
-
+    cout << "hasStock: " << hasStock << endl;
     if (hasStock) {
         // 3. 재고가 충분하면 아무 것도 하지 않고 종료
-        return;
+        return true;
     }
 
     // 4. 재고 부족 → 다른 DVM에 재고 요청
-    auto responseList = socketManager.requestBeverageStockToOthers(beverageId, quantity);
+    auto responseList = socketManager->requestBeverageStockToOthers(beverageId, quantity, 0, 0);
 
     // 5. 가장 가까운 DVM 계산
-    DVMInfoDTO nearestDVM = locationManager.calculateNearest(responseList);
+    DVMInfoDTO nearestDVM = locationManager->calculateNearest(responseList);
 
     // 6. 계산된 DVM 정보를 예외로 던져서 호출 쪽에서 처리하도록 함
-    throw DVMInfoException(nearestDVM);
+    // throw DVMInfoException(nearestDVM);
+    return false;
 }

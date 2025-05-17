@@ -24,12 +24,55 @@ int main(int argc, char* argv[]) {
     BeverageManager* beverageManager = new BeverageManager();
     LocationManager* locationManager = new LocationManager();
     
-    SelectBeverageController* selectBeverageController = new SelectBeverageController();
-    RequestPrePaymentController* requestPrePaymentController = new RequestPrePaymentController(authCodeManager, bank, socketManager);
+    SelectBeverageController* selectBeverageController = new SelectBeverageController(locationManager, beverageManager, socketManager);
+    RequestPrePaymentController* requestPrePaymentController = new RequestPrePaymentController(authCodeManager, bank, socketManager, beverageManager);
     EnterAuthCodeController* enterAuthCodeController = new EnterAuthCodeController(beverageManager, authCodeManager);
     ResponsePrePaymentController* responsePrePaymentController = new ResponsePrePaymentController(beverageManager, authCodeManager);
-    RequestPaymentController* requestPaymentController = new RequestPaymentController(beverageManager, bank, new CreditCard("", 0), 0, 0, 0);
-    ResponseStockController* responseStockController = new ResponseStockController(beverageManager, locationManager);
+    RequestPaymentController* requestPaymentController = new RequestPaymentController(beverageManager, bank);
+    ResponseStockController* responseStockController = new ResponseStockController(locationManager, beverageManager);
+
+    authCodeManager->saveAuthCode(1, 2, "AB123");
+    map<int, pair<string, int>> beverageMap;
+    beverageMap[1] = make_pair("콜라", 1200);
+    beverageMap[2] = make_pair("사이다", 1100);
+    beverageMap[3] = make_pair("녹차", 1600);
+    beverageMap[4] = make_pair("홍차", 1300);
+    beverageMap[5] = make_pair("밀크티", 1400);
+    beverageMap[6] = make_pair("탄산수", 2000);
+    beverageMap[7] = make_pair("보리차", 2500);
+    beverageMap[8] = make_pair("캔커피", 2600);
+    beverageMap[9] = make_pair("물", 1500);
+    beverageMap[10] = make_pair("에너지드링크", 1700);
+    beverageMap[11] = make_pair("유자차", 1800);
+    beverageMap[12] = make_pair("식혜", 1900);
+    beverageMap[13] = make_pair("아이스티", 2000);
+    beverageMap[14] = make_pair("딸기주스", 2100);
+    beverageMap[15] = make_pair("오렌지주스", 2200);
+    beverageMap[16] = make_pair("포도주스", 2300);
+    beverageMap[17] = make_pair("이온음료", 2400);
+    beverageMap[18] = make_pair("아메리카노", 2500);
+    beverageMap[19] = make_pair("핫초코", 2600);
+    beverageMap[20] = make_pair("카페라떼", 2700);
+    vector<int> beverageIds;
+    for(int i = 0; i < 7; i++){
+      // 랜덤하게 인풋을 추가
+      beverageIds.push_back(i);
+    }
+    for (const auto& pair : beverageMap) {
+        int id = pair.first;
+        string name = pair.second.first;
+        int price = pair.second.second;
+        // 보유중인 음료
+        if(find(beverageIds.begin(), beverageIds.end(), id) != beverageIds.end()){
+          beverageManager->addBeverage(Beverage(id, name, 10, price));
+          cout << "음료 추가: " << id << ", " << name << ", " << price << endl;
+        }
+        // 보유중이지 않은 음료
+        else{
+          beverageManager->addBeverage(Beverage(id, name, 0, price));
+        }
+        // cout << "음료 추가: " << id << ", " << name << ", " << price << endl;
+    }
 
     int beverageId = -1;
     int quantity = -1;
@@ -49,7 +92,11 @@ int main(int argc, char* argv[]) {
         try{
         Beverage beverage = enterAuthCodeController->enterAuthCode(authCode);
         cout << "인증 코드 확인 성공: " << beverage.getId() << endl; 
+        continue;
         } catch (const customException::InvalidException& e) {
+            std::cout << "인증 코드가 유효하지 않습니다. 다시 입력하세요." << std::endl;
+            continue;
+        } catch (const customException::NotFoundException& e) {
             std::cout << "인증 코드가 유효하지 않습니다. 다시 입력하세요." << std::endl;
             continue;
         }
@@ -62,20 +109,18 @@ int main(int argc, char* argv[]) {
         cin >> beverageId;
         cout << "수량을 입력하세요 (1~10): ";
         cin >> quantity;
-        /*status = */selectBeverageController->selectBeverage(beverageId, quantity);
+        status = selectBeverageController->selectBeverage(beverageId, quantity);
       } catch (const customException::InvalidException& e) {
           std::cout << "음료 아이디가 유효하지 않습니다. 다시 입력하세요." << std::endl;
           continue;
       }
-
-      
       if (status) {
           cout << "음료 결제" << endl;
           string cardNumber;
           cout << "카드 번호를 입력하세요: ";
           cin >> cardNumber;
           try{
-              Beverage beverage = requestPaymentController->enterCardNumber(cardNumber);
+              Beverage beverage = requestPaymentController->enterCardNumber(cardNumber, beverageId, quantity);
               cout << "결제 성공: " << beverage.getId() << endl;
           } catch (const RequestPaymentController::CardNotFoundException& e) {
               cout << e.what() << endl;
@@ -87,16 +132,10 @@ int main(int argc, char* argv[]) {
           cin >> intention;
           bool intentionBool = (intention == 1);
           string cardNumber;
-          if(intentionBool) {
-            cout << "카드 번호를 입력하세요: ";
-          cin >> cardNumber;
-          }else{
-            continue;
-          }
-          
+
           try {
-            Beverage beverage = beverageManager->getBeverage(beverageId);
             requestPrePaymentController->enterPrePayIntention(intentionBool);
+            Beverage beverage = beverageManager->getBeverage(beverageId);
             string authCode = requestPrePaymentController->enterCardNumber(cardNumber, beverage, quantity, 0, 0);
             cout << "결제 성공: " << beverage.getId() << endl;
           } catch (const customException::InvalidException& e) {

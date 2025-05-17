@@ -1,6 +1,6 @@
 #include "Domain/Credit/CreditCard.h"
 #include "Domain/Credit/Bank.h"
-#include "exception/CustomException.h"
+#include "Exception/CustomException.h"
 #include <gtest/gtest.h>
 
 using namespace customException;

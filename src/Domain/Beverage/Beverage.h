@@ -4,7 +4,7 @@
 using namespace std;
 
 class Beverage {
-private:
+public:
     int id;
     string name;
     int stock;

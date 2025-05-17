@@ -7,10 +7,11 @@
 
 class SelectBeverageController {
 private:
-    LocationManager locationManager;
-    BeverageManager beverageManager;
-    SocketManager socketManager;
+    LocationManager* locationManager;
+    BeverageManager* beverageManager;
+    SocketManager* socketManager;
 
 public:
-    void selectBeverage(int beverageId, int quantity);
+    SelectBeverageController(LocationManager* locationManager, BeverageManager* beverageManager, SocketManager* socketManager);
+    bool selectBeverage(int beverageId, int quantity);
 };

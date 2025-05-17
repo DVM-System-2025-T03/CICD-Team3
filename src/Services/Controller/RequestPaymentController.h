@@ -10,21 +10,13 @@ class RequestPaymentController {
 private:
     BeverageManager* beverageManager;
     Bank* bank;
-    CreditCard* creditCard;
-    int beverageId;
-    int quantity;
-    int price;
 
 public:
     // 생성자: 모든 private 멤버를 초기화
     RequestPaymentController(BeverageManager* beverageManager, 
-                             Bank* bank,
-                             CreditCard* creditCard,
-                             int beverageId,
-                             int quantity,
-                             int price);
+                             Bank* bank);
 
-    Beverage enterCardNumber(string cardNumber);
+    Beverage enterCardNumber(string cardNumber, int beverageId, int quantity);
 
     class CardNotFoundException : public exception {
         public:

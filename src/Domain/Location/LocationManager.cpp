@@ -3,7 +3,9 @@
 
 DVMInfoDTO LocationManager::calculateNearest(list<ResponseStockDTO> responseList) {
     if (responseList.empty()) {
-        throw std::invalid_argument("responseList is empty");
+        // TODO: 목객체 삭제
+        responseList.push_back(ResponseStockDTO(3, 10, 2, 3)); // Dummy response
+        // throw std::invalid_argument("responseList is empty");
     }
 
     double minDist = std::numeric_limits<double>::max();

@@ -40,6 +40,14 @@ class ResponseStockDTO{
             this->src_id = src_id;
             this->dst_id = dst_id;
         }
+
+        int getX() const {
+            return msg_content.coor_x;
+        }
+
+        int getY() const {
+            return msg_content.coor_y;
+        }
 };
 
 // to_json, from_json 함수 정의

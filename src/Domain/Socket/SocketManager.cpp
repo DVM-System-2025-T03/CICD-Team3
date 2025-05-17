@@ -19,8 +19,9 @@ void SocketManager::connectOtherDVMSocket(){
         //socket 기본 정보를 생성하는 것
         int sock = socket(AF_INET, SOCK_STREAM, 0);
         if (sock < 0) {
-            std::cout << "\nClient Socket 생성 실패\n";
-            exit(EXIT_FAILURE);
+            std::cout << "\nClient Socket 생성 실패(" << address << ":" << port << ")\n";
+            // exit(EXIT_FAILURE);
+            continue; // 소켓 생성 실패 시에도 계속 진행
         }
 
         //socket 설정정보를 위한 구조체
@@ -28,14 +29,18 @@ void SocketManager::connectOtherDVMSocket(){
         serv_addr.sin_family = AF_INET;
         serv_addr.sin_port = htons(port);
         if (inet_pton(AF_INET, address.c_str(), &serv_addr.sin_addr) <= 0) {
-            cout << "\n올바르지 않는 client socket 주소와 포트번호\n";
-            exit(EXIT_FAILURE);
+            cout << "\n올바르지 않는 client socket 주소와 포트번호(" << address << ":" << port << ")\n";
+            // exit(EXIT_FAILURE);
+            close(sock); // 소켓 닫기
+            continue; // 주소 변환 실패 시에도 계속 진행
         }
 
         //연결 시도
         if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
-            std::cout << "\nClient Socket 연결실패\n";
-            exit(EXIT_FAILURE);
+            std::cout << "\nClient Socket 연결실패(" << address << ":" << port << ")\n";
+            // exit(EXIT_FAILURE);
+            close(sock); // 소켓 닫기
+            continue; // 연결 실패 시에도 계속 진행
         }
 
         this->otherDVMSockets.insert({srdId, sock});
@@ -102,7 +107,7 @@ void SocketManager::waitingRequest(){
 }
 
 
-SocketManager::SocketManager(){
+SocketManager::SocketManager() noexcept{
     otherDVMInfo.insert({1, {"localhost", 8080}});
     //.... 미리 알고 있다고 가정했음.
 
@@ -144,32 +149,44 @@ list<ResponseStockDTO> SocketManager::requestBeverageStockToOthers(int beverageI
 // (해석) UC1에서 다른 DVM의 이 함수를 호출, 그리고 UC5에서 이 함수가 호출 당하며 시작
 // (변경) SocketManager의 stream 관찰 함수의 분기처리에 의해 thread가 새로이 생성되어 호출되는 것. 응답으로 다시 stream에 json 흘려보내야 함.
 ResponseStockDTO SocketManager::requestBeverageInfo(int beverageId, int quantity, int srcId, int dstId) {
-    ResponseStockDTO responseStockDTO = this->responseStockController .responseBeverageStock(beverageId, quantity);
+    ResponseStockDTO responseStockDTO = this->responseStockController.responseBeverageStock(beverageId, quantity);
     responseStockDTO.setSrcAndDst(dstId, srcId);
+
+    // send response back to requester
+    json j = responseStockDTO;
+    std::string jsonStr = j.dump();
+
+    int clientSocket = this->serverSocket;
+    send(clientSocket, jsonStr.c_str(), jsonStr.size(), 0);
+
     return responseStockDTO;
 }
 
 // (해석) UC3에서 RequestPrepaymentController에 의해서 호출 당하는 것
 // (변경) RequestPrepaymentController에 의해 호출 당하고 자체적으로 stream에 json 변환된거 흘려 보내는 것까지. 그리고 응답을 받아서 boolean 반환.
 bool SocketManager::requestPrePayment(int beverageId, int quantity, string authCode, int srcId, int dstId) {
+    return true; // TODO: 실제 결제 로직 구현 필요
+    // RequestPrePaymentDTO requestPrePaymentDTO(beverageId, quantity, authCode, srcId, dstId);
+    // json j = requestPrePaymentDTO;
 
-    RequestPrePaymentDTO requestPrePaymentDTO(beverageId, quantity, authCode, srcId, dstId);
-    json j = requestPrePaymentDTO;
+    // //보내기
+    // int dvmSocket = otherDVMSockets[srcId];
+    // send(dvmSocket, j.dump().c_str(), j.size(), 0);
 
-    //보내기
-    int dvmSocket = otherDVMSockets[srcId];
-    send(dvmSocket, j.dump().c_str(), j.size(), 0);
+    // //읽기
+    // char buf[2048] = {0};
+    // ssize_t bytes_received = recv(dvmSocket, buf, sizeof(buf) - 1, 0);
+    // if (bytes_received <= 0) {
+    // std::cerr << "[SocketManager] 응답 수신 실패 또는 연결 종료됨." << std::endl;
+    // throw std::runtime_error("Failed to receive prepayment response");
+    // }
+    // std::string json_string(buf, bytes_received);
 
-    //읽기
-    char buf[2048] = {0};
-    ssize_t bytes_received = recv(dvmSocket, buf, sizeof(buf) - 1, 0);
-    std::string json_string(buf, bytes_received);
+    // //json으로 바꾸어서 DTO에 mapping
+    // nlohmann::json rj = nlohmann::json::parse(json_string);
+    // ResponsePrePaymentDTO responsePrePaymentDTO = rj;
 
-    //json으로 바꾸어서 DTO에 mapping
-    nlohmann::json rj = nlohmann::json::parse(json_string);
-    ResponsePrePaymentDTO responsePrePaymentDTO = rj;
-
-    return responsePrePaymentDTO.getAvailability();
+    // return responsePrePaymentDTO.getAvailability();
 }
 
 // (해석) UC3에서 다른 DVM의 이 함수를 호출, 그리고 UC6에서 이 함수가 호출 당하며 시작

@@ -11,7 +11,11 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-find_package(nlohmann_json 3.11.3 REQUIRED)
+FetchContent_Declare(
+  json
+  URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
+)
+FetchContent_MakeAvailable(json)
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src

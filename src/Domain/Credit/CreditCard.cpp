@@ -1,5 +1,6 @@
 #include "CreditCard.h"
-#include "exception/CustomException.h"
+#include "Exception/CustomException.h"
+#include <iostream>
 using namespace customException;
 
 bool CreditCard::validateBalance(int price) {
@@ -17,7 +18,6 @@ void CreditCard::reduceBalance(int price) {
     if (balance < price) {
         throw out_of_range("Insufficient balance");
     }
-
     balance -= price;
 }
 

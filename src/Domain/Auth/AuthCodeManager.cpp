@@ -1,5 +1,5 @@
 #include "AuthCodeManager.h"
-#include "exception/CustomException.h"
+#include "Exception/CustomException.h"
 
 using namespace customException;
 
@@ -36,4 +36,11 @@ string AuthCodeManager::generateAuthCode() {
         authCode += CHARACTERS[dist(gen)];
     }
     return authCode;
+}
+
+void AuthCodeManager::deleteAuthCode(string authCode) {
+    if(authCodeMap.find(authCode) == authCodeMap.end()){
+        throw NotFoundException("Auth code not found");
+    }
+    authCodeMap.erase(authCode);
 }

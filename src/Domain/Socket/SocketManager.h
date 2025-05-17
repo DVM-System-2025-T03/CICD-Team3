@@ -1,17 +1,24 @@
 #pragma once
-#include <vector>
+#include <iostream>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <list>
 #include <string>
 #include <vector>
-#include <map>
-#include "../DTO/RequestStockDTO.h"
-#include "../DTO/ResponseStockDTO.h"
-#include "../DTO/RequestPrePaymentDTO.h"
-#include "../DTO/ResponseStockDTO.h"
-#include "../DTO/ResponsePrePaymentDTO.h"
-#include "../../Services/Controller/ResponseStockController.h"
-#include "../../Services/Controller/ResponsePrePaymentController.h"
+
+#include "Services/Controller/ResponseStockController.h"
+#include "Services/Controller/ResponsePrePaymentController.h"
+#include "Domain/DTO/ResponseStockDTO.h"
+#include "Domain/DTO/ResponsePrePaymentDTO.h"
+#include "Domain/DTO/RequestStockDTO.h"
+#include "Domain/DTO/RequestPrePaymentDTO.h"
+
+#define PORT 8888
+#define BROADCAST_IP "255.255.255.255"
 
 using namespace std;
+using json = nlohmann::json;
 
 class SocketManager {
 private:
@@ -28,10 +35,8 @@ private:
 
 
 public:
-    //새로 추가한 생성자 및 메서드
-    SocketManager();
+    SocketManager() noexcept;
 
-    //2040 정의 메서드
     list<ResponseStockDTO> requestBeverageStockToOthers(int beverageId, int quantity, int srcId, int dstId);
     
     ResponseStockDTO requestBeverageInfo(int beverageId, int quantity, int srcId, int dstId);

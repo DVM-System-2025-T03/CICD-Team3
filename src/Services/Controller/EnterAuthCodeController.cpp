@@ -1,5 +1,5 @@
 #include "EnterAuthCodeController.h"
-#include "exception/CustomException.h"
+#include "Exception/CustomException.h"
 using namespace customException;
 
 EnterAuthCodeController::EnterAuthCodeController(BeverageManager* beverageManager, AuthCodeManager* authCodeManager)
@@ -20,6 +20,7 @@ Beverage EnterAuthCodeController::enterAuthCode(string authCode) {
     }
 
     int beverageId = authCodeManager->getBeverageId(authCode);
+    authCodeManager->deleteAuthCode(authCode);
     Beverage beverage = beverageManager->getBeverage(beverageId);
     return beverage;
 }

@@ -13,4 +13,5 @@ public:
     void reduceBalance(int price);
     bool isValid();
     string& getCardNumber() { return cardNumber; }
+    int getBalance() { return balance; }
 };

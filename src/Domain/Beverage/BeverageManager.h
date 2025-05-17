@@ -8,6 +8,7 @@ private:
     map<int, Beverage> beverages;
 
 public:
+    BeverageManager() = default;
     bool hasEnoughStock(int beverageId, int quantity);
     bool reduceQuantity(int beverageId, int quantity);
     Beverage getBeverage(int beverageId);

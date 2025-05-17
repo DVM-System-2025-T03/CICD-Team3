@@ -1,20 +1,17 @@
 #include "RequestPaymentController.h"
 
-RequestPaymentController::RequestPaymentController(const BeverageManager& beverageManager, 
-                                                       const Bank& bank,
-                                                       const CreditCard& creditCard,
-                                                       int beverageId,
-                                                       int quantity,
-                                                       int price)
-    : beverageManager(beverageManager), bank(bank), creditCard(creditCard), 
-      beverageId(beverageId), quantity(quantity), price(price) {}
+RequestPaymentController::RequestPaymentController(BeverageManager* beverageManager, 
+                                                       Bank* bank)
+    : beverageManager(beverageManager), bank(bank) {}
 
-Beverage RequestPaymentController::enterCardNumber(string cardNumber) {
+Beverage RequestPaymentController::enterCardNumber(string cardNumber, int beverageId, int quantity) {
     const int MAX_ATTEMPTS = 3;
+    Beverage beverage = beverageManager->getBeverage(beverageId);
+    int price = beverage.getPrice() * quantity;
     CreditCard* card = nullptr;
 
     for (int attempt = 1; attempt <= MAX_ATTEMPTS; ++attempt) {
-        card = bank.requestCard(cardNumber);
+        card = bank->requestCard(cardNumber);
         if (card != nullptr) {
             break;
         }
@@ -36,15 +33,16 @@ Beverage RequestPaymentController::enterCardNumber(string cardNumber) {
         throw InsufficientBalanceException();
     }
 
+    
     // 재고 차감
-    if (!beverageManager.reduceQuantity(beverageId, quantity)) {
+    if (!beverageManager->reduceQuantity(beverageId, quantity)) {
         throw BeverageReductionException();
     }
 
     // 결제 처리
     card->reduceBalance(price);
-    bank.saveCreditCard(*card);
+    bank->saveCreditCard(*card);
 
     // 구매한 음료 반환
-    return beverageManager.getBeverage(beverageId);
+    return beverageManager->getBeverage(beverageId);
 }

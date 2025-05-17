@@ -2,9 +2,10 @@
 #include "CreditCard.h"
 
 CreditCard* Bank::requestCard(string cardNumber) {
-    std::ifstream file("card_db.txt");
+    string path = filesystem::current_path().string() + "/card_db.txt";
+    ifstream file(path);
     if (!file.is_open()) {
-        cerr << "[Bank] 카드 데이터 파일 열기 실패" << endl;
+        cerr << "[Bank] 카드 데이터 파일 열기 실패" << path << endl;
         return nullptr;
     }
 
@@ -30,6 +31,45 @@ CreditCard* Bank::requestCard(string cardNumber) {
 }
 
 void Bank::saveCreditCard(CreditCard creditCard) {
-    // 추가 구현
-    
+    string path = filesystem::current_path().string() + "/card_db.txt";
+    string tempPath = filesystem::current_path().string() + "/card_db_temp.txt";
+
+    ifstream inFile(path);
+    ofstream outFile(tempPath);
+
+    if (!inFile.is_open() || !outFile.is_open()) {
+        cerr << "[Bank] 카드 데이터 파일 열기 실패 (읽기 또는 쓰기)" << endl;
+        return;
+    }
+
+    string line;
+    bool updated = false;
+    while (getline(inFile, line)) {
+        istringstream iss(line);
+        string storedCardNumber;
+        int balance;
+
+        if (!(iss >> storedCardNumber >> balance)) {
+            outFile << line << endl;
+            continue;
+        }
+
+        if (storedCardNumber == creditCard.getCardNumber()) {
+            outFile << storedCardNumber << " " << creditCard.getBalance() << endl;
+            updated = true;
+        } else {
+            outFile << line << endl;
+        }
+    }
+
+    if (!updated) {
+        outFile << creditCard.getCardNumber() << " " << creditCard.getBalance() << endl;
+    }
+
+    inFile.close();
+    outFile.close();
+
+    // 기존 파일을 덮어쓰기
+    filesystem::remove(path);
+    filesystem::rename(tempPath, path);
 }

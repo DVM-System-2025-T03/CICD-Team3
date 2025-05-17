@@ -10,6 +10,7 @@ private:
     Location location;
 
 public:
+    LocationManager() = default;
     DVMInfoDTO calculateNearest(list<ResponseStockDTO> responseList);
     Location getLocation();
 };

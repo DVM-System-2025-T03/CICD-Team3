@@ -36,6 +36,9 @@ string RequestPrePaymentController::enterCardNumber(string cardNumber, Beverage 
             if (!isPrePayable) {
                 throw FailedToPrePaymentException("Invalid auth code");
             }
+
+            card->reduceBalance(beverage.getPrice() * quantity);
+            bank->saveCreditCard(*card);
     
             cout << "선결제 완료" << endl;
             cout << "인증 코드 : " << authCode << endl;

@@ -15,10 +15,11 @@
 #include "Exception/CustomException.h"
 #include "Exception/DVMInfoException.h"
 #include <iostream>
+#include <cstdlib>
 
 int main(int argc, char* argv[]) {
 
-    SocketManager* socketManager = new SocketManager();
+    SocketManager* socketManager = new SocketManager(atoi(argv[1]), atoi(argv[2]));
     AuthCodeManager* authCodeManager = new AuthCodeManager();
     Bank* bank = new Bank();
     BeverageManager* beverageManager = new BeverageManager();
@@ -30,6 +31,8 @@ int main(int argc, char* argv[]) {
     ResponsePrePaymentController* responsePrePaymentController = new ResponsePrePaymentController(beverageManager, authCodeManager);
     RequestPaymentController* requestPaymentController = new RequestPaymentController(beverageManager, bank);
     ResponseStockController* responseStockController = new ResponseStockController(locationManager, beverageManager);
+
+    socketManager->setController(responseStockController, responsePrePaymentController);
 
     authCodeManager->saveAuthCode(1, 2, "AB123");
     map<int, pair<string, int>> beverageMap;
@@ -54,7 +57,7 @@ int main(int argc, char* argv[]) {
     beverageMap[19] = make_pair("핫초코", 2600);
     beverageMap[20] = make_pair("카페라떼", 2700);
     vector<int> beverageIds;
-    for(int i = 0; i < 7; i++){
+    for(int i = 0; i < 20; i++){
       // 랜덤하게 인풋을 추가
       beverageIds.push_back(i);
     }
@@ -136,7 +139,7 @@ int main(int argc, char* argv[]) {
           try {
             requestPrePaymentController->enterPrePayIntention(intentionBool);
             Beverage beverage = beverageManager->getBeverage(beverageId);
-            string authCode = requestPrePaymentController->enterCardNumber(cardNumber, beverage, quantity, 0, 0);
+            string authCode = requestPrePaymentController->enterCardNumber(cardNumber, beverage, quantity, 0, 1);
             cout << "결제 성공: " << beverage.getId() << endl;
           } catch (const customException::InvalidException& e) {
               continue;

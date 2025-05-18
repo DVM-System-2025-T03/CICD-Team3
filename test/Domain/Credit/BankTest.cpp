@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "Domain/Credit/Bank.h"
 #include "Domain/Credit/CreditCard.h"
+#include "Exception/CustomException.h"
 
 #include <fstream>
 

@@ -1,6 +1,7 @@
 #include "Domain/Auth/AuthCodeManager.h"
 #include "Exception/CustomException.h"
 #include <gtest/gtest.h>
+
 using namespace customException;
 class AuthCodeManagerTest : public ::testing::Test {
 protected:

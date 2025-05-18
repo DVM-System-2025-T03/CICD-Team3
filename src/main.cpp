@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
     AuthCodeManager* authCodeManager = new AuthCodeManager();
     Bank* bank = new Bank();
     BeverageManager* beverageManager = new BeverageManager();
-    LocationManager* locationManager = new LocationManager();
+    LocationManager* locationManager = new LocationManager(0, 0);   // 현재 DVM 위치 (0, 0) -> 임시로 설정
     
     SelectBeverageController* selectBeverageController = new SelectBeverageController(locationManager, beverageManager, socketManager);
     RequestPrePaymentController* requestPrePaymentController = new RequestPrePaymentController(authCodeManager, bank, socketManager, beverageManager);
@@ -118,6 +118,7 @@ int main(int argc, char* argv[]) {
           DVMInfoDTO nearestDVM = e.getNearestDVM();
           
           cout << "음료 선결제" << endl;
+          cout << "가장 가까운 DVM 정보: DvmId = " << nearestDVM.getPrePaymentDvmId() << ", 위치 = (" << nearestDVM.getX() << ", " << nearestDVM.getY() << ")" << endl;
           cout << "선결제 의사를 입력하세요 (1: 선결제, 0: 일반 결제): ";
           int intention;
           cin >> intention;

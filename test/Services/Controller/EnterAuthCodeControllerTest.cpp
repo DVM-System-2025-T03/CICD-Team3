@@ -36,5 +36,5 @@ TEST_F(EnterAuthCodeControllerTest, EnterAuthCode_유효한코드_음료반환) 
 TEST_F(EnterAuthCodeControllerTest, EnterAuthCode_잘못된코드_예외발생) {
     EXPECT_THROW({
         controller->enterAuthCode("INVALID_CODE");
-    }, NotFoundException);
+    }, InvalidException);
 }

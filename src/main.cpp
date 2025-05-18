@@ -85,19 +85,17 @@ int main(int argc, char* argv[]) {
           cout << "프로그램을 종료합니다." << endl;
           break;
       } else if (menu == 2) {
-          // 인증 코드 입력
+        // 인증 코드 입력
         cout << "인증 코드를 입력하세요: ";
         string authCode;
         cin >> authCode;
-        try{
-        Beverage beverage = enterAuthCodeController->enterAuthCode(authCode);
-        cout << "인증 코드 확인 성공: " << beverage.getId() << endl; 
-        continue;
+        try {
+          Beverage beverage = enterAuthCodeController->enterAuthCode(authCode);
+          cout << "인증 코드 확인 성공! 음료를 받으세요 : " << beverage.getId() << endl; 
+          continue;
         } catch (const customException::InvalidException& e) {
-            std::cout << "인증 코드가 유효하지 않습니다. 다시 입력하세요." << std::endl;
-            continue;
-        } catch (const customException::NotFoundException& e) {
-            std::cout << "인증 코드가 유효하지 않습니다. 다시 입력하세요." << std::endl;
+            // 인증 코드 3회 실패한 경우
+            std::cout << e.what() << std::endl;
             continue;
         }
       } else if (menu != 1) {

@@ -147,8 +147,11 @@ int main(int argc, char* argv[]) {
           cout << "결제 성공: " << beverage.getId() << endl;
       } catch (const RequestPaymentController::CardNotFoundException& e) {
           cout << e.what() << endl;
-      } 
-    }
+      } catch (const RequestPaymentController::InsufficientBalanceException& e) {
+        cout << e.what() << endl;
+      } catch (const RequestPaymentController::BeverageReductionException& e) {
+        cout << e.what() << endl;
+      }
 
     delete socketManager;
     delete authCodeManager;

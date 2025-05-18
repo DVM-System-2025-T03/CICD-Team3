@@ -13,7 +13,6 @@
 #include "Domain/Location/LocationManager.h"
 #include "Domain/Beverage/Beverage.h"
 #include "Exception/CustomException.h"
-#include "Exception/DVMInfoException.h"
 #include <iostream>
 
 int main(int argc, char* argv[]) {
@@ -74,10 +73,11 @@ int main(int argc, char* argv[]) {
         // cout << "음료 추가: " << id << ", " << name << ", " << price << endl;
     }
 
-    int beverageId = -1;
+    int beverageId = -1;      
     int quantity = -1;
     bool status = false;
     int menu = -1;
+
     while (true) {
       cout << "메뉴를 선택하세요 (1: 음료 선택, 2: 선결제 코드 입력, 0: 종료): ";
       cin >> menu;
@@ -85,47 +85,38 @@ int main(int argc, char* argv[]) {
           cout << "프로그램을 종료합니다." << endl;
           break;
       } else if (menu == 2) {
-          // 인증 코드 입력
+        // 인증 코드 입력
         cout << "인증 코드를 입력하세요: ";
         string authCode;
         cin >> authCode;
-        try{
-        Beverage beverage = enterAuthCodeController->enterAuthCode(authCode);
-        cout << "인증 코드 확인 성공: " << beverage.getId() << endl; 
-        continue;
+        try {
+          Beverage beverage = enterAuthCodeController->enterAuthCode(authCode);
+          cout << "인증 코드 확인 성공! 음료를 받으세요 : " << beverage.getId() << endl; 
+          continue;
         } catch (const customException::InvalidException& e) {
-            std::cout << "인증 코드가 유효하지 않습니다. 다시 입력하세요." << std::endl;
-            continue;
-        } catch (const customException::NotFoundException& e) {
-            std::cout << "인증 코드가 유효하지 않습니다. 다시 입력하세요." << std::endl;
+            // 인증 코드 3회 실패한 경우
+            std::cout << e.what() << std::endl;
             continue;
         }
       } else if (menu != 1) {
           cout << "잘못된 메뉴입니다. 다시 선택하세요." << endl;
           continue;
       }
+
+      // uc1
       try {
         cout << "음료 아이디를 입력하세요 (1~20): ";
         cin >> beverageId;
         cout << "수량을 입력하세요 (1~10): ";
         cin >> quantity;
-        status = selectBeverageController->selectBeverage(beverageId, quantity);
+        selectBeverageController->selectBeverage(beverageId, quantity);
       } catch (const customException::InvalidException& e) {
-          std::cout << "음료 아이디가 유효하지 않습니다. 다시 입력하세요." << std::endl;
+          std::cout << e.what() << " 다시 입력하세요." << std::endl;
           continue;
-      }
-      if (status) {
-          cout << "음료 결제" << endl;
-          string cardNumber;
-          cout << "카드 번호를 입력하세요: ";
-          cin >> cardNumber;
-          try{
-              Beverage beverage = requestPaymentController->enterCardNumber(cardNumber, beverageId, quantity);
-              cout << "결제 성공: " << beverage.getId() << endl;
-          } catch (const RequestPaymentController::CardNotFoundException& e) {
-              cout << e.what() << endl;
-          }
-      } else {
+      } catch (const customException::DVMInfoException& e) {
+          // uc3
+          DVMInfoDTO nearestDVM = e.getNearestDVM();
+          
           cout << "음료 선결제" << endl;
           cout << "선결제 의사를 입력하세요 (1: 선결제, 0: 일반 결제): ";
           int intention;
@@ -136,13 +127,45 @@ int main(int argc, char* argv[]) {
           try {
             requestPrePaymentController->enterPrePayIntention(intentionBool);
             Beverage beverage = beverageManager->getBeverage(beverageId);
+
             string authCode = requestPrePaymentController->enterCardNumber(cardNumber, beverage, quantity, 0, 0);
-            cout << "결제 성공: " << beverage.getId() << endl;
+            cout << "선결제 성공: " << authCode << endl;
           } catch (const customException::InvalidException& e) {
+              // 선결제 의사 없는 경우 or 카드번호 3회 실패한 경우
               continue;
-          }
-      } 
+          } catch (const customException::NotEnoughBalanceException& e) {
+              // 카드 잔액 부족한 경우
+              cout << e.what() << " 다시 입력하세요." << endl;
+              continue;
+          } catch (const customException::FailedToPrePaymentException& e) {
+              // 선결제 실패한 경우
+              cout << e.what() << " 다시 입력하세요." << endl;
+              continue;
+          } catch (const customException::FileOpenException& e) {
+            // 카드 DB 파일 열기 실패한 경우
+            cerr << e.what() << endl;
+            exit(EXIT_FAILURE);
+        }
+      }
+
+      // uc2
+      cout << "음료 결제" << endl;
+      string cardNumber;
+      cout << "카드 번호를 입력하세요: ";
+      cin >> cardNumber;
+      try{
+          Beverage beverage = requestPaymentController->enterCardNumber(cardNumber, beverageId, quantity);
+          cout << "결제 성공: " << beverage.getId() << endl;
+      } catch (const RequestPaymentController::CardNotFoundException& e) {
+          cout << e.what() << endl;
+      } catch (const RequestPaymentController::InsufficientBalanceException& e) {
+        cout << e.what() << endl;
+      } catch (const RequestPaymentController::BeverageReductionException& e) {
+        cout << e.what() << endl;
+      }
+
     }
+
     delete socketManager;
     delete authCodeManager;
     delete bank;

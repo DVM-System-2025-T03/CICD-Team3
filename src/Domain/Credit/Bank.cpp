@@ -5,8 +5,7 @@ CreditCard* Bank::requestCard(string cardNumber) {
     string path = filesystem::current_path().string() + "/card_db.txt";
     ifstream file(path);
     if (!file.is_open()) {
-        cerr << "[Bank] 카드 데이터 파일 열기 실패" << path << endl;
-        return nullptr;
+        throw customException::FileOpenException("카드 DB 파일 열기 실패 : " + path);
     }
 
     std::string line;
@@ -27,7 +26,7 @@ CreditCard* Bank::requestCard(string cardNumber) {
 
     cout << "[Bank] 해당 카드 번호 없음: " << cardNumber << std::endl;
 
-    return nullptr;
+    throw customException::NotFoundException("해당 카드 번호 없음 : " + cardNumber);
 }
 
 void Bank::saveCreditCard(CreditCard creditCard) {

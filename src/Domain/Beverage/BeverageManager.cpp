@@ -5,7 +5,7 @@ using namespace customException;
 
 bool BeverageManager::hasEnoughStock(int beverageId, int quantity) {
     if(this->beverages.find(beverageId) == beverages.end()){
-        return false;
+        throw NotFoundException("beverageId에 해당하는 음료가 없습니다.");
     }
 
     Beverage beverage = this->beverages[beverageId];

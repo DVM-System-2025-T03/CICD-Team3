@@ -5,6 +5,8 @@
 
 #include <fstream>
 
+using namespace customException;
+
 class BankTest : public ::testing::Test {
 protected:
     Bank bank;

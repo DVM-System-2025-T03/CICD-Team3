@@ -3,6 +3,7 @@
 #include "Domain/Beverage/BeverageManager.h"
 #include "Domain/Socket/SocketManager.h"
 #include "Exception/DVMInfoException.h"
+#include "Exception/CustomException.h"
 #include <stdexcept>
 
 class SelectBeverageController {
@@ -13,5 +14,5 @@ private:
 
 public:
     SelectBeverageController(LocationManager* locationManager, BeverageManager* beverageManager, SocketManager* socketManager);
-    bool selectBeverage(int beverageId, int quantity);
+    void selectBeverage(int beverageId, int quantity);
 };

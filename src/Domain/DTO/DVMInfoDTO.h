@@ -3,10 +3,13 @@
 
 class DVMInfoDTO{
     private:
-        double x;
-        double y;
+        int x;
+        int y;
+        int prePaymentDvmId;
     public:
-        DVMInfoDTO(double x, double y) : x(x), y(y) {}
-        double getX() const { return x; }
-        double getY() const { return y; }
+        DVMInfoDTO() : x(0), y(0), prePaymentDvmId(0) {}
+        DVMInfoDTO(int x, int y, int prePaymentDvmId) : x(x), y(y), prePaymentDvmId(prePaymentDvmId) {}
+        int getX() const { return x; }
+        int getY() const { return y; }
+        int getPrePaymentDvmId() const { return prePaymentDvmId; }
 };

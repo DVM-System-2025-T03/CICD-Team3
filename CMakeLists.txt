@@ -55,6 +55,13 @@ add_executable(AuthCodeManagerTest
 target_link_libraries(AuthCodeManagerTest gtest gmock gtest_main pthread nlohmann_json::nlohmann_json)
 add_test(NAME AuthCodeManagerTest COMMAND AuthCodeManagerTest)
 
+add_executable(BeverageTest
+    test/Domain/Beverage/BeverageTest.cpp
+    src/Domain/Beverage/Beverage.cpp
+)
+target_link_libraries(BeverageTest gtest gmock gtest_main pthread nlohmann_json::nlohmann_json)
+add_test(NAME BeverageTest COMMAND BeverageTest)
+
 add_executable(BeverageManagerTest
     test/Domain/Beverage/BeverageManagerTest.cpp
     src/Domain/Beverage/BeverageManager.cpp
@@ -77,6 +84,19 @@ add_executable(BankTest
 )
 target_link_libraries(BankTest gtest gmock gtest_main pthread nlohmann_json::nlohmann_json)
 add_test(NAME BankTest COMMAND BankTest)
+
+add_executable(LocationTest
+    test/Domain/Location/LocationTest.cpp
+)
+target_link_libraries(LocationTest gtest gmock gtest_main pthread nlohmann_json::nlohmann_json)
+add_test(NAME LocationTest COMMAND LocationTest)
+
+add_executable(LocationManagerTest
+    test/Domain/Location/LocationManagerTest.cpp
+    src/Domain/Location/LocationManager.cpp
+)
+target_link_libraries(LocationManagerTest gtest gmock gtest_main pthread nlohmann_json::nlohmann_json)
+add_test(NAME LocationManagerTest COMMAND LocationManagerTest)
 
 add_executable(EnterAuthCodeControllerTest
     test/Services/Controller/EnterAuthCodeControllerTest.cpp

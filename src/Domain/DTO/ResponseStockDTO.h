@@ -37,8 +37,8 @@ class ResponseStockDTO{
         }
 
         void setSrcAndDst(int srcId, int dstId){
-            this->src_id = src_id;
-            this->dst_id = dst_id;
+            this->src_id = srcId;
+            this->dst_id = dstId;
         }
 
         int getX() const {
@@ -47,6 +47,10 @@ class ResponseStockDTO{
 
         int getY() const {
             return msg_content.coor_y;
+        }
+
+        int getSrcId() const {
+            return src_id;      // 해당 DTO를 보낸 DVM의 ID
         }
 };
 

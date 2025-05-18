@@ -1,6 +1,5 @@
 #include "AuthCodeManager.h"
 #include "Exception/CustomException.h"
-#include <iostream>
 
 using namespace customException;
 

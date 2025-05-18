@@ -22,14 +22,12 @@ using json = nlohmann::json;
 
 class SocketManager {
 private:
-    ResponseStockController *responseStockController;
-    ResponsePrePaymentController *responsePrePaymentController;
+    ResponseStockController responseStockController;
+    ResponsePrePaymentController responsePrePaymentController;
     map<int,pair<string,int>> otherDVMInfo;
 
     map<int,int> otherDVMSockets;
     int serverSocket;
-    int serverPort;
-    int srcId;
 
     void connectOtherDVMSocket();
     void openServerSocket();
@@ -37,12 +35,11 @@ private:
 
 
 public:
-    SocketManager(int srcId, int serverPort);
+    SocketManager() noexcept;
 
-    void setController(ResponseStockController *responseStockController, ResponsePrePaymentController *responsePrePaymentController);
     list<ResponseStockDTO> requestBeverageStockToOthers(int beverageId, int quantity, int srcId, int dstId);
     
-    ResponseStockDTO requestBeverageInfo(int beverageId, int quantity, int srcId, int dstId,int clientSocket);
-    ResponsePrePaymentDTO requestPrePay(int beverageId, int quantity, string authCode, int srcId, int dstId, int clientSocket);
+    ResponseStockDTO requestBeverageInfo(int beverageId, int quantity, int srcId, int dstId);
+    ResponsePrePaymentDTO requestPrePay(int beverageId, int quantity, string authCode, int srcId, int dstId);
     bool requestPrePayment(int beverageId, int quantity, string authCode, int srcId, int dstId);
 };

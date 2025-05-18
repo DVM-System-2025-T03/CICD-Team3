@@ -26,7 +26,7 @@ Beverage BeverageManager::getBeverage(int beverageId) {
     if(this->beverages.find(beverageId) == beverages.end()){
         throw NotFoundException("beverageId에 해당하는 음료가 없습니다.");
     }
-    cout << "beverageId : " << beverageId << '\n';
+
     return this->beverages[beverageId];
 }
 

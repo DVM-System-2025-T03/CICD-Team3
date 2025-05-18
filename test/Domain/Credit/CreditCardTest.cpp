@@ -27,11 +27,11 @@ TEST_F(CreditCardTest, ValidateBalance_경곗값_max_성공) {
 }
 
 TEST_F(CreditCardTest, ValidateBalance_경계값_5001_예외) {
-    EXPECT_THROW(card->validateBalance(5001), NotEnoughBalanceException);
+    EXPECT_FALSE(card->validateBalance(5001));
 }
 
 TEST_F(CreditCardTest, ValidateBalance_초과값_예외) {
-    EXPECT_THROW(card->validateBalance(99999), NotEnoughBalanceException);
+    EXPECT_FALSE(card->validateBalance(99999));
 }
 
 TEST_F(CreditCardTest, ReduceBalance_잔액감소) {

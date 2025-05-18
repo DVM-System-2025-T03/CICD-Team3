@@ -1,8 +1,11 @@
 #include <gtest/gtest.h>
 #include "Domain/Credit/Bank.h"
 #include "Domain/Credit/CreditCard.h"
+#include "Exception/CustomException.h"
 
 #include <fstream>
+
+using namespace customException;
 
 class BankTest : public ::testing::Test {
 protected:
@@ -31,6 +34,5 @@ TEST_F(BankTest, RequestCard_있는번호_조회성공) {
 }
 
 TEST_F(BankTest, RequestCard_없는번호_조회실패) {
-    CreditCard* card = bank.requestCard("1111-2222-3333-4444");
-    EXPECT_EQ(card, nullptr);
+    EXPECT_THROW(bank.requestCard("1111-2222-3333-4444"), NotFoundException);
 }

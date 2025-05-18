@@ -131,7 +131,7 @@ int main(int argc, char* argv[]) {
             Beverage beverage = beverageManager->getBeverage(beverageId);
 
             string authCode = requestPrePaymentController->enterCardNumber(cardNumber, beverage, quantity, 0, 0);
-            cout << "결제 성공: " << beverage.getId() << endl;
+            cout << "선결제 성공: " << authCode << endl;
           } catch (const customException::InvalidException& e) {
               // 선결제 의사 없는 경우 or 카드번호 3회 실패한 경우
               continue;

@@ -13,7 +13,7 @@ void RequestPrePaymentController::enterPrePayIntention(bool intention) {
     cout << "선결제를 진행합니다." << endl;
 }
 
-string RequestPrePaymentController::enterCardNumber(string cardNumber, Beverage beverage, int quantity, int srcId, int dstId) {
+string RequestPrePaymentController::enterCardNumber(string cardNumber, Beverage beverage, int quantity, int dstId) {
     for (int i = 0; i < 3; i++) {
         cout << "카드 번호를 입력하세요 현재 " << i + 1 << " : ";
         cin >> cardNumber;
@@ -29,7 +29,7 @@ string RequestPrePaymentController::enterCardNumber(string cardNumber, Beverage 
 
             string authCode = authCodeManager->generateAuthCode();
             
-            bool isPrePayable = socketManager->requestPrePayment(beverage.getId(), quantity, authCode, srcId, dstId);
+            bool isPrePayable = socketManager->requestPrePayment(beverage.getId(), quantity, authCode, dstId);
             if (!isPrePayable) {
                 throw FailedToPrePaymentException("해당 음료는 선결제를 할 수 없습니다.");
             }

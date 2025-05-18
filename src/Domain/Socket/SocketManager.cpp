@@ -15,12 +15,13 @@ std::string receive_msg(int socket){
     // 1. 4바이트 길이 읽기
     int32_t len;
     int r1 = recv(socket, &len, sizeof(len), MSG_WAITALL);
+    // cout << "<<<<<<<<<<<receive data>>>>>>>>>>>>>\n";
     if(r1 != sizeof(len)) {
         cout << "예상치 못한 이상한 메시지 수신\n";
         return "";
     }
     len = ntohl(len); // 다시 호스트 바이트 오더로
-    cout << r1 << " " << len << '\n';
+    // cout << r1 << " " << len << '\n';
 
     // 2. 본문 데이터를 len 바이트만큼 채워서 읽기
     std::vector<char> _buffer(len);
@@ -31,7 +32,7 @@ std::string receive_msg(int socket){
     }       
 
     std::string json_str(_buffer.data(), valread);
-    cout << json_str << '\n';
+    // cout << json_str << '\n';
     return json_str;
 }
 
@@ -73,9 +74,9 @@ void SocketManager::connectOtherDVMSocket(){
                 connected = true;
                 break;
             } else {
-                perror("connect 실패");
-                std::cout << "\nClient Socket 연결실패(" << address << ":" << port 
-                        << "), 재시도: " << (attempt+1) << std::endl;
+                // perror("connect 실패");
+                // std::cout << "\nClient Socket 연결실패(" << address << ":" << port 
+                //         << "), 재시도: " << (attempt+1) << std::endl;
                 std::this_thread::sleep_for(std::chrono::seconds(1));
             }
         }
@@ -85,7 +86,7 @@ void SocketManager::connectOtherDVMSocket(){
         }
 
         this->otherDVMSockets.insert({srdId, sock});
-        cout << srdId << " : socket 연결 성공\n"; 
+        // cout << srdId << " : socket 연결 성공\n"; 
     }
 }
 
@@ -123,9 +124,9 @@ void SocketManager::openServerSocket(){
 
 void SocketManager::waitingRequest(){
     while(true){
-        cout << "server가 request 연결 대기중\n";
+        // cout << "server가 request 연결 대기중\n";
         int client_socket = accept(this->serverSocket, nullptr, nullptr);
-        cout << "server 연결 성공 \n";
+        // cout << "server 연결 성공 \n";
         if (client_socket < 0) {
             perror("accept 실패");
             continue;
@@ -136,7 +137,7 @@ void SocketManager::waitingRequest(){
                 auto json_str = receive_msg(client_socket);
 
                 try {
-                    cout << json_str << '\n';
+                    // cout << json_str << '\n';
                     nlohmann::json j = nlohmann::json::parse(json_str);
 
                     // 특정 JSON 값으로 처리 분기

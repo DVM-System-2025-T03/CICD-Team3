@@ -38,7 +38,7 @@ TEST(BeverageTest, hasEnoughStock_재고보다크면_FALSE반환) {
 
 TEST(BeverageTest, hasEnoughStock_재고보다_1만큼_커도_FALSE반환_경계값_테스트) {
     Beverage b(1, "Test", 5, 1000);
-    EXPECT_FALSE(b.hasEnoughStock(8));
+    EXPECT_FALSE(b.hasEnoughStock(6));
 }
 
 TEST(BeverageTest, hasEnoughStock_음수요청이면_TRUE반환) {

@@ -20,7 +20,7 @@ void SelectBeverageController::selectBeverage(int beverageId, int quantity) {
     } catch (const customException::NotFoundException& e) {
         throw customException::InvalidException("존재하지 않는 beverageId 입니다: " + std::to_string(beverageId));
     }
-    cout << "hasStock: " << hasStock << endl;
+    // cout << "hasStock: " << hasStock << endl;
     if (hasStock) {
         // 3. 재고가 충분하면 아무 것도 하지 않고 종료
         return;

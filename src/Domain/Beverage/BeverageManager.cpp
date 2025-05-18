@@ -9,7 +9,7 @@ bool BeverageManager::hasEnoughStock(int beverageId, int quantity) {
     }
 
     Beverage beverage = this->beverages[beverageId];
-    cout << "음료 이름: " << beverage.getId() << "재고" << beverage.stock << endl;
+    // cout << "음료 이름: " << beverage.getId() << "재고" << beverage.stock << endl;
     return beverage.hasEnoughStock(quantity);
 }
 
@@ -26,7 +26,7 @@ Beverage BeverageManager::getBeverage(int beverageId) {
     if(this->beverages.find(beverageId) == beverages.end()){
         throw NotFoundException("beverageId에 해당하는 음료가 없습니다.");
     }
-    cout << "beverageId : " << beverageId << '\n';
+    // cout << "beverageId : " << beverageId << '\n';
     return this->beverages[beverageId];
 }
 

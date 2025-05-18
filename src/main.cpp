@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
     beverageMap[19] = make_pair("핫초코", 2600);
     beverageMap[20] = make_pair("카페라떼", 2700);
     vector<int> beverageIds;
-    for(int i = 0; i < 20; i++){
+    for(int i = 0; i < 7; i++){
       // 랜덤하게 인풋을 추가
       beverageIds.push_back(i);
     }
@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
         // 보유중인 음료
         if(find(beverageIds.begin(), beverageIds.end(), id) != beverageIds.end()){
           beverageManager->addBeverage(Beverage(id, name, 10, price));
-          cout << "음료 추가: " << id << ", " << name << ", " << price << endl;
+          // cout << "음료 추가: " << id << ", " << name << ", " << price << endl;
         }
         // 보유중이지 않은 음료
         else{
@@ -82,6 +82,23 @@ int main(int argc, char* argv[]) {
     int menu = -1;
 
     while (true) {
+      cout << "===============================\n";
+      cout << "| " << setw(2) << left << "ID"
+          << " | " << setw(12) << left << "상품명"
+          << " | " << setw(7) << right << "가격  |\n";
+      cout << "-------------------------------\n";
+
+      // 메뉴 출력
+      for (const auto& item : beverageMap) {
+          cout << "| "
+              << setw(2) << right << item.first << " "
+              << "| "
+              << setw(13) << left << item.second.first
+              << "| "
+              << setw(5) << right << item.second.second << "₩ |\n";
+      }
+      cout << "===============================\n";
+
       cout << "메뉴를 선택하세요 (1: 음료 선택, 2: 선결제 코드 입력, 0: 종료): ";
       cin >> menu;
       if (menu == 0) {

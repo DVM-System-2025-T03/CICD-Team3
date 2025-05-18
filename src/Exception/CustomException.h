@@ -37,19 +37,19 @@ namespace customException {
     class NotEnoughStockException : public CustomException {
     public:
         explicit NotEnoughStockException(const string& message) 
-            : CustomException("Not Enough Stock: " + message) {}
+            : CustomException(message) {}
     };
 
     class NotEnoughBalanceException : public CustomException {
     public:
         explicit NotEnoughBalanceException(const string& message) 
-            : CustomException("Not Enough Balance: " + message) {}
+            : CustomException(message) {}
     };
 
     class FailedToPrePaymentException : public CustomException {
     public:
         explicit FailedToPrePaymentException(const string& message) 
-            : CustomException("Failed to Connect: " + message) {}
+            : CustomException(message) {}
 
     };
 
@@ -65,5 +65,11 @@ namespace customException {
             const DVMInfoDTO& getNearestDVM() const noexcept {
                 return nearestDVM_;
             }
+    };
+
+    class FileOpenException : public CustomException {
+    public:
+        explicit FileOpenException(const string& message) 
+            : CustomException("File Open Error: " + message) {}
     };
 }

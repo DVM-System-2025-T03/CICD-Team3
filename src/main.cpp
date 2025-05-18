@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
         // cout << "음료 추가: " << id << ", " << name << ", " << price << endl;
     }
 
-    int beverageId = -1;
+    int beverageId = -1;      
     int quantity = -1;
     bool status = false;
     int menu = -1;
@@ -129,12 +129,25 @@ int main(int argc, char* argv[]) {
           try {
             requestPrePaymentController->enterPrePayIntention(intentionBool);
             Beverage beverage = beverageManager->getBeverage(beverageId);
+
             string authCode = requestPrePaymentController->enterCardNumber(cardNumber, beverage, quantity, 0, 0);
             cout << "결제 성공: " << beverage.getId() << endl;
           } catch (const customException::InvalidException& e) {
+              // 선결제 의사 없는 경우 or 카드번호 3회 실패한 경우
               continue;
-          }
-
+          } catch (const customException::NotEnoughBalanceException& e) {
+              // 카드 잔액 부족한 경우
+              cout << e.what() << " 다시 입력하세요." << endl;
+              continue;
+          } catch (const customException::FailedToPrePaymentException& e) {
+              // 선결제 실패한 경우
+              cout << e.what() << " 다시 입력하세요." << endl;
+              continue;
+          } catch (const customException::FileOpenException& e) {
+            // 카드 DB 파일 열기 실패한 경우
+            cerr << e.what() << endl;
+            exit(EXIT_FAILURE);
+        }
       }
 
       // uc2
@@ -152,6 +165,8 @@ int main(int argc, char* argv[]) {
       } catch (const RequestPaymentController::BeverageReductionException& e) {
         cout << e.what() << endl;
       }
+
+    }
 
     delete socketManager;
     delete authCodeManager;

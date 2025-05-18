@@ -180,12 +180,12 @@ void SocketManager::setController(ResponseStockController *responseStockControll
 
 // (해석) UC1에서 SelectBeverageController에 의해서 호출 당하는 것
 // (변경) SelectBeverageController에 의해 호출 당하고 자체적으로 stream에 json 변환된거 흘려 보내는 것까지. 그리고 응답을 다 받아서 list로 줘야 함.
-list<ResponseStockDTO> SocketManager::requestBeverageStockToOthers(int beverageId, int quantity, int srcId, int dstId) {
+list<ResponseStockDTO> SocketManager::requestBeverageStockToOthers(int beverageId, int quantity) {
 
     list<ResponseStockDTO> result;
 
     for(auto dvmSocket : otherDVMSockets){
-        RequestStockDTO requestStockDTO(beverageId, quantity, dvmSocket.first, 0); // PFR에 broadcast는 dstId 0으로 하랬음.
+        RequestStockDTO requestStockDTO(beverageId, quantity, this->srcId, 0); // PFR에 broadcast는 dstId 0으로 하랬음.
         json j = requestStockDTO;
 
         //보내기
@@ -214,7 +214,7 @@ list<ResponseStockDTO> SocketManager::requestBeverageStockToOthers(int beverageI
 // (변경) SocketManager의 stream 관찰 함수의 분기처리에 의해 thread가 새로이 생성되어 호출되는 것. 응답으로 다시 stream에 json 흘려보내야 함.
 ResponseStockDTO SocketManager::requestBeverageInfo(int beverageId, int quantity, int srcId, int dstId, int clientSocket) {
     ResponseStockDTO responseStockDTO = this->responseStockController->responseBeverageStock(beverageId, quantity);
-    responseStockDTO.setSrcAndDst(dstId, this->srcId);
+    responseStockDTO.setSrcAndDst(this->srcId, srcId);
 
     // send response back to requester
     json j = responseStockDTO;
@@ -232,8 +232,8 @@ ResponseStockDTO SocketManager::requestBeverageInfo(int beverageId, int quantity
 
 // (해석) UC3에서 RequestPrepaymentController에 의해서 호출 당하는 것
 // (변경) RequestPrepaymentController에 의해 호출 당하고 자체적으로 stream에 json 변환된거 흘려 보내는 것까지. 그리고 응답을 받아서 boolean 반환.
-bool SocketManager::requestPrePayment(int beverageId, int quantity, string authCode, int srcId, int dstId) {
-    RequestPrePaymentDTO requestPrePaymentDTO(beverageId, quantity, authCode, srcId, dstId);
+bool SocketManager::requestPrePayment(int beverageId, int quantity, string authCode, int dstId) {
+    RequestPrePaymentDTO requestPrePaymentDTO(beverageId, quantity, authCode, this->srcId, dstId);
     json j = requestPrePaymentDTO;
 
     //보내기
@@ -260,7 +260,7 @@ bool SocketManager::requestPrePayment(int beverageId, int quantity, string authC
 // (변경) SocketManager의 stream 관찰 함수의 분기처리에 의해 thread가 새로이 생성되어 호출되는 것. 응답으로 다시 stream에 json 흘려보내야 함.
 ResponsePrePaymentDTO SocketManager::requestPrePay(int beverageId, int quantity, string authCode, int srcId, int dstId, int clientSocket) {
     ResponsePrePaymentDTO responsePrePaymentDTO =  this->responsePrePaymentController->responsePrePay(beverageId, quantity, authCode);
-    responsePrePaymentDTO.setSrcAndDst(srcId, dstId);
+    responsePrePaymentDTO.setSrcAndDst(this->srcId, srcId);
 
     // send response back to requester
     json j = responsePrePaymentDTO;

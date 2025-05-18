@@ -27,7 +27,7 @@ void SelectBeverageController::selectBeverage(int beverageId, int quantity) {
     }
 
     // 4. 재고 부족 → 다른 DVM에 재고 요청
-    auto responseList = socketManager->requestBeverageStockToOthers(beverageId, quantity, 0, 0);
+    auto responseList = socketManager->requestBeverageStockToOthers(beverageId, quantity);
 
     // 5. 가장 가까운 DVM 계산
     DVMInfoDTO nearestDVM = locationManager->calculateNearest(responseList);

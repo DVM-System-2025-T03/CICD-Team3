@@ -2,7 +2,6 @@
 #include "Domain/Location/LocationManager.h"
 #include "Domain/Beverage/BeverageManager.h"
 #include "Domain/Socket/SocketManager.h"
-#include "Exception/DVMInfoException.h"
 #include "Exception/CustomException.h"
 #include <stdexcept>
 

@@ -13,7 +13,6 @@
 #include "Domain/Location/LocationManager.h"
 #include "Domain/Beverage/Beverage.h"
 #include "Exception/CustomException.h"
-#include "Exception/DVMInfoException.h"
 #include <iostream>
 
 int main(int argc, char* argv[]) {
@@ -78,6 +77,7 @@ int main(int argc, char* argv[]) {
     int quantity = -1;
     bool status = false;
     int menu = -1;
+
     while (true) {
       cout << "메뉴를 선택하세요 (1: 음료 선택, 2: 선결제 코드 입력, 0: 종료): ";
       cin >> menu;
@@ -104,28 +104,21 @@ int main(int argc, char* argv[]) {
           cout << "잘못된 메뉴입니다. 다시 선택하세요." << endl;
           continue;
       }
+
+      // uc1
       try {
         cout << "음료 아이디를 입력하세요 (1~20): ";
         cin >> beverageId;
         cout << "수량을 입력하세요 (1~10): ";
         cin >> quantity;
-        status = selectBeverageController->selectBeverage(beverageId, quantity);
+        selectBeverageController->selectBeverage(beverageId, quantity);
       } catch (const customException::InvalidException& e) {
-          std::cout << "음료 아이디가 유효하지 않습니다. 다시 입력하세요." << std::endl;
+          std::cout << e.what() << " 다시 입력하세요." << std::endl;
           continue;
-      }
-      if (status) {
-          cout << "음료 결제" << endl;
-          string cardNumber;
-          cout << "카드 번호를 입력하세요: ";
-          cin >> cardNumber;
-          try{
-              Beverage beverage = requestPaymentController->enterCardNumber(cardNumber, beverageId, quantity);
-              cout << "결제 성공: " << beverage.getId() << endl;
-          } catch (const RequestPaymentController::CardNotFoundException& e) {
-              cout << e.what() << endl;
-          }
-      } else {
+      } catch (const customException::DVMInfoException& e) {
+          // uc3
+          DVMInfoDTO nearestDVM = e.getNearestDVM();
+          
           cout << "음료 선결제" << endl;
           cout << "선결제 의사를 입력하세요 (1: 선결제, 0: 일반 결제): ";
           int intention;
@@ -141,8 +134,22 @@ int main(int argc, char* argv[]) {
           } catch (const customException::InvalidException& e) {
               continue;
           }
+
+      }
+
+      // uc2
+      cout << "음료 결제" << endl;
+      string cardNumber;
+      cout << "카드 번호를 입력하세요: ";
+      cin >> cardNumber;
+      try{
+          Beverage beverage = requestPaymentController->enterCardNumber(cardNumber, beverageId, quantity);
+          cout << "결제 성공: " << beverage.getId() << endl;
+      } catch (const RequestPaymentController::CardNotFoundException& e) {
+          cout << e.what() << endl;
       } 
     }
+
     delete socketManager;
     delete authCodeManager;
     delete bank;

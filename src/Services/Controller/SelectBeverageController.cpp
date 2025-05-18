@@ -33,5 +33,5 @@ void SelectBeverageController::selectBeverage(int beverageId, int quantity) {
     DVMInfoDTO nearestDVM = locationManager->calculateNearest(responseList);
 
     // 6. 계산된 DVM 정보를 예외로 던져서 호출 쪽에서 처리하도록 함
-    throw DVMInfoException(nearestDVM);
+    throw customException::DVMInfoException(nearestDVM);
 }

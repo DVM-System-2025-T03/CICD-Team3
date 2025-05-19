@@ -170,7 +170,8 @@ SocketManager::SocketManager(int srcId, int serverPort){
     openServerSocket();
     thread t(&SocketManager::waitingRequest, this);
     t.detach();
-    connectOtherDVMSocket();
+    thread t2(&SocketManager::connectOtherDVMSocket, this);
+    t2.detach();
 }
 
 void SocketManager::setController(ResponseStockController *responseStockController, ResponsePrePaymentController *responsePrePaymentController){

@@ -22,7 +22,7 @@ jobs:
 
       # 1. 의존성 설치 및 gcov/lcov 추가!
       - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y cmake lcov gcov
+        run: sudo apt-get update && sudo apt-get install -y cmake lcov gcc g++
 
       # 2. CMake 빌드 세팅 (컴파일 커맨드 파일 생성도 함께)
       - name: Configure CMake

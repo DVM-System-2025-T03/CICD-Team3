@@ -60,7 +60,6 @@ jobs:
           args: >
             -Dsonar.projectKey=${{ secrets.PROJECT_KEY }}
             -Dsonar.organization=${{ secrets.ORGANIZATION_KEY }}
-            -Dsonar.cfamily.compile-commands=$BUILD_WRAPPER_OUT_DIR/compile_commands.json
             -Dsonar.cfamily.build-wrapper-output=$BUILD_WRAPPER_OUT_DIR
             -Dsonar.cfamily.gcov.reportsPath=build
 

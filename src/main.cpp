@@ -16,6 +16,18 @@
 #include <iostream>
 #include <cstdlib>
 
+bool isInteger(const std::string& str) {
+  if(str.empty()) {
+    return false;
+  }
+    for (char c : str) {
+        if (!std::isdigit(c)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 int main(int argc, char* argv[]) {
 
     SocketManager* socketManager = new SocketManager(atoi(argv[1]), atoi(argv[2]));
@@ -66,7 +78,7 @@ int main(int argc, char* argv[]) {
         int price = pair.second.second;
         // 보유중인 음료
         if(find(beverageIds.begin(), beverageIds.end(), id) != beverageIds.end()){
-          beverageManager->addBeverage(Beverage(id, name, 10, price));
+          beverageManager->addBeverage(Beverage(id, name, id + 10, price));
           // cout << "음료 추가: " << id << ", " << name << ", " << price << endl;
         }
         // 보유중이지 않은 음료
@@ -102,14 +114,13 @@ int main(int argc, char* argv[]) {
 
       cout << "메뉴를 선택하세요 (1: 음료 선택, 2: 선결제 코드 입력, 0: 종료): ";
       getline(cin, menuStr);
-      try {
-          menu = stoi(menuStr);
-      } catch (const std::invalid_argument& e) {
-          cout << "잘못된 입력입니다. 다시 입력하세요." << endl;
+      if(!isInteger(menuStr)) {
+          cout << "잘못된 메뉴 입니다. 정수를 입력하세요. (0, 1, 2)" << endl;
           continue;
       }
+      menu = stoi(menuStr);
       if (menu < 0 || menu > 2) {
-          cout << "잘못된 메뉴입니다. 다시 선택하세요." << endl;
+          cout << "잘못된 메뉴입니다. 범위를 확인하세요. (0 ~ 2)" << endl;
           continue;
       }
       // 메뉴 선택
@@ -130,8 +141,7 @@ int main(int argc, char* argv[]) {
             std::cout << e.what() << std::endl;
             continue;
         }
-      } else if (menu == 1){
-
+      } else if (menu == 1){ // 1일때는 이하 실행 (else에 안걸리도록 넣음)
       } else {
           cout << "잘못된 메뉴입니다. 다시 선택하세요." << endl;
           continue;
@@ -143,28 +153,30 @@ int main(int argc, char* argv[]) {
         string quantityStr;
         cout << "음료 아이디를 입력하세요 (1~20): ";
         getline(cin, beverageIdStr);
-        try {
-          beverageId = stoi(beverageIdStr);
-      } catch (const std::invalid_argument& e) {
-          cout << "잘못된 입력입니다. 다시 입력하세요." << endl;
+        if(!isInteger(beverageIdStr)) {
+          cout << "잘못된 음료 아이디 입력입니다. 정수를 입력하세요. (1 ~ 20)" << endl;
           continue;
-      }
-        if (beverageId < 1 || beverageId > 20) {
-            cout << "잘못된 음료 아이디입니다. 다시 입력하세요." << endl;
-            continue;
         }
-        cout << "수량을 입력하세요 (1~10): ";
+        beverageId = stoi(beverageIdStr);
+        Beverage beverage = beverageManager->getBeverage(beverageId);
+        if(beverage.getStock() > 0)
+        {
+          cout << "수량을 입력하세요 (1~" << beverage.getStock() << "): ";
+        }else{
+          cout << "수량을 입력하세요 (재고 없음, 선결제 진행): "; 
+        }
+        
         getline(cin, quantityStr);
-         try {
-          quantity = stoi(quantityStr);
-      } catch (const std::invalid_argument& e) {
-          cout << "잘못된 입력입니다. 다시 입력하세요." << endl;
-          continue;
-      }
-        if (quantity < 1 || quantity > 10) {
-            cout << "잘못된 수량입니다. 다시 입력하세요." << endl;
-            continue;
+        if(!isInteger(quantityStr)) {
+          if(beverage.getStock() > 0)
+        {
+          cout << "수량을 입력하세요 (1~" << beverage.getStock() << "): ";
+        }else{
+          cout << "수량을 입력하세요 (재고 없음, 선결제 진행): "; 
         }
+          continue;
+        }
+        quantity = stoi(quantityStr);
         selectBeverageController->selectBeverage(beverageId, quantity);
       } catch (const customException::InvalidException& e) {
           std::cout << e.what() << " 다시 입력하세요." << std::endl;
@@ -175,9 +187,19 @@ int main(int argc, char* argv[]) {
           
           cout << "음료 선결제" << endl;
           cout << "가장 가까운 DVM 정보: DvmId = " << nearestDVM.getPrePaymentDvmId() << ", 위치 = (" << nearestDVM.getX() << ", " << nearestDVM.getY() << ")" << endl;
-          cout << "선결제 의사를 입력하세요 (1: 선결제, 0: 일반 결제): ";
+          cout << "선결제 의사를 입력하세요 (1: 선결제 진행, 0: 선결제 진행 안함): ";
           int intention;
-          cin >> intention;
+          string intentionStr;
+          getline(cin, intentionStr);
+          if(!isInteger(intentionStr)) {
+            cout << "잘못된 의사입니다. 정수를 입력하세요. (0 ~ 1)" << endl;
+            continue;
+          }
+          intention = stoi(intentionStr);
+          if (intention < 0 || intention > 1) {
+            cout << "잘못된 의사입니다. 다시 입력하세요. (0 ~ 1)" << endl;
+            continue;
+          }
           bool intentionBool = (intention == 1);
           string cardNumber;
 

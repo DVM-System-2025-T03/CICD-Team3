@@ -4,6 +4,18 @@ project(sonar_scanner_example)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# === (1) 코드 커버리지 ON/OFF 옵션 추가 ===
+option(COVERAGE "Enable code coverage flags" ON)
+if(COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    message(STATUS "Code coverage enabled!")
+    set(COVERAGE_COMPILE_FLAGS "--coverage -O0")
+    set(COVERAGE_LINK_FLAGS    "--coverage")
+    # 전체 타겟에 적용
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COVERAGE_COMPILE_FLAGS}")
+    set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} ${COVERAGE_COMPILE_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${COVERAGE_LINK_FLAGS}")
+endif()
+
 include(FetchContent)
 FetchContent_Declare(
   googletest

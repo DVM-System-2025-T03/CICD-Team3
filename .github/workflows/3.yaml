@@ -26,7 +26,8 @@ jobs:
 
       # 2. CMake 빌드 세팅 (컴파일 커맨드 파일 생성도 함께)
       - name: Configure CMake
-        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug \
+          -DCMAKE_CXX_FLAGS="--coverage" -DCMAKE_C_FLAGS="--coverage" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
       # 3. Build Wrapper 설치 (SonarCloud용)
       - name: Install Build Wrapper

@@ -1,19 +1,24 @@
 #pragma once
 #include <string>
-#include "AuthCodeManager.h"
-#include "CreditCard.h"
-#include "Bank.h"
-#include "SocketManager.h"
+
+#include "../../Domain/Credit/CreditCard.h"
+#include "../../Domain/Credit/Bank.h"
+#include "../../Domain/Socket/SocketManager.h"
+#include "../../Domain/Auth/AuthCodeManager.h"
+#include "../../Domain/DTO/ResponseStockDTO.h"
+#include "../../Domain/Beverage/BeverageManager.h"
+
 using namespace std;
 
 class RequestPrePaymentController {
 private:
-    AuthCodeManager authCodeManager;
-    CreditCard card;
-    Bank bank;
-    SocketManager socketManager;
+    AuthCodeManager* authCodeManager;
+    Bank* bank;
+    SocketManager* socketManager;
+    BeverageManager* beverageManager;
 
 public:
+    RequestPrePaymentController(AuthCodeManager* authCodeManager, Bank* bank, SocketManager* socketManager, BeverageManager* beverageManager);
     void enterPrePayIntention(bool intention);
-    string enterCardNumber(string cardNumber);
+    string enterCardNumber(string cardNumber, Beverage beverage, int quantity, int dstId);
 };

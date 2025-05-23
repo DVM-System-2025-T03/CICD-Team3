@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-using namespace std;
+#include <Exception/CustomException.h>
 
 class CreditCard {
 private:
@@ -8,6 +8,10 @@ private:
     int balance;
 
 public:
+    CreditCard(string cardNumber, int balance) : cardNumber(cardNumber), balance(balance) {}
     bool validateBalance(int price);
     void reduceBalance(int price);
+    bool isValid();
+    string& getCardNumber() { return cardNumber; }
+    int getBalance() { return balance; }
 };

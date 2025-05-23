@@ -1,25 +1,39 @@
-#include <list>
-#include "Beverage.h"
+#include "BeverageManager.h"
+#include "Exception/CustomException.h"
 
-class BeverageManager{
-    private:
-        list<Beverage> beverages;
+using namespace customException;
 
-    public:
-        bool hasEnoughStock(int beverageId, int quantity){
-        return false;
+bool BeverageManager::hasEnoughStock(int beverageId, int quantity) {
+    if(this->beverages.find(beverageId) == beverages.end()){
+        throw NotFoundException("beverageId에 해당하는 음료가 없습니다.");
     }
 
-        bool reduceQuantity(int beverageId, int quantity){
-        return false;
+    Beverage beverage = this->beverages[beverageId];
+    // cout << "음료 이름: " << beverage.getId() << "재고" << beverage.stock << endl;
+    return beverage.hasEnoughStock(quantity);
+}
+
+bool BeverageManager::reduceQuantity(int beverageId, int quantity) {
+    if (this->beverages.find(beverageId) == beverages.end()) {
+        throw NotFoundException("beverageId에 해당하는 음료가 없습니다.");
     }
 
-        Beverage getBeverage(int beverageId){
-        return ;
-    }
+    Beverage& beverage = this->beverages[beverageId];
+    return beverage.reduceQuantity(quantity);
+}
 
-        int getStock(int beverageId){
+Beverage BeverageManager::getBeverage(int beverageId) {
+    if(this->beverages.find(beverageId) == beverages.end()){
+        throw NotFoundException("beverageId에 해당하는 음료가 없습니다.");
+    }
+    // cout << "beverageId : " << beverageId << '\n';
+    return this->beverages[beverageId];
+}
+
+int BeverageManager::getStock(int beverageId){
         return 0;
-    }
+}
 
-};
+void BeverageManager::addBeverage(Beverage beverage) {
+    beverages.insert({beverage.getId(), beverage});
+}

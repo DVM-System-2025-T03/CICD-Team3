@@ -1,15 +1,17 @@
 #pragma once
 #include <string>
-#include "BeverageManager.h"
-#include "AuthCodeManager.h"
-#include "Beverage.h"
+#include <optional>
+#include "../../Domain/Beverage/BeverageManager.h"
+#include "../../Domain/Auth/AuthCodeManager.h"
+#include "../../Domain/Beverage/Beverage.h"
 using namespace std;
 
 class EnterAuthCodeController {
 private:
-    BeverageManager beverageManager;
-    AuthCodeManager authCodeManager;
+    BeverageManager* beverageManager;
+    AuthCodeManager* authCodeManager;
 
 public:
+    EnterAuthCodeController(BeverageManager* beverageManager, AuthCodeManager* authCodeManager);
     Beverage enterAuthCode(string authCode);
 };

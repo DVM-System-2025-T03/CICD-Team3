@@ -1,18 +1,15 @@
-#ifndef RESPONSEPREPAYMENTCONTROLLER_H
-#define RESPONSEPREPAYMENTCONTROLLER_H
-
-#include "BeverageManager.h"
-#include "AuthCodeManager.h"
-#include "ResponsePrePaymentDTO.h"
-#include "AuthCode.h"
+#pragma once
+#include "../../Domain/Beverage/BeverageManager.h"
+#include "../../Domain/Auth/AuthCodeManager.h"
+#include "../../Domain/DTO/ResponsePrePaymentDTO.h"
 
 class ResponsePrePaymentController {
-private:
-    BeverageManager beverageManager;
-    AuthCodeManager authCodeManager;
+    private:
+        BeverageManager* beverageManager;
+        AuthCodeManager* authCodeManager;
 
-public:
-    ResponsePrePaymentDTO responsePrePay(int beverageId, int quantity, AuthCode authCode);
+    public:
+        ResponsePrePaymentController() = default;
+        ResponsePrePaymentController(BeverageManager* beverageManager, AuthCodeManager* authCodeManager);
+        ResponsePrePaymentDTO responsePrePay(int beverageId, int quantity, string authCode);
 };
-
-#endif

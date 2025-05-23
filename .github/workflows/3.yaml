@@ -20,35 +20,43 @@ jobs:
         with:
           fetch-depth: 0  # SonarCloud 분석에 필요
 
-      #########################
-      # CMake Build & GTest
-      #########################
+      # 1. 의존성 설치 및 gcov/lcov 추가!
       - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y cmake lcov
+        run: sudo apt-get update && sudo apt-get install -y cmake lcov gcov
 
+      # 2. CMake 빌드 세팅 (컴파일 커맨드 파일 생성도 함께)
       - name: Configure CMake
-        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-      - name: Build with CMake
-        run: cmake --build build
+      # 3. Build Wrapper 설치 (SonarCloud용)
+      - name: Install Build Wrapper
+        uses: SonarSource/sonarcloud-github-c-cpp@v2
 
+      # 4. Build Wrapper로 실제 빌드 수행 (Sonar 분석용) **테스트 전 입니다**
+      - name: Run Build Wrapper
+        run: |
+          rm -rf build   # 이전 빌드 삭제(충돌 방지)
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+          build-wrapper-linux-x86-64 --out-dir $BUILD_WRAPPER_OUT_DIR cmake --build build --config Debug
+
+      # 5. lcov counter 초기화 (coverage 깨끗하게 시작)
+      - name: Zero counters
+        run: lcov --directory build --zerocounters
+
+      # 6. 테스트 수행(실행 후 커버리지 위한 데이터 수집 가능해짐)
       - name: Run GoogleTest
         run: |
           cd build
           ctest --output-on-failure
 
-      ###############################
-      # SonarCloud 분석 (C/C++ 기준)
-      ###############################
-      - name: Install Build Wrapper
-        uses: SonarSource/sonarcloud-github-c-cpp@v2
-
-      - name: Run Build Wrapper
+      # 7. lcov로 커버리지 info 생성 및 불필요 경로 제외
+      - name: Capture coverage info
         run: |
-          rm -rf build   # 이전 빌드 폴더 삭제
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
-          build-wrapper-linux-x86-64 --out-dir build_wrapper_output_directory cmake --build build --config Debug
+          lcov --directory build --capture --output-file coverage.info
+          lcov --remove coverage.info '/usr/*' '*/test/*' --output-file coverage.info
+          lcov --list coverage.info
 
+      # 8. SonarCloud에 분석 요청. 커버리지 파일 연동!
       - name: Analyze on SonarCloud
         uses: SonarSource/sonarcloud-github-action@master
         env:
@@ -57,10 +65,11 @@ jobs:
           args: >
             -Dsonar.projectKey=${{ secrets.PROJECT_KEY }}
             -Dsonar.organization=${{ secrets.ORGANIZATION_KEY }}
-            -Dsonar.cfamily.compile-commands=build_wrapper_output_directory/compile_commands.json
+            -Dsonar.cfamily.compile-commands=$BUILD_WRAPPER_OUT_DIR/compile_commands.json
+            -Dsonar.cfamily.build-wrapper-output=$BUILD_WRAPPER_OUT_DIR
+            -Dsonar.coverageReportPaths=coverage.info
 
-
-     # 빌드 성공 시 Discord 알림
+      # 빌드 성공 시 Discord 알림
       - name: Discord Success Notification
         if: success()
         uses: Ilshidur/action-discord@master

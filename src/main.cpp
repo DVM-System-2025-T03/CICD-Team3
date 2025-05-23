@@ -80,6 +80,7 @@ int main(int argc, char* argv[]) {
     int quantity = -1;
     bool status = false;
     int menu = -1;
+    string menuStr="";
 
     while (true) {
       cout << "===============================\n";
@@ -100,7 +101,18 @@ int main(int argc, char* argv[]) {
       cout << "===============================\n";
 
       cout << "메뉴를 선택하세요 (1: 음료 선택, 2: 선결제 코드 입력, 0: 종료): ";
-      cin >> menu;
+      getline(cin, menuStr);
+      try {
+          menu = stoi(menuStr);
+      } catch (const std::invalid_argument& e) {
+          cout << "잘못된 입력입니다. 다시 입력하세요." << endl;
+          continue;
+      }
+      if (menu < 0 || menu > 2) {
+          cout << "잘못된 메뉴입니다. 다시 선택하세요." << endl;
+          continue;
+      }
+      // 메뉴 선택
       if (menu == 0) {
           cout << "프로그램을 종료합니다." << endl;
           break;
@@ -118,17 +130,41 @@ int main(int argc, char* argv[]) {
             std::cout << e.what() << std::endl;
             continue;
         }
-      } else if (menu != 1) {
+      } else if (menu == 1){
+
+      } else {
           cout << "잘못된 메뉴입니다. 다시 선택하세요." << endl;
           continue;
       }
 
       // uc1
       try {
+        string beverageIdStr;
+        string quantityStr;
         cout << "음료 아이디를 입력하세요 (1~20): ";
-        cin >> beverageId;
+        getline(cin, beverageIdStr);
+        try {
+          beverageId = stoi(beverageIdStr);
+      } catch (const std::invalid_argument& e) {
+          cout << "잘못된 입력입니다. 다시 입력하세요." << endl;
+          continue;
+      }
+        if (beverageId < 1 || beverageId > 20) {
+            cout << "잘못된 음료 아이디입니다. 다시 입력하세요." << endl;
+            continue;
+        }
         cout << "수량을 입력하세요 (1~10): ";
-        cin >> quantity;
+        getline(cin, quantityStr);
+         try {
+          quantity = stoi(quantityStr);
+      } catch (const std::invalid_argument& e) {
+          cout << "잘못된 입력입니다. 다시 입력하세요." << endl;
+          continue;
+      }
+        if (quantity < 1 || quantity > 10) {
+            cout << "잘못된 수량입니다. 다시 입력하세요." << endl;
+            continue;
+        }
         selectBeverageController->selectBeverage(beverageId, quantity);
       } catch (const customException::InvalidException& e) {
           std::cout << e.what() << " 다시 입력하세요." << std::endl;

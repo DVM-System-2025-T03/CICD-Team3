@@ -15,8 +15,11 @@ void RequestPrePaymentController::enterPrePayIntention(bool intention) {
 
 string RequestPrePaymentController::enterCardNumber(string cardNumber, Beverage beverage, int quantity, int dstId) {
     for (int i = 0; i < 3; i++) {
-        cout << "카드 번호를 입력하세요 현재 " << i + 1 << " : ";
-        cin >> cardNumber;
+        cardNumber = inputCardNumber();
+        if (cardNumber.empty()) {
+            cout << "카드 번호를 입력하지 않았습니다. 다시 입력하세요." << endl;
+            continue;
+        }
         cout << "CARD NUMBER" << cardNumber << endl;
         try {
             CreditCard* card = bank->requestCard(cardNumber);
@@ -49,4 +52,11 @@ string RequestPrePaymentController::enterCardNumber(string cardNumber, Beverage 
     cout << "카드번호 3회 실패" << endl;
     // uc1
     throw InvalidException("카드 번호 3회 실패");
+}
+
+string RequestPrePaymentController::inputCardNumber() {
+    string cardNumber;
+    cout << "카드 번호를 입력하세요: ";
+    cin >> cardNumber;
+    return cardNumber;
 }

@@ -131,7 +131,8 @@ int main(int argc, char* argv[]) {
         // 인증 코드 입력
         cout << "인증 코드를 입력하세요: ";
         string authCode;
-        cin >> authCode;
+        // cin >> authCode;
+        getline(cin, authCode); // 개행 문자 제거
         try {
           Beverage beverage = enterAuthCodeController->enterAuthCode(authCode);
           cout << "인증 코드 확인 성공! 음료를 받으세요 : " << beverage.getId() << endl; 
@@ -231,7 +232,8 @@ int main(int argc, char* argv[]) {
       cout << "음료 결제" << endl;
       string cardNumber;
       cout << "카드 번호를 입력하세요: ";
-      cin >> cardNumber;
+      // cin >> cardNumber;
+      // getline(cin, cardNumber); // 개행 문자 제거
       try{
           Beverage beverage = requestPaymentController->enterCardNumber(cardNumber, beverageId, quantity);
           cout << "결제 성공: " << beverage.getId() << endl;

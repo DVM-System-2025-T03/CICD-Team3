@@ -5,7 +5,7 @@ RequestPaymentController::RequestPaymentController(BeverageManager* beverageMana
     : beverageManager(beverageManager), bank(bank) {}
 
 Beverage RequestPaymentController::enterCardNumber(string cardNumber, int beverageId, int quantity) {
-    const int MAX_ATTEMPTS = 3;
+    const int MAX_ATTEMPTS = 4;
     Beverage beverage = beverageManager->getBeverage(beverageId);
     int price = beverage.getPrice() * quantity;
     CreditCard* card = nullptr;
@@ -56,6 +56,7 @@ Beverage RequestPaymentController::enterCardNumber(string cardNumber, int bevera
 string RequestPaymentController::inputCardNumber() {
     string cardNumber;
     cout << "카드 번호를 입력하세요: ";
-    cin >> cardNumber;
+    // cin >> cardNumber;
+    getline(cin, cardNumber); // 개행 문자 제거
     return cardNumber;
 }

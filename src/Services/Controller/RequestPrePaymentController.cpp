@@ -57,6 +57,7 @@ string RequestPrePaymentController::enterCardNumber(string cardNumber, Beverage 
 string RequestPrePaymentController::inputCardNumber() {
     string cardNumber;
     cout << "카드 번호를 입력하세요: ";
-    cin >> cardNumber;
+    // cin >> cardNumber;
+    getline(cin, cardNumber);
     return cardNumber;
 }

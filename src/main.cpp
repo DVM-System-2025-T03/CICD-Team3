@@ -233,7 +233,7 @@ int main(int argc, char* argv[]) {
       string cardNumber;
       cout << "카드 번호를 입력하세요: ";
       // cin >> cardNumber;
-      getline(cin, cardNumber); // 개행 문자 제거
+      // getline(cin, cardNumber); // 개행 문자 제거
       try{
           Beverage beverage = requestPaymentController->enterCardNumber(cardNumber, beverageId, quantity);
           cout << "결제 성공: " << beverage.getId() << endl;

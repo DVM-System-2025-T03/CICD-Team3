@@ -16,7 +16,8 @@ Beverage RequestPaymentController::enterCardNumber(string cardNumber, int bevera
         }catch(customException::NotFoundException e){
             if (attempt < MAX_ATTEMPTS) {
                 cerr << "[" << attempt << "번 실패] 올바르지 않은 카드번호입니다. 다시 입력해주세요: ";
-                cin >> cardNumber;
+                // cin >> cardNumber;
+                getline(cin, cardNumber);
             }
         }
     }

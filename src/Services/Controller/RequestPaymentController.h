@@ -10,6 +10,7 @@ class RequestPaymentController {
 private:
     BeverageManager* beverageManager;
     Bank* bank;
+    string inputCardNumber();
 
 public:
     // 생성자: 모든 private 멤버를 초기화

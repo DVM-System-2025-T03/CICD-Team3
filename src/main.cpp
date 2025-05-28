@@ -179,6 +179,9 @@ int main(int argc, char* argv[]) {
         }
         quantity = stoi(quantityStr);
         selectBeverageController->selectBeverage(beverageId, quantity);
+      } catch (const customException::NotFoundException& e) {
+          std::cout << e.what() << "음료를 찾을 수 없습니다. 다시 입력하세요." << std::endl;
+          continue;
       } catch (const customException::InvalidException& e) {
           std::cout << e.what() << " 다시 입력하세요." << std::endl;
           continue;

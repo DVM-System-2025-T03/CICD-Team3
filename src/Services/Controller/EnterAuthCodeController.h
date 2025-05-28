@@ -11,6 +11,9 @@ private:
     BeverageManager* beverageManager;
     AuthCodeManager* authCodeManager;
 
+protected:
+    virtual string inputAuthCode();
+
 public:
     EnterAuthCodeController(BeverageManager* beverageManager, AuthCodeManager* authCodeManager);
     Beverage enterAuthCode(string authCode);

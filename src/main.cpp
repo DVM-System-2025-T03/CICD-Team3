@@ -79,13 +79,11 @@ int main(int argc, char* argv[]) {
         // 보유중인 음료
         if(find(beverageIds.begin(), beverageIds.end(), id) != beverageIds.end()){
           beverageManager->addBeverage(Beverage(id, name, id + 10, price));
-          // cout << "음료 추가: " << id << ", " << name << ", " << price << endl;
         }
         // 보유중이지 않은 음료
         else{
           beverageManager->addBeverage(Beverage(id, name, 0, price));
         }
-        // cout << "음료 추가: " << id << ", " << name << ", " << price << endl;
     }
 
     int beverageId = -1;      
@@ -131,7 +129,6 @@ int main(int argc, char* argv[]) {
         // 인증 코드 입력
         cout << "인증 코드를 입력하세요: ";
         string authCode;
-        // cin >> authCode;
         getline(cin, authCode); // 개행 문자 제거
         try {
           Beverage beverage = enterAuthCodeController->enterAuthCode(authCode);
@@ -229,8 +226,6 @@ int main(int argc, char* argv[]) {
       // uc2
       cout << "음료 결제" << endl;
       string cardNumber;
-      // cin >> cardNumber;
-      // getline(cin, cardNumber); // 개행 문자 제거
       try{
           Beverage beverage = requestPaymentController->enterCardNumber(cardNumber, beverageId, quantity);
           cout << "결제 성공: " << beverage.getId() << endl;

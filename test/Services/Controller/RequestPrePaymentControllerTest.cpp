@@ -1,104 +1,77 @@
-// #include "Services/Controller/RequestPrePaymentController.h"
-// #include <gtest/gtest.h>
-// #include <gmock/gmock.h>
+#include "gtest/gtest.h"
+#include "Services/Controller/RequestPrePaymentController.h"
+#include "Domain/Beverage/Beverage.h"
+#include "Domain/Socket/SocketManager.h"
+#include "Domain/Credit/Bank.h"
+#include "Domain/Auth/AuthCodeManager.h"
+#include "Domain/Beverage/BeverageManager.h"
+#include <queue>
+#include <stdexcept>
+#include <string>
 
-// using namespace std;
-// using ::testing::Return;
-// using ::testing::_;
-// using ::testing::NiceMock;
+using namespace std;
 
-// class MockAuthCodeManager : public AuthCodeManager{
-// public:
-//     MOCK_METHOD(string, generateAuthCode, (), ());
-// };
+// ----------------- Mock SocketManager ------------------
+class MockSocketManager : public SocketManager {
+public:
+    MockSocketManager() : SocketManager(0, 0) {}
+};
 
-// class MockBank : public Bank{
-// public:
-//     MOCK_METHOD(CreditCard*, requestCard, (const string&), ());
-// };
+// ------------- Testable Controller with Mocked Input -------------
+class TestableRequestPrePaymentController : public RequestPrePaymentController {
+private:
+    queue<string> mockInputs;
 
-// class MockSocketManager : public SocketManager{
-// public:
-//     MOCK_METHOD(bool, requestPrePayment, (int, int, const string&, int, int), ());
-// };
+public:
+    TestableRequestPrePaymentController(AuthCodeManager* auth, Bank* bank,
+        SocketManager* socket, BeverageManager* bev)
+        : RequestPrePaymentController(auth, bank, socket, bev) {}
 
-// class MockCreditCard : public CreditCard {
-// public:
-//     MOCK_METHOD(bool, isValid, (), (const));
-//     MOCK_METHOD(bool, validateBalance, (int), (const));
-// };
+    void setMockInputs(const vector<string>& inputs) {
+        mockInputs = queue<string>(deque<string>(inputs.begin(), inputs.end()));
+    }
 
-// class MockBeverage : public Beverage {
-// public:
-//     MOCK_METHOD(int, getId, (), (const));
-//     MOCK_METHOD(int, getPrice, (), (const));
-// };
+protected:
+    string inputCardNumber() override {
+        if (mockInputs.empty()) throw runtime_error("No more mock inputs");
+        string result = mockInputs.front();
+        mockInputs.pop();
+        return result;
+    }
+};
 
-// // 선결제 요청 성공
-// TEST(RequestPrePaymentControllerTest, PrePayment_Success) {
-//     NiceMock<MockAuthCodeManager> mockAuthCodeManager;
-//     NiceMock<MockBank> mockBank;
-//     NiceMock<MockSocketManager> mockSocketManager;
-//     NiceMock<MockCreditCard> mockCard;
-//     NiceMock<MockBeverage> mockBeverage;
+// ----------------------------- Test Suite -----------------------------
+class RequestPrePaymentControllerTest : public ::testing::Test {
+protected:
+    AuthCodeManager authCodeManager;
+    Bank bank;
+    MockSocketManager socketManager;
+    BeverageManager beverageManager;
+};
 
-//     EXPECT_CALL(mockBank, requestCard(_))
-//         .WillOnce(Return(&mockCard));
+TEST_F(RequestPrePaymentControllerTest, InvalidCardNumbersShouldFail) {
+    Beverage beverage(15, "오렌지주스", 0, 2200);
+    TestableRequestPrePaymentController controller(&authCodeManager, &bank, &socketManager, &beverageManager);
+    controller.setMockInputs({"invalid-card-1", "invalid-card-2"});
 
-//     EXPECT_CALL(mockCard, isValid())
-//         .WillOnce(Return(true));
+    EXPECT_THROW(controller.enterCardNumber("", beverage, 10, 1), runtime_error);
+}
 
-//     EXPECT_CALL(mockCard, validateBalance(100))
-//         .WillOnce(Return(true));
+TEST_F(RequestPrePaymentControllerTest, InsufficientBalanceShouldThrow) {
+    Beverage beverage(15, "오렌지주스", 0, 2200);
 
-//     EXPECT_CALL(mockAuthCodeManager, generateAuthCode())
-//         .WillOnce(Return("AUTH123"));
+    TestableRequestPrePaymentController controller(&authCodeManager, &bank, &socketManager, &beverageManager);
+    controller.setMockInputs({"1111-2222-3333-4444"});
 
-//     EXPECT_CALL(mockSocketManager, requestPrePayment(_, _, _, _, _))
-//         .WillOnce(Return(true));
+    EXPECT_THROW(controller.enterCardNumber("", beverage, 10, 1), customException::NotEnoughBalanceException);
+}
 
-//     EXPECT_CALL(mockBeverage, getPrice())
-//         .WillRepeatedly(Return(100));
+TEST_F(RequestPrePaymentControllerTest, SuccessfulPrePaymentShouldReturnAuthCode) {
+    Beverage beverage(15, "오렌지주스", 0, 220);
 
-//     EXPECT_CALL(mockBeverage, getId())
-//         .WillRepeatedly(Return(1));
+    TestableRequestPrePaymentController controller(&authCodeManager, &bank, &socketManager, &beverageManager);
+    controller.setMockInputs({"1111-2222-3333-4444"});
 
-//     ON_CALL(mockBank, requestCard(_)).WillByDefault([](const std::string& num) {
-//     std::cout << "[MOCK CALL] requestCard called with: " << num << std::endl;
-//     return nullptr;
-// });
-
-//     std::istringstream input("1234\n");
-//     std::streambuf* origCin = std::cin.rdbuf();
-//     std::cin.rdbuf(input.rdbuf());
-
-//     RequestPrePaymentController controller(&mockAuthCodeManager, &mockBank, &mockSocketManager);
-//     bool result = controller.enterPrePayIntention(true, mockBeverage, 1, 0, 0);
-
-//     std::cin.rdbuf(origCin);
-
-//     ASSERT_TRUE(result);
-// }
-
-// // 선결제 요청 실패
-// TEST(RequestPrePaymentControllerTest, PrePayment_CardInvalidThreeTimes_Fail) {
-//     NiceMock<MockAuthCodeManager> mockAuthCodeManager;
-//     NiceMock<MockBank> mockBank;
-//     NiceMock<MockSocketManager> mockSocketManager;
-//     NiceMock<MockBeverage> mockBeverage;
-
-//     EXPECT_CALL(mockBank, requestCard(_))
-//         .Times(3)
-//         .WillRepeatedly(Return(nullptr));
-
-//     std::istringstream input("1111\n2222\n3333\n");
-//     std::streambuf* origCin = std::cin.rdbuf();
-//     std::cin.rdbuf(input.rdbuf());
-
-//     RequestPrePaymentController controller(&mockAuthCodeManager, &mockBank, &mockSocketManager);
-//     bool result = controller.enterPrePayIntention(true, mockBeverage, 1, 0, 0);
-
-//     std::cin.rdbuf(origCin);
-
-//     ASSERT_FALSE(result);
-// }
+    string authCode = controller.enterCardNumber("", beverage, 1, 1);
+    EXPECT_FALSE(authCode.empty());
+}

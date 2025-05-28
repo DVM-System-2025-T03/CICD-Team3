@@ -16,7 +16,9 @@ private:
     Bank* bank;
     SocketManager* socketManager;
     BeverageManager* beverageManager;
-    string inputCardNumber();
+
+protected:
+    virtual string inputCardNumber();
 
 public:
     RequestPrePaymentController(AuthCodeManager* authCodeManager, Bank* bank, SocketManager* socketManager, BeverageManager* beverageManager);

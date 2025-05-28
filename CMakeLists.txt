@@ -119,3 +119,21 @@ add_executable(EnterAuthCodeControllerTest
 )
 target_link_libraries(EnterAuthCodeControllerTest gtest gmock gtest_main pthread nlohmann_json::nlohmann_json)
 add_test(NAME EnterAuthCodeControllerTest COMMAND EnterAuthCodeControllerTest)
+
+add_executable(RequestPrePaymentControllerTest
+    test/Services/Controller/RequestPrePaymentControllerTest.cpp
+    src/Domain/Socket/SocketManager.cpp
+    src/Domain/Credit/Bank.cpp
+    src/Domain/Credit/CreditCard.cpp
+    src/Domain/Auth/AuthCodeManager.cpp
+    src/Domain/Beverage/BeverageManager.cpp
+    src/Domain/Beverage/Beverage.cpp
+    src/Services/Controller/RequestPrePaymentController.cpp
+    src/Services/Controller/ResponseStockController.cpp
+    src/Services/Controller/ResponsePrePaymentController.cpp
+    src/Domain/Location/LocationManager.cpp
+)
+target_link_libraries(RequestPrePaymentControllerTest
+    gtest gmock gtest_main pthread nlohmann_json::nlohmann_json
+)
+add_test(NAME RequestPrePaymentControllerTest COMMAND RequestPrePaymentControllerTest)

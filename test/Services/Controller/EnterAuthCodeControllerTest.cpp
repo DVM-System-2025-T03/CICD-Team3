@@ -10,8 +10,6 @@
 
 using namespace customException;
 using namespace std;
-
-// 🎯 Mock 가능한 Controller 정의
 class TestableEnterAuthCodeController : public EnterAuthCodeController {
 private:
     queue<string> mockInputs;
@@ -32,8 +30,6 @@ protected:
         return code;
     }
 };
-
-// 📦 테스트 클래스
 class EnterAuthCodeControllerTest : public ::testing::Test {
 protected:
     AuthCodeManager authCodeManager;
@@ -54,13 +50,13 @@ protected:
     }
 };
 
-// ✅ 성공 케이스 테스트
+// 성공 케이스 테스트
 TEST_F(EnterAuthCodeControllerTest, EnterAuthCode_유효한코드_음료반환) {
     Beverage beverage = controller->enterAuthCode("ABC12");
     EXPECT_EQ(beverage.getId(), 1);
 }
 
-// ❌ 실패 케이스 테스트 (3회 실패 → 예외 발생)
+// 실패 케이스 테스트 (3회 실패 → 예외 발생)
 TEST_F(EnterAuthCodeControllerTest, EnterAuthCode_잘못된코드_예외발생) {
     vector<string> wrongCodes = {"WRONG1", "WRONG2", "WRONG3"};
     controller->setMockInputs(wrongCodes);

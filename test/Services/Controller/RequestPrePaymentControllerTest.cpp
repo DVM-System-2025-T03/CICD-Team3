@@ -63,7 +63,7 @@ protected:
     BeverageManager beverageManager;
 };
 
-TEST_F(RequestPrePaymentControllerTest, InvalidCardNumbersShouldFail) {
+TEST_F(RequestPrePaymentControllerTest, reponsePrePay_잘못된_카드번호_실패) {
     Beverage beverage(15, "오렌지주스", 0, 2200);
     TestableRequestPrePaymentController controller(&authCodeManager, &bank, &socketManager, &beverageManager);
     controller.setMockInputs({"invalid-card-1", "invalid-card-2"});
@@ -71,7 +71,7 @@ TEST_F(RequestPrePaymentControllerTest, InvalidCardNumbersShouldFail) {
     EXPECT_THROW(controller.enterCardNumber("", beverage, 10, 1), runtime_error);
 }
 
-TEST_F(RequestPrePaymentControllerTest, InsufficientBalanceShouldThrow) {
+TEST_F(RequestPrePaymentControllerTest, reponsePrePay_잔액부족_예외) {
     Beverage beverage(15, "오렌지주스", 0, 2200);
     socketManager.setExpectedAvailability(false);
 
@@ -81,7 +81,7 @@ TEST_F(RequestPrePaymentControllerTest, InsufficientBalanceShouldThrow) {
     EXPECT_THROW(controller.enterCardNumber("", beverage, 10, 1), FailedToPrePaymentException);
 }
 
-TEST_F(RequestPrePaymentControllerTest, SuccessfulPrePaymentShouldReturnAuthCode) {
+TEST_F(RequestPrePaymentControllerTest, responsePrePay_선결제_성공) {
     Beverage beverage(15, "오렌지주스", 0, 220);
     socketManager.setExpectedAvailability(true);
 

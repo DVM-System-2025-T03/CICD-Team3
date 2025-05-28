@@ -229,7 +229,6 @@ int main(int argc, char* argv[]) {
       // uc2
       cout << "음료 결제" << endl;
       string cardNumber;
-      cout << "카드 번호를 입력하세요: ";
       // cin >> cardNumber;
       // getline(cin, cardNumber); // 개행 문자 제거
       try{

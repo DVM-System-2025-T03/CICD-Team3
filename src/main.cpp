@@ -169,12 +169,6 @@ int main(int argc, char* argv[]) {
         
         getline(cin, quantityStr);
         if(!isInteger(quantityStr)) {
-          if(beverage.getStock() > 0)
-        {
-          cout << "수량을 입력하세요 (1~" << beverage.getStock() << "): ";
-        }else{
-          cout << "수량을 입력하세요 (재고 없음, 선결제 진행): "; 
-        }
           continue;
         }
         quantity = stoi(quantityStr);

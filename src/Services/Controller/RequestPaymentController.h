@@ -10,6 +10,8 @@ class RequestPaymentController {
 private:
     BeverageManager* beverageManager;
     Bank* bank;
+
+protected:
     string inputCardNumber();
 
 public:

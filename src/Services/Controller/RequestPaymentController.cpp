@@ -5,7 +5,7 @@ RequestPaymentController::RequestPaymentController(BeverageManager* beverageMana
     : beverageManager(beverageManager), bank(bank) {}
 
 Beverage RequestPaymentController::enterCardNumber(string cardNumber, int beverageId, int quantity) {
-    const int MAX_ATTEMPTS = 4;
+    const int MAX_ATTEMPTS = 3;
     Beverage beverage = beverageManager->getBeverage(beverageId);
     int price = beverage.getPrice() * quantity;
     CreditCard* card = nullptr;

@@ -44,5 +44,5 @@ public:
     
     ResponseStockDTO requestBeverageInfo(int beverageId, int quantity, int srcId, int dstId,int clientSocket);
     ResponsePrePaymentDTO requestPrePay(int beverageId, int quantity, string authCode, int srcId, int dstId, int clientSocket);
-    bool requestPrePayment(int beverageId, int quantity, string authCode, int dstId);
+    virtual bool requestPrePayment(int beverageId, int quantity, string authCode, int dstId);
 };

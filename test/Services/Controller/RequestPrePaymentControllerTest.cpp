@@ -5,16 +5,30 @@
 #include "Domain/Credit/Bank.h"
 #include "Domain/Auth/AuthCodeManager.h"
 #include "Domain/Beverage/BeverageManager.h"
+#include "Domain/Credit/CreditCard.h"
+#include "Exception/CustomException.h"
 #include <queue>
 #include <stdexcept>
 #include <string>
 
 using namespace std;
+using namespace customException;
 
 // ----------------- Mock SocketManager ------------------
 class MockSocketManager : public SocketManager {
+private:
+    bool expectedAvailability = false;
+
 public:
     MockSocketManager() : SocketManager(0, 0) {}
+
+    void setExpectedAvailability(bool available) {
+        expectedAvailability = available;
+    }
+
+    bool requestPrePayment(int beverageId, int quantity, string authCode, int dstId) override {
+        return expectedAvailability;
+    }
 };
 
 // ------------- Testable Controller with Mocked Input -------------
@@ -59,19 +73,21 @@ TEST_F(RequestPrePaymentControllerTest, InvalidCardNumbersShouldFail) {
 
 TEST_F(RequestPrePaymentControllerTest, InsufficientBalanceShouldThrow) {
     Beverage beverage(15, "오렌지주스", 0, 2200);
+    socketManager.setExpectedAvailability(false);
 
     TestableRequestPrePaymentController controller(&authCodeManager, &bank, &socketManager, &beverageManager);
     controller.setMockInputs({"1111-2222-3333-4444"});
 
-    EXPECT_THROW(controller.enterCardNumber("", beverage, 10, 1), customException::NotEnoughBalanceException);
+    EXPECT_THROW(controller.enterCardNumber("", beverage, 10, 1), FailedToPrePaymentException);
 }
 
 TEST_F(RequestPrePaymentControllerTest, SuccessfulPrePaymentShouldReturnAuthCode) {
     Beverage beverage(15, "오렌지주스", 0, 220);
+    socketManager.setExpectedAvailability(true);
 
     TestableRequestPrePaymentController controller(&authCodeManager, &bank, &socketManager, &beverageManager);
     controller.setMockInputs({"1111-2222-3333-4444"});
 
     string authCode = controller.enterCardNumber("", beverage, 1, 1);
-    EXPECT_FALSE(authCode.empty());
+    EXPECT_FALSE(authCode.empty()); // AUTH1234처럼 고정값이면 EXPECT_EQ(authCode, "AUTH1234");
 }

@@ -169,6 +169,7 @@ int main(int argc, char* argv[]) {
         
         getline(cin, quantityStr);
         if(!isInteger(quantityStr)) {
+          cout << "잘못된 음료 아이디 입력입니다. 정수를 입력하세요. (1~" << beverage.getStock() << ")" << endl;
           continue;
         }
         quantity = stoi(quantityStr);

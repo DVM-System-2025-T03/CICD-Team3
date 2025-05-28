@@ -157,19 +157,28 @@ int main(int argc, char* argv[]) {
         }
         beverageId = stoi(beverageIdStr);
         Beverage beverage = beverageManager->getBeverage(beverageId);
-        if(beverage.getStock() > 0)
-        {
-          cout << "수량을 입력하세요 (1~" << beverage.getStock() << "): ";
-        }else{
-          cout << "수량을 입력하세요 (재고 없음, 선결제 진행): "; 
-        }
+
+        for(int i = 0; i< 3; i++){
+          if(beverage.getStock() > 0)
+          {
+            cout << "수량을 입력하세요 (1~" << beverage.getStock() << "): ";
+          }else{
+            cout << "수량을 입력하세요 (재고 없음, 선결제 진행): "; 
+          }
         
-        getline(cin, quantityStr);
-        if(!isInteger(quantityStr)) {
-          cout << "잘못된 음료 아이디 입력입니다. 정수를 입력하세요. (1~" << beverage.getStock() << ")" << endl;
-          continue;
-        }
-        quantity = stoi(quantityStr);
+          getline(cin, quantityStr);
+          if(!isInteger(quantityStr)) {
+            cout << "잘못된 음료 아이디 입력입니다. 정수를 입력하세요. (1~" << beverage.getStock() << ")" << endl;
+            continue;
+          }else{
+            try{
+              quantity = stoi(quantityStr);
+            } catch (const std::invalid_argument& e) {
+              cout << "잘못된 음료 아이디 입력입니다. 정수를 입력하세요. (1~" << beverage.getStock() << ")" << endl;
+            }
+            break;
+          }
+      }
         selectBeverageController->selectBeverage(beverageId, quantity);
       } catch (const customException::NotFoundException& e) {
           std::cout << e.what() << "음료를 찾을 수 없습니다. 다시 입력하세요." << std::endl;

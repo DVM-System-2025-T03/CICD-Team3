@@ -12,7 +12,7 @@ private:
     Bank* bank;
 
 protected:
-    string inputCardNumber();
+    virtual string inputCardNumber();
 
 public:
     // 생성자: 모든 private 멤버를 초기화

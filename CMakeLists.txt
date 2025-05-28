@@ -136,6 +136,17 @@ add_executable(RequestPrePaymentControllerTest
 target_link_libraries(RequestPrePaymentControllerTest
     gtest gmock gtest_main pthread nlohmann_json::nlohmann_json
 )
-add_test(NAME RequestPrePaymentControllerTest COMMAND RequestPrePaymentControllerTest)
 
-configure_file(${CMAKE_SOURCE_DIR}/card_db.txt ${CMAKE_BINARY_DIR}/card_db.txt COPYONLY)
+# 👇 테스트 실행 직전에 card_db.txt를 복사
+add_custom_command(TARGET RequestPrePaymentControllerTest PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_SOURCE_DIR}/card_db.txt
+        ${CMAKE_BINARY_DIR}/card_db.txt
+    COMMENT "📁 card_db.txt 를 RequestPrePaymentControllerTest 실행 전 복사"
+)
+
+add_test(NAME RequestPrePaymentControllerTest
+    COMMAND bash -c "
+        cp '${CMAKE_SOURCE_DIR}/card_db.txt' '${CMAKE_BINARY_DIR}/card_db.txt' &&
+        '${CMAKE_BINARY_DIR}/RequestPrePaymentControllerTest'"
+)

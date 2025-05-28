@@ -137,3 +137,5 @@ target_link_libraries(RequestPrePaymentControllerTest
     gtest gmock gtest_main pthread nlohmann_json::nlohmann_json
 )
 add_test(NAME RequestPrePaymentControllerTest COMMAND RequestPrePaymentControllerTest)
+
+configure_file(${CMAKE_SOURCE_DIR}/card_db.txt ${CMAKE_BINARY_DIR}/card_db.txt COPYONLY)

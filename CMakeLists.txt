@@ -154,6 +154,19 @@ target_link_libraries(SelectBeverageControllerTest
 )
 add_test(NAME SelectBeverageControllerTest COMMAND SelectBeverageControllerTest)
 
+add_executable(RequestPaymentControllerTest
+    test/Services/Controller/RequestPaymentControllerTest.cpp
+    src/Domain/Beverage/BeverageManager.cpp
+    src/Domain/Beverage/Beverage.cpp
+    src/Domain/Credit/Bank.cpp
+    src/Domain/Credit/CreditCard.cpp
+    src/Services/Controller/RequestPaymentController.cpp
+)
+target_link_libraries(RequestPaymentControllerTest
+    gtest gmock gtest_main pthread nlohmann_json::nlohmann_json
+)
+add_test(NAME RequestPaymentControllerTest COMMAND RequestPaymentControllerTest)
+
 
 
 # 👇 테스트 실행 직전에 card_db.txt를 복사

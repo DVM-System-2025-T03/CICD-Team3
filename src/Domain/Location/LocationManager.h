@@ -13,6 +13,6 @@ private:
 
 public:
     LocationManager(int x, int y) : location(x, y) {}
-    DVMInfoDTO calculateNearest(list<ResponseStockDTO> responseList);
+    virtual DVMInfoDTO calculateNearest(list<ResponseStockDTO> responseList);
     Location getLocation();
 };

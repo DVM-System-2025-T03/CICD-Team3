@@ -16,6 +16,6 @@ private:
     list<CreditCard> cards;
 
 public:
-    CreditCard* requestCard(string cardNumber);
-    void saveCreditCard(CreditCard creditCard);
+    virtual CreditCard* requestCard(string cardNumber);
+    virtual void saveCreditCard(CreditCard creditCard);
 };

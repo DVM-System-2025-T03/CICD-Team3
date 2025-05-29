@@ -9,8 +9,8 @@ private:
 
 public:
     BeverageManager() = default;
-    bool hasEnoughStock(int beverageId, int quantity);
-    bool reduceQuantity(int beverageId, int quantity);
+    virtual bool hasEnoughStock(int beverageId, int quantity);
+    virtual bool reduceQuantity(int beverageId, int quantity);
     Beverage getBeverage(int beverageId);
     void addBeverage(Beverage beverage);
     int getStock(int beverageId);

@@ -137,6 +137,25 @@ target_link_libraries(RequestPrePaymentControllerTest
     gtest gmock gtest_main pthread nlohmann_json::nlohmann_json
 )
 
+
+add_executable(SelectBeverageControllerTest
+    test/Services/Controller/SelectBeverageControllerTest.cpp
+    src/Domain/Beverage/BeverageManager.cpp
+    src/Domain/Location/LocationManager.cpp
+    src/Domain/Socket/SocketManager.cpp
+    src/Services/Controller/SelectBeverageController.cpp
+    src/Domain/Beverage/Beverage.cpp
+    src/Services/Controller/ResponseStockController.cpp
+    src/Services/Controller/ResponsePrePaymentController.cpp
+    src/Domain/Auth/AuthCodeManager.cpp
+)
+target_link_libraries(SelectBeverageControllerTest
+    gtest gmock gtest_main pthread nlohmann_json::nlohmann_json
+)
+add_test(NAME SelectBeverageControllerTest COMMAND SelectBeverageControllerTest)
+
+
+
 # 👇 테스트 실행 직전에 card_db.txt를 복사
 add_custom_command(TARGET RequestPrePaymentControllerTest PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different

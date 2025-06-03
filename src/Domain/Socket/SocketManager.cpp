@@ -12,24 +12,29 @@
 #include <vector>
 
 std::string receive_msg(int socket){
-    // 1. 4바이트 길이 읽기
-    int32_t len;
-    int r1 = recv(socket, &len, sizeof(len), MSG_WAITALL);
-    // cout << "<<<<<<<<<<<receive data>>>>>>>>>>>>>\n";
-    if(r1 != sizeof(len)) {
-        cout << "예상치 못한 이상한 메시지 수신\n";
-        return "";
-    }
-    len = ntohl(len); // 다시 호스트 바이트 오더로
-    // cout << r1 << " " << len << '\n';
+    // // 1. 4바이트 길이 읽기
+    // int32_t len;
+    // int r1 = recv(socket, &len, sizeof(len), MSG_WAITALL);
+    cout << "<<<<<<<<<<<receive data>>>>>>>>>>>>>\n";
+    // if(r1 != sizeof(len)) {
+    //     cout << "예상치 못한 이상한 메시지 수신\n";
+    //     return "";
+    // }
+    // len = ntohl(len); // 다시 호스트 바이트 오더로
+    // // cout << r1 << " " << len << '\n';
 
     // 2. 본문 데이터를 len 바이트만큼 채워서 읽기
-    std::vector<char> _buffer(len);
-    int valread = recv(socket, _buffer.data(), len, MSG_WAITALL);
-    if(valread != len) { 
-        cout << "예상치 못한 이상한 json 메시지 수신\n";
-        return "";
-    }       
+    std::vector<char> _buffer(2040);
+    int valread = recv(socket, _buffer.data(), sizeof(_buffer), MSG_WAITALL);
+
+    if (valread > 0) {
+        std::string json_str(_buffer.data(), valread);
+        std::cout << "수신받은 문자열: [" << json_str << "]" << std::endl;
+    }
+    // if(valread != len) { 
+    //     cout << "예상치 못한 이상한 json 메시지 수신\n";
+    //     return "";
+    // }       
 
     std::string json_str(_buffer.data(), valread);
     // cout << json_str << '\n';
@@ -195,7 +200,7 @@ list<ResponseStockDTO> SocketManager::requestBeverageStockToOthers(int beverageI
         int32_t length = json_str.size();
         int32_t net_length = htonl(length);
 
-        send(dvmSocket.second, &net_length, sizeof(net_length), 0);
+        // send(dvmSocket.second, &net_length, sizeof(net_length), 0);
         send(dvmSocket.second, json_str.data(), json_str.size(), 0);
 
 
@@ -224,7 +229,7 @@ ResponseStockDTO SocketManager::requestBeverageInfo(int beverageId, int quantity
     int32_t length = jsonStr.size();
     int32_t net_length = htonl(length);
 
-    send(clientSocket, &net_length, sizeof(net_length), 0);
+    // send(clientSocket, &net_length, sizeof(net_length), 0);
     send(clientSocket, jsonStr.data(), jsonStr.size(), 0);
 
     // close(clientSocket);
@@ -245,7 +250,7 @@ bool SocketManager::requestPrePayment(int beverageId, int quantity, string authC
     int32_t length = jsonStr.size();
     int32_t net_length = htonl(length);
 
-    send(dvmSocket, &net_length, sizeof(net_length), 0);
+    // send(dvmSocket, &net_length, sizeof(net_length), 0);
     send(dvmSocket, jsonStr.data(), jsonStr.size(), 0);
 
     //읽기
@@ -270,7 +275,7 @@ ResponsePrePaymentDTO SocketManager::requestPrePay(int beverageId, int quantity,
     int32_t length = jsonStr.size();
     int32_t net_length = htonl(length);
 
-    send(clientSocket, &net_length, sizeof(net_length), 0);
+    // send(clientSocket, &net_length, sizeof(net_length), 0);
     send(clientSocket, jsonStr.data(), jsonStr.size(), 0);
 
     // close(clientSocket);

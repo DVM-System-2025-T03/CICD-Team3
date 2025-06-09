@@ -9,6 +9,7 @@ class DVMInfoDTO{
     public:
         DVMInfoDTO() : x(0), y(0), prePaymentDvmId(0) {}
         DVMInfoDTO(int x, int y, int prePaymentDvmId) : x(x), y(y), prePaymentDvmId(prePaymentDvmId) {}
+        ~DVMInfoDTO() = default;
         int getX() const { return x; }
         int getY() const { return y; }
         int getPrePaymentDvmId() const { return prePaymentDvmId; }

@@ -39,6 +39,12 @@ private:
 public:
     SocketManager() = default;
     SocketManager(int srcId, int serverPort);
+    ~SocketManager() {
+        for (auto& socket : otherDVMSockets) {
+            close(socket.second);
+        }
+        close(serverSocket);
+    }
 
     void setController(ResponseStockController *responseStockController, ResponsePrePaymentController *responsePrePaymentController);
     virtual list<ResponseStockDTO> requestBeverageStockToOthers(int beverageId, int quantity);

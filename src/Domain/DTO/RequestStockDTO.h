@@ -11,6 +11,7 @@ class Msg_content_RequestStockDTO{
         int item_num;
 
         Msg_content_RequestStockDTO() = default;
+        ~Msg_content_RequestStockDTO() = default;
 
         Msg_content_RequestStockDTO(int item_code, int item_num){
             this->item_code = item_code;
@@ -26,6 +27,7 @@ class RequestStockDTO{
         Msg_content_RequestStockDTO msg_content;
 
         RequestStockDTO() = default;
+        ~RequestStockDTO() = default;
 
         RequestStockDTO(int beverageId, int quantity, int srcId, int dstId){
             this->msg_type = "req_stock";

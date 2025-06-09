@@ -16,5 +16,6 @@ protected:
 
 public:
     EnterAuthCodeController(BeverageManager* beverageManager, AuthCodeManager* authCodeManager);
+    ~EnterAuthCodeController() = default;
     Beverage enterAuthCode(string authCode);
 };

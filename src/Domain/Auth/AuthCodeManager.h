@@ -10,6 +10,7 @@ private:
 
 public:
     AuthCodeManager() = default;
+    ~AuthCodeManager() = default;
     bool validateAuthCode(string authCode);
     int getBeverageId(string authCode);
     void saveAuthCode(int beverageId, int quantity, string authCode);

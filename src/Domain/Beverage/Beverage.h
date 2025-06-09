@@ -12,6 +12,7 @@ public:
 
 public:
     Beverage();
+    ~Beverage() = default;
     Beverage(int id, const string& name, int stock, int price);
     bool hasEnoughStock(int quantity);
     bool reduceQuantity(int quantity);

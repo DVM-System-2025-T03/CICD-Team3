@@ -8,6 +8,8 @@ private:
     int balance;
 
 public:
+    CreditCard() = default;
+    ~CreditCard() = default;
     CreditCard(string cardNumber, int balance) : cardNumber(cardNumber), balance(balance) {}
     virtual bool validateBalance(int price);
     void reduceBalance(int price);

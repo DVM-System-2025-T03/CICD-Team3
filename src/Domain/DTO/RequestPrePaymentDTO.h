@@ -12,6 +12,7 @@ class Msg_content_RequestPrePaymentDTO{
         string cert_code;
 
         Msg_content_RequestPrePaymentDTO() = default;
+        ~Msg_content_RequestPrePaymentDTO() = default;
 
         Msg_content_RequestPrePaymentDTO(int item_code, int item_num, string cert_code){
             this->item_code = item_code;
@@ -28,6 +29,7 @@ class RequestPrePaymentDTO{
         Msg_content_RequestPrePaymentDTO msg_content;
 
         RequestPrePaymentDTO() = default;
+        ~RequestPrePaymentDTO() = default;
 
         RequestPrePaymentDTO(int beverageId, int quantity, string cert_code, int src_id, int dst_id){
             this->msg_type = "req_prepay";

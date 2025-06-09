@@ -17,4 +17,5 @@ public:
     bool reduceQuantity(int quantity);
     int getId();
     int getPrice();
+    int getStock();
 };

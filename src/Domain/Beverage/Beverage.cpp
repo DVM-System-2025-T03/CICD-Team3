@@ -32,3 +32,7 @@ int Beverage::getId(){
 int Beverage::getPrice(){
     return price;
 }
+
+int Beverage::getStock(){
+    return stock;
+}

@@ -17,6 +17,9 @@ private:
     SocketManager* socketManager;
     BeverageManager* beverageManager;
 
+protected:
+    virtual string inputCardNumber();
+
 public:
     RequestPrePaymentController(AuthCodeManager* authCodeManager, Bank* bank, SocketManager* socketManager, BeverageManager* beverageManager);
     void enterPrePayIntention(bool intention);

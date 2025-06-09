@@ -16,6 +16,18 @@
 #include <iostream>
 #include <cstdlib>
 
+bool isInteger(const std::string& str) {
+  if(str.empty()) {
+    return false;
+  }
+    for (char c : str) {
+        if (!std::isdigit(c)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 int main(int argc, char* argv[]) {
 
     SocketManager* socketManager = new SocketManager(atoi(argv[1]), atoi(argv[2]));
@@ -66,20 +78,19 @@ int main(int argc, char* argv[]) {
         int price = pair.second.second;
         // 보유중인 음료
         if(find(beverageIds.begin(), beverageIds.end(), id) != beverageIds.end()){
-          beverageManager->addBeverage(Beverage(id, name, 10, price));
-          // cout << "음료 추가: " << id << ", " << name << ", " << price << endl;
+          beverageManager->addBeverage(Beverage(id, name, id + 10, price));
         }
         // 보유중이지 않은 음료
         else{
           beverageManager->addBeverage(Beverage(id, name, 0, price));
         }
-        // cout << "음료 추가: " << id << ", " << name << ", " << price << endl;
     }
 
     int beverageId = -1;      
     int quantity = -1;
     bool status = false;
     int menu = -1;
+    string menuStr="";
 
     while (true) {
       cout << "===============================\n";
@@ -100,7 +111,17 @@ int main(int argc, char* argv[]) {
       cout << "===============================\n";
 
       cout << "메뉴를 선택하세요 (1: 음료 선택, 2: 선결제 코드 입력, 0: 종료): ";
-      cin >> menu;
+      getline(cin, menuStr);
+      if(!isInteger(menuStr)) {
+          cout << "잘못된 메뉴 입니다. 정수를 입력하세요. (0, 1, 2)" << endl;
+          continue;
+      }
+      menu = stoi(menuStr);
+      if (menu < 0 || menu > 2) {
+          cout << "잘못된 메뉴입니다. 범위를 확인하세요. (0 ~ 2)" << endl;
+          continue;
+      }
+      // 메뉴 선택
       if (menu == 0) {
           cout << "프로그램을 종료합니다." << endl;
           break;
@@ -108,7 +129,7 @@ int main(int argc, char* argv[]) {
         // 인증 코드 입력
         cout << "인증 코드를 입력하세요: ";
         string authCode;
-        cin >> authCode;
+        getline(cin, authCode); // 개행 문자 제거
         try {
           Beverage beverage = enterAuthCodeController->enterAuthCode(authCode);
           cout << "인증 코드 확인 성공! 음료를 받으세요 : " << beverage.getId() << endl; 
@@ -118,18 +139,50 @@ int main(int argc, char* argv[]) {
             std::cout << e.what() << std::endl;
             continue;
         }
-      } else if (menu != 1) {
+      } else if (menu == 1){ // 1일때는 이하 실행 (else에 안걸리도록 넣음)
+      } else {
           cout << "잘못된 메뉴입니다. 다시 선택하세요." << endl;
           continue;
       }
 
       // uc1
       try {
+        string beverageIdStr;
+        string quantityStr;
         cout << "음료 아이디를 입력하세요 (1~20): ";
-        cin >> beverageId;
-        cout << "수량을 입력하세요 (1~10): ";
-        cin >> quantity;
+        getline(cin, beverageIdStr);
+        if(!isInteger(beverageIdStr)) {
+          cout << "잘못된 음료 아이디 입력입니다. 정수를 입력하세요. (1 ~ 20)" << endl;
+          continue;
+        }
+        beverageId = stoi(beverageIdStr);
+        Beverage beverage = beverageManager->getBeverage(beverageId);
+
+        for(int i = 0; i< 3; i++){
+          if(beverage.getStock() > 0)
+          {
+            cout << "수량을 입력하세요 (1~" << beverage.getStock() << "): ";
+          }else{
+            cout << "수량을 입력하세요 (재고 없음, 선결제 진행): "; 
+          }
+        
+          getline(cin, quantityStr);
+          if(!isInteger(quantityStr)) {
+            cout << "잘못된 음료 아이디 입력입니다. 정수를 입력하세요. (1~" << beverage.getStock() << ")" << endl;
+            continue;
+          }else{
+            try{
+              quantity = stoi(quantityStr);
+            } catch (const std::invalid_argument& e) {
+              cout << "잘못된 음료 아이디 입력입니다. 정수를 입력하세요. (1~" << beverage.getStock() << ")" << endl;
+            }
+            break;
+          }
+      }
         selectBeverageController->selectBeverage(beverageId, quantity);
+      } catch (const customException::NotFoundException& e) {
+          std::cout << e.what() << "음료를 찾을 수 없습니다. 다시 입력하세요." << std::endl;
+          continue;
       } catch (const customException::InvalidException& e) {
           std::cout << e.what() << " 다시 입력하세요." << std::endl;
           continue;
@@ -139,9 +192,19 @@ int main(int argc, char* argv[]) {
           
           cout << "음료 선결제" << endl;
           cout << "가장 가까운 DVM 정보: DvmId = " << nearestDVM.getPrePaymentDvmId() << ", 위치 = (" << nearestDVM.getX() << ", " << nearestDVM.getY() << ")" << endl;
-          cout << "선결제 의사를 입력하세요 (1: 선결제, 0: 일반 결제): ";
+          cout << "선결제 의사를 입력하세요 (1: 선결제 진행, 0: 선결제 진행 안함): ";
           int intention;
-          cin >> intention;
+          string intentionStr;
+          getline(cin, intentionStr);
+          if(!isInteger(intentionStr)) {
+            cout << "잘못된 의사입니다. 정수를 입력하세요. (0 ~ 1)" << endl;
+            continue;
+          }
+          intention = stoi(intentionStr);
+          if (intention < 0 || intention > 1) {
+            cout << "잘못된 의사입니다. 다시 입력하세요. (0 ~ 1)" << endl;
+            continue;
+          }
           bool intentionBool = (intention == 1);
           string cardNumber;
 
@@ -172,8 +235,6 @@ int main(int argc, char* argv[]) {
       // uc2
       cout << "음료 결제" << endl;
       string cardNumber;
-      cout << "카드 번호를 입력하세요: ";
-      cin >> cardNumber;
       try{
           Beverage beverage = requestPaymentController->enterCardNumber(cardNumber, beverageId, quantity);
           cout << "결제 성공: " << beverage.getId() << endl;

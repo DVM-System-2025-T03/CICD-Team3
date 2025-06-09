@@ -1,104 +1,93 @@
-// #include "Services/Controller/RequestPrePaymentController.h"
-// #include <gtest/gtest.h>
-// #include <gmock/gmock.h>
+#include "gtest/gtest.h"
+#include "Services/Controller/RequestPrePaymentController.h"
+#include "Domain/Beverage/Beverage.h"
+#include "Domain/Socket/SocketManager.h"
+#include "Domain/Credit/Bank.h"
+#include "Domain/Auth/AuthCodeManager.h"
+#include "Domain/Beverage/BeverageManager.h"
+#include "Domain/Credit/CreditCard.h"
+#include "Exception/CustomException.h"
+#include <queue>
+#include <stdexcept>
+#include <string>
 
-// using namespace std;
-// using ::testing::Return;
-// using ::testing::_;
-// using ::testing::NiceMock;
+using namespace std;
+using namespace customException;
 
-// class MockAuthCodeManager : public AuthCodeManager{
-// public:
-//     MOCK_METHOD(string, generateAuthCode, (), ());
-// };
+// ----------------- Mock SocketManager ------------------
+class MockSocketManager : public SocketManager {
+private:
+    bool expectedAvailability = false;
 
-// class MockBank : public Bank{
-// public:
-//     MOCK_METHOD(CreditCard*, requestCard, (const string&), ());
-// };
+public:
+    MockSocketManager() : SocketManager(0, 0) {}
 
-// class MockSocketManager : public SocketManager{
-// public:
-//     MOCK_METHOD(bool, requestPrePayment, (int, int, const string&, int, int), ());
-// };
+    void setExpectedAvailability(bool available) {
+        expectedAvailability = available;
+    }
 
-// class MockCreditCard : public CreditCard {
-// public:
-//     MOCK_METHOD(bool, isValid, (), (const));
-//     MOCK_METHOD(bool, validateBalance, (int), (const));
-// };
+    bool requestPrePayment(int beverageId, int quantity, string authCode, int dstId) override {
+        return expectedAvailability;
+    }
+};
 
-// class MockBeverage : public Beverage {
-// public:
-//     MOCK_METHOD(int, getId, (), (const));
-//     MOCK_METHOD(int, getPrice, (), (const));
-// };
+// ------------- Testable Controller with Mocked Input -------------
+class TestableRequestPrePaymentController : public RequestPrePaymentController {
+private:
+    queue<string> mockInputs;
 
-// // 선결제 요청 성공
-// TEST(RequestPrePaymentControllerTest, PrePayment_Success) {
-//     NiceMock<MockAuthCodeManager> mockAuthCodeManager;
-//     NiceMock<MockBank> mockBank;
-//     NiceMock<MockSocketManager> mockSocketManager;
-//     NiceMock<MockCreditCard> mockCard;
-//     NiceMock<MockBeverage> mockBeverage;
+public:
+    TestableRequestPrePaymentController(AuthCodeManager* auth, Bank* bank,
+        SocketManager* socket, BeverageManager* bev)
+        : RequestPrePaymentController(auth, bank, socket, bev) {}
 
-//     EXPECT_CALL(mockBank, requestCard(_))
-//         .WillOnce(Return(&mockCard));
+    void setMockInputs(const vector<string>& inputs) {
+        mockInputs = queue<string>(deque<string>(inputs.begin(), inputs.end()));
+    }
 
-//     EXPECT_CALL(mockCard, isValid())
-//         .WillOnce(Return(true));
+protected:
+    string inputCardNumber() override {
+        if (mockInputs.empty()) throw runtime_error("No more mock inputs");
+        string result = mockInputs.front();
+        mockInputs.pop();
+        return result;
+    }
+};
 
-//     EXPECT_CALL(mockCard, validateBalance(100))
-//         .WillOnce(Return(true));
+// ----------------------------- Test Suite -----------------------------
+class RequestPrePaymentControllerTest : public ::testing::Test {
+protected:
+    AuthCodeManager authCodeManager;
+    Bank bank;
+    MockSocketManager socketManager;
+    BeverageManager beverageManager;
+};
 
-//     EXPECT_CALL(mockAuthCodeManager, generateAuthCode())
-//         .WillOnce(Return("AUTH123"));
+TEST_F(RequestPrePaymentControllerTest, responsePrePay_잘못된_카드번호_예외) {
+    Beverage beverage(15, "오렌지주스", 0, 2200);
+    TestableRequestPrePaymentController controller(&authCodeManager, &bank, &socketManager, &beverageManager);
+    controller.setMockInputs({"invalid-1", "invalid-2", "invalid-3"});
 
-//     EXPECT_CALL(mockSocketManager, requestPrePayment(_, _, _, _, _))
-//         .WillOnce(Return(true));
+    EXPECT_THROW(controller.enterCardNumber("", beverage, 10, 1), InvalidException);
+}
 
-//     EXPECT_CALL(mockBeverage, getPrice())
-//         .WillRepeatedly(Return(100));
+TEST_F(RequestPrePaymentControllerTest, responsePrePay_잔액부족_예외) {
+    Beverage beverage(15, "오렌지주스", 0, 2200);
+    socketManager.setExpectedAvailability(false);
 
-//     EXPECT_CALL(mockBeverage, getId())
-//         .WillRepeatedly(Return(1));
+    TestableRequestPrePaymentController controller(&authCodeManager, &bank, &socketManager, &beverageManager);
+    controller.setMockInputs({"1111-2222-3333-4444"});
 
-//     ON_CALL(mockBank, requestCard(_)).WillByDefault([](const std::string& num) {
-//     std::cout << "[MOCK CALL] requestCard called with: " << num << std::endl;
-//     return nullptr;
-// });
+    EXPECT_THROW(controller.enterCardNumber("", beverage, 10, 1), FailedToPrePaymentException);
+}
 
-//     std::istringstream input("1234\n");
-//     std::streambuf* origCin = std::cin.rdbuf();
-//     std::cin.rdbuf(input.rdbuf());
+TEST_F(RequestPrePaymentControllerTest, responsePrePay_선결제_성공) {
+    Beverage beverage(15, "오렌지주스", 0, 220);
+    socketManager.setExpectedAvailability(true);
 
-//     RequestPrePaymentController controller(&mockAuthCodeManager, &mockBank, &mockSocketManager);
-//     bool result = controller.enterPrePayIntention(true, mockBeverage, 1, 0, 0);
+    TestableRequestPrePaymentController controller(&authCodeManager, &bank, &socketManager, &beverageManager);
+    controller.setMockInputs({"1111-2222-3333-4444"});
 
-//     std::cin.rdbuf(origCin);
-
-//     ASSERT_TRUE(result);
-// }
-
-// // 선결제 요청 실패
-// TEST(RequestPrePaymentControllerTest, PrePayment_CardInvalidThreeTimes_Fail) {
-//     NiceMock<MockAuthCodeManager> mockAuthCodeManager;
-//     NiceMock<MockBank> mockBank;
-//     NiceMock<MockSocketManager> mockSocketManager;
-//     NiceMock<MockBeverage> mockBeverage;
-
-//     EXPECT_CALL(mockBank, requestCard(_))
-//         .Times(3)
-//         .WillRepeatedly(Return(nullptr));
-
-//     std::istringstream input("1111\n2222\n3333\n");
-//     std::streambuf* origCin = std::cin.rdbuf();
-//     std::cin.rdbuf(input.rdbuf());
-
-//     RequestPrePaymentController controller(&mockAuthCodeManager, &mockBank, &mockSocketManager);
-//     bool result = controller.enterPrePayIntention(true, mockBeverage, 1, 0, 0);
-
-//     std::cin.rdbuf(origCin);
-
-//     ASSERT_FALSE(result);
-// }
+    string authCode = controller.enterCardNumber("", beverage, 1, 1);
+    EXPECT_FALSE(authCode.empty()); // AUTH1234처럼 고정값이면 EXPECT_EQ(authCode, "AUTH1234");
+}

@@ -119,3 +119,66 @@ add_executable(EnterAuthCodeControllerTest
 )
 target_link_libraries(EnterAuthCodeControllerTest gtest gmock gtest_main pthread nlohmann_json::nlohmann_json)
 add_test(NAME EnterAuthCodeControllerTest COMMAND EnterAuthCodeControllerTest)
+
+add_executable(RequestPrePaymentControllerTest
+    test/Services/Controller/RequestPrePaymentControllerTest.cpp
+    src/Domain/Socket/SocketManager.cpp
+    src/Domain/Credit/Bank.cpp
+    src/Domain/Credit/CreditCard.cpp
+    src/Domain/Auth/AuthCodeManager.cpp
+    src/Domain/Beverage/BeverageManager.cpp
+    src/Domain/Beverage/Beverage.cpp
+    src/Services/Controller/RequestPrePaymentController.cpp
+    src/Services/Controller/ResponseStockController.cpp
+    src/Services/Controller/ResponsePrePaymentController.cpp
+    src/Domain/Location/LocationManager.cpp
+)
+target_link_libraries(RequestPrePaymentControllerTest
+    gtest gmock gtest_main pthread nlohmann_json::nlohmann_json
+)
+
+
+add_executable(SelectBeverageControllerTest
+    test/Services/Controller/SelectBeverageControllerTest.cpp
+    src/Domain/Beverage/BeverageManager.cpp
+    src/Domain/Location/LocationManager.cpp
+    src/Domain/Socket/SocketManager.cpp
+    src/Services/Controller/SelectBeverageController.cpp
+    src/Domain/Beverage/Beverage.cpp
+    src/Services/Controller/ResponseStockController.cpp
+    src/Services/Controller/ResponsePrePaymentController.cpp
+    src/Domain/Auth/AuthCodeManager.cpp
+)
+target_link_libraries(SelectBeverageControllerTest
+    gtest gmock gtest_main pthread nlohmann_json::nlohmann_json
+)
+add_test(NAME SelectBeverageControllerTest COMMAND SelectBeverageControllerTest)
+
+add_executable(RequestPaymentControllerTest
+    test/Services/Controller/RequestPaymentControllerTest.cpp
+    src/Domain/Beverage/BeverageManager.cpp
+    src/Domain/Beverage/Beverage.cpp
+    src/Domain/Credit/Bank.cpp
+    src/Domain/Credit/CreditCard.cpp
+    src/Services/Controller/RequestPaymentController.cpp
+)
+target_link_libraries(RequestPaymentControllerTest
+    gtest gmock gtest_main pthread nlohmann_json::nlohmann_json
+)
+add_test(NAME RequestPaymentControllerTest COMMAND RequestPaymentControllerTest)
+
+
+
+# 👇 테스트 실행 직전에 card_db.txt를 복사
+add_custom_command(TARGET RequestPrePaymentControllerTest PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_SOURCE_DIR}/card_db.txt
+        ${CMAKE_BINARY_DIR}/card_db.txt
+    COMMENT "📁 card_db.txt 를 RequestPrePaymentControllerTest 실행 전 복사"
+)
+
+add_test(NAME RequestPrePaymentControllerTest
+    COMMAND bash -c "
+        cp '${CMAKE_SOURCE_DIR}/card_db.txt' '${CMAKE_BINARY_DIR}/card_db.txt' &&
+        '${CMAKE_BINARY_DIR}/RequestPrePaymentControllerTest'"
+)

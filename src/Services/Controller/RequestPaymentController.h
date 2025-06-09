@@ -19,6 +19,8 @@ public:
     RequestPaymentController(BeverageManager* beverageManager, 
                              Bank* bank);
 
+    ~RequestPaymentController() = default;
+
     Beverage enterCardNumber(string cardNumber, int beverageId, int quantity);
 
     class CardNotFoundException : public exception {

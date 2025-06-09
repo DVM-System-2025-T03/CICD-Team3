@@ -16,6 +16,13 @@ private:
     list<CreditCard> cards;
 
 public:
+    Bank() = default;
+    ~Bank() {
+        for (CreditCard& card : cards) {
+            delete &card;  
+        }
+        cards.clear();
+    };
     virtual CreditCard* requestCard(string cardNumber);
     virtual void saveCreditCard(CreditCard creditCard);
 };

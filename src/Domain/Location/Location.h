@@ -11,6 +11,7 @@ class Location{
     public:
         Location() = default;
         Location(int x, int y) : x(x), y(y) {}
+        ~Location() = default;
 
         int getX(){
             return this->x;

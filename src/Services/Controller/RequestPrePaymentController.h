@@ -22,6 +22,7 @@ protected:
 
 public:
     RequestPrePaymentController(AuthCodeManager* authCodeManager, Bank* bank, SocketManager* socketManager, BeverageManager* beverageManager);
+    ~RequestPrePaymentController() = default;
     void enterPrePayIntention(bool intention);
     string enterCardNumber(string cardNumber, Beverage beverage, int quantity, int dstId);
 };

@@ -13,5 +13,6 @@ private:
 
 public:
     SelectBeverageController(LocationManager* locationManager, BeverageManager* beverageManager, SocketManager* socketManager);
+    ~SelectBeverageController() = default;
     void selectBeverage(int beverageId, int quantity);
 };

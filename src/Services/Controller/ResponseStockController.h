@@ -11,5 +11,6 @@ private:
 public:
     ResponseStockController() = default;
     ResponseStockController(LocationManager * LocationManager, BeverageManager* beverageManager);
+    ~ResponseStockController() = default;
     ResponseStockDTO responseBeverageStock(int beverageId, int quantity);
 };

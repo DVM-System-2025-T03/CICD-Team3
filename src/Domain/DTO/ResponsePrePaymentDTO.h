@@ -12,6 +12,7 @@ class Msg_content_ResponsePrePaymentDTO{
         bool availability;
 
         Msg_content_ResponsePrePaymentDTO() = default;
+        ~Msg_content_ResponsePrePaymentDTO() = default;
 
         Msg_content_ResponsePrePaymentDTO(int item_code, int item_num, bool availability){
             this->item_code = item_code;
@@ -32,6 +33,7 @@ class ResponsePrePaymentDTO{
         Msg_content_ResponsePrePaymentDTO msg_content;
         
         ResponsePrePaymentDTO() = default;
+        ~ResponsePrePaymentDTO() = default;
 
         ResponsePrePaymentDTO(int beverageId, int quantity, bool availability){
             this->msg_type = "resp_prepay";

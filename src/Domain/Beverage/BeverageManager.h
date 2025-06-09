@@ -9,6 +9,7 @@ private:
 
 public:
     BeverageManager() = default;
+    ~BeverageManager() = default;
     virtual bool hasEnoughStock(int beverageId, int quantity);
     virtual bool reduceQuantity(int beverageId, int quantity);
     virtual Beverage getBeverage(int beverageId);

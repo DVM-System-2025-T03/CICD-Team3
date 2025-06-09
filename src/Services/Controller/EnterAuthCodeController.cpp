@@ -19,11 +19,10 @@ Beverage EnterAuthCodeController::enterAuthCode(string authCode) {
             authCodeManager->deleteAuthCode(authCode);
             return beverageManager->getBeverage(beverageId);
 
-        } catch (const NotFoundException& e) {
+        } catch (const NotFoundException &e) {
             // 마지막 시도가 아니면 재입력 요청
             if (attempt < MAX_ATTEMPTS) {
                 std::cerr << "[" << attempt << "번째 실패] 유효하지 않은 인증 코드입니다. 다시 입력해주세요: ";
-                // std::cin  >> authCode;
                 authCode = inputAuthCode(); // 개행 문자 제거
             } else {
                 // 3회 모두 실패한 경우
@@ -31,6 +30,7 @@ Beverage EnterAuthCodeController::enterAuthCode(string authCode) {
             }
         }
     }
+    return Beverage();
 }
 
 string EnterAuthCodeController::inputAuthCode() {

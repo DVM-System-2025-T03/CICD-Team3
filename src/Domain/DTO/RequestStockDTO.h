@@ -29,7 +29,7 @@ class RequestStockDTO{
         RequestStockDTO() = default;
         ~RequestStockDTO() = default;
 
-        RequestStockDTO(int beverageId, int quantity, int srcId, int dstId){
+        RequestStockDTO(int beverageId, int quantity, int src_id, int dst_id){
             this->msg_type = "req_stock";
             this->src_id = src_id;
             this->dst_id = dst_id;

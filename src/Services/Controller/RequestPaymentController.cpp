@@ -21,7 +21,7 @@ Beverage RequestPaymentController::enterCardNumber(string cardNumber, int bevera
         try{
             card = bank->requestCard(cardNumber);
             break;      // 카드 조회 성공 시 루프 종료
-        }catch(customException::NotFoundException e){
+        }catch(customException::NotFoundException &e){
             if (attempt < MAX_ATTEMPTS) {
                 cerr << "[" << attempt << "번 실패] 올바르지 않은 카드번호입니다. 다시 입력하세요." << endl;
             }
